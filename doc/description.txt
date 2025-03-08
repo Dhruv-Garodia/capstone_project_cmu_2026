@@ -1,0 +1,26 @@
+The 3D reconstruction process involved:
+
+First obtaining the actual 3D structure using high-resolution imaging (pFIB-SEM with 6 nm voxel resolution)
+Processing this data through a 6-step segmentation method:
+
+- Gaussian smoothing filter (hyperparameter: gaussian_filter_size)
+    Noise is reduced in each 2D image.
+
+- Forward gradient threshold (hyperparameter: gradient_threshold)
+    The method detects sharp intensity changes (which indicate the “front” of the solid features) while minimizing the effect of streak artifacts.
+
+- Low-grayscale-value-removal (hyperparameter: low_grayscale_value_threshold)
+    The grayscale values are removed below the threshold. (labeled as 0)
+
+- High-grayscale-value-addition (hyperparameter: high_grayscale_value_threshold)
+    The grayscale values are added to the threshold. (labeled as 1)
+
+- 3D spherical element operations (opening/closing) (hyperparameter: 3d_cleaning_element_size)
+    opening: erosion followed by dilation. remove small noise or tiny objects that may have been incorrectly labeled as 1.
+    closing: dilation followed by erosion. fill small holes, ensure the objects are connected.
+
+- Final 3D Gaussian smoothing (hyperparameter: 3d_gaussian_filter)
+    The 3D structure is smoothed.
+
+Analyzing the segmented volumes to determine porosity and pore size distributions
+Fitting these distributions to the log-normal function to extract the characteristic parameters

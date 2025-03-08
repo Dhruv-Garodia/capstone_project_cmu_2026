@@ -1,0 +1,4 @@
+*.pdf
+/data
+*.tif
+*.npy
