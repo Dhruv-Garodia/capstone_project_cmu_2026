@@ -7,6 +7,7 @@ def validate_segmentation(original, segmented):
     print("Original shape:", original.shape)
     print("Segmented shape:", segmented.shape)
     
+    # area of the solid part / area of the total part
     porosity = np.sum(segmented) / segmented.size
     print(f"Overall porosity for segmented volume: {porosity:.3f}")
     
@@ -49,5 +50,5 @@ def validate_segmentation(original, segmented):
 if __name__ == "__main__":
     os.chdir("..")
     original = tifffile.imread("data/pFIB/pristine_full.tif")
-    segmented = np.load("scripts/output/segmented_volume.npy")
+    segmented = tifffile.imread("scripts/output/segmented_stack.tif")
     validate_segmentation(original, segmented)
