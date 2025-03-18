@@ -1,4 +1,8 @@
 # reproduce the results of the paper
+# TODO: crop inside the (cropping the outside - rectangle)
+# TODO: replicate the value of pososity that is consistent with the paper 0.5 / 127
+# TODO: replicate the paper
+
 import os
 import numpy as np
 import tifffile
