@@ -1,0 +1,12 @@
+=== Cropped_stack Analysis ===
+
+Shape: (665, 448, 1602)
+Data type: uint8
+
+Overall porosity: 48.6699
+
+Slice porosity - 
+  Min: 0.0526
+  Max: 70.3807
+  Mean: 48.6699
+  StdDev: 10.6264

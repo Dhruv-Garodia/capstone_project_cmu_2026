@@ -1,0 +1,10 @@
+=== Segmented_volume Porosity Analysis ===
+
+Shape: (665, 1100, 2640)
+Overall porosity: 8.9890%
+
+Slice porosity - 
+  Min: 0.0074%
+  Max: 12.4017%
+  Mean: 8.9890%
+  StdDev: 1.7528%

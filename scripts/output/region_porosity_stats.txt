@@ -1,0 +1,12 @@
+=== Segmented_volume Porosity Analysis ===
+
+Stack shape: (665, 1100, 2640)
+Total highlighted voxels: 479938492
+Pore voxels within highlighted regions: 236129927
+Overall region porosity: 49.2000%
+
+Slice porosity within highlighted regions - 
+  Min: 30.3673%
+  Max: 60.1061%
+  Mean: 48.6515%
+  StdDev: 3.9238%

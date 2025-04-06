@@ -1,0 +1,56 @@
+python eval.py output/segmented_volume.npy
+
+Parameters:
+rotation_angle = 52        # Rotation angle for the slice (Step 0)
+sigma_initial = 1.0        # For initial Gaussian smoothing (Step 1)
+gradient_threshold = 20.0  # Threshold for the forward gradient (Step 2)
+low_threshold = 50         # Low grayscale threshold (Step 3)
+high_threshold = 200       # High grayscale threshold (Step 4)
+morph_radius = 2           # Radius for the 3D spherical structuring element (Step 5)
+sigma_final = 1.0          # Sigma for final 3D Gaussian smoothing (Step 6)
+
+Overall porosity: 8.9890%
+Min slice porosity: 0.0074%
+Max slice porosity: 12.4017%
+Mean slice porosity: 8.9890%
+Std dev of slice porosity: 1.7528%
+
+=====
+python eval.py output/segmented_volume.npy output/highlighted_stack.tif 
+
+Parameters:
+rotation_angle = 52        # Rotation angle for the slice (Step 0)
+sigma_initial = 1.0        # For initial Gaussian smoothing (Step 1)
+gradient_threshold = 20.0  # Threshold for the forward gradient (Step 2)
+low_threshold = 50         # Low grayscale threshold (Step 3)
+high_threshold = 200       # High grayscale threshold (Step 4)
+morph_radius = 2           # Radius for the 3D spherical structuring element (Step 5)
+sigma_final = 1.0          # Sigma for final 3D Gaussian smoothing (Step 6)
+
+Result:
+Total highlighted voxels: 463535335
+Pore voxels within highlighted regions: 106582763
+Overall region porosity: 22.9934%
+Min slice porosity: 3.8207%
+Max slice porosity: 27.4585%
+Mean slice porosity: 22.8110%
+Std dev of slice porosity: 2.7090%
+
+=====
+Parameters:
+rotation_angle = 52        # Keep this the same (matches the paper methodology)
+sigma_initial = 0.8        # Slightly reduced to preserve more pore details
+gradient_threshold = 15.0  # Lowered to classify more regions as pores
+low_threshold = 40         # Lowered to classify more low-intensity regions as pores
+high_threshold = 170       # Lowered to classify fewer regions as solid
+morph_radius = 1           # Reduced to preserve more pore structures
+sigma_final = 0.7          # Reduced to prevent excessive smoothing of pore boundaries
+
+Total highlighted voxels: 479938492
+Pore voxels within highlighted regions: 236129927
+Overall region porosity: 49.2000%
+Min slice porosity: 30.3673%
+Max slice porosity: 60.1061%
+Mean slice porosity: 48.6515%
+Std dev of slice porosity: 3.9238%
+Region porosity statistics saved to scripts/output/region_porosity_stats.txt

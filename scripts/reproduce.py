@@ -13,12 +13,12 @@ from skimage import exposure
 
 # Define hyperparameters (adjust these values as needed)
 rotation_angle = 52        # Rotation angle for the slice (Step 0)
-sigma_initial = 1.0        # For initial Gaussian smoothing (Step 1)
-gradient_threshold = 20.0  # Threshold for the forward gradient (Step 2)
-low_threshold = 50         # Low grayscale threshold (Step 3)
-high_threshold = 200       # High grayscale threshold (Step 4)
-morph_radius = 2           # Radius for the 3D spherical structuring element (Step 5)
-sigma_final = 1.0          # Sigma for final 3D Gaussian smoothing (Step 6)
+sigma_initial = 0.8        # For initial Gaussian smoothing (Step 1)
+gradient_threshold = 15.0  # Threshold for the forward gradient (Step 2)
+low_threshold = 40         # Low grayscale threshold (Step 3)
+high_threshold = 170       # High grayscale threshold (Step 4)
+morph_radius = 1           # Radius for the 3D spherical structuring element (Step 5)
+sigma_final = 0.7          # Sigma for final 3D Gaussian smoothing (Step 6)
 
 def preprocess_volume(volume, ref_slice_idx=None):
     """
