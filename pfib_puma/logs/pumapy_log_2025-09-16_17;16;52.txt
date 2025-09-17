@@ -1,0 +1,13 @@
+
+---------------------------- 
+Generating Random Spheres
+---------------------------- 
+Domain Size: (630, 1860, 354)
+Diameter: 492
+Porosity: 0.005798979687480346
+Allow intersection: True
+Segmented: True
+
+---------------------------- 
+Finished Random Sphere Generation
+---------------------------- 

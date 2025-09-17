@@ -1,0 +1,74 @@
+try to create a mesh in blender -> lots of possibilities
+Turning mesh into tensor 
+Try to create a pipeline between blender and python, essentially starting to prepare for the ground for machine learning and training on that in pore calculation.
+
+===
+Step 0: Starting Point, Our Biggest Challenge
+We begin with just 3 TIF files showing porous materials, but we don't know for sure what their exact porosity values are.
+
+Step 1: Create Ground Truth
+We use Blender to turn these TIF files into accurate 3D models and measure their true porosity and pore size distribution(? not sure if its possible). 
+
+Step 2: Verify Our Measurements
+We double-check our porosity calculations using multiple different methods to make sure our numbers are correct. 
+
+Step 3: Create More Examples - Blender
+Since 3 samples isn't enough:
+    - We create artificial samples with known porosity values
+    - We make variations of our original samples
+
+Step 4: Build Machine Learning Models - Python
+After that, we find a way to convert the mesh into a tensor.
+Then, we use our expanded dataset to train two types of AI models:
+    - One that can look at a 3D sample and tell you its porosity
+    - Another that can create a new 3D sample when you specify what porosity you want
+
+Step 5: Validation
+Use some metrics to determine if:
+    - They have the correct porosity we asked for
+    - Their pore sizes match realistic distributions
+    - Manually check by ourself
+
+┌─────────────────────┐                   ┌──────────────────────┐
+│ INPUT               │                   │ GROUND TRUTH         │
+│ TIF Samples         ├───────────────────► Blender Mesh         │
+└─────────┬───────────┘                   │ Analysis             │
+          │                               └──────────┬───────────┘
+          │                                          │
+          ▼                                          ▼
+┌─────────────────────┐                   ┌──────────────────────┐
+│ DATA AUGMENTATION   │                   │ VALIDATION           │
+│ Generate Variants   │◄──────────────────┤ Multi-method         │
+│ with Similar        │                   │ Porosity Calculation │
+│ Properties          │                   └──────────┬───────────┘
+└─────────┬───────────┘                              │
+          │                                          │
+          ▼                                          ▼
+┌─────────────────────┐                   ┌──────────────────────┐
+│ ML TRAINING         │                   │ SYNTHETIC DATASET    │
+│ Porosity Prediction │◄──────────────────┤ Known Porosity Values│
+│ & Volume Generation │                   │ Controlled           │
+└─────────┬───────────┘                   │ Distributions        │
+          │                               └──────────────────────┘
+          │
+          ▼
+┌─────────────────────┐
+│ OUTPUT VALIDATION   │
+│ Porosity Accuracy   │
+│ Size Distribution   │
+│ Visual Assessment   │
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│ FINAL SYSTEM        │
+│ Input: Porosity     │
+│ Output: 3D Volume   │
+│ with Target Porosity│
+└─────────────────────┘
+
+====
+Questions
+1. How to make sure the data we generated follows the desired pore size distribution?
+2. Can we load the tif samples to blender? And try to analyze start from there?
+

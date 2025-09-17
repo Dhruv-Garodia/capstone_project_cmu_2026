@@ -1,0 +1,4 @@
+log normal bins
+1. create synthetic data (puma / blender)
+2. generate model -> having testing / training dataset
+3. move on real dataset

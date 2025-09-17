@@ -1,0 +1,27 @@
+
+---------------------------- 
+Generating Random Fiber Domain
+---------------------------- 
+Domain Shape: : (630, 1860, 354)
+Fiber radius: : 10
+Porosity: 0.492
+Angle Type: (0)
+Angle Variation: (0)
+Direction: (x)
+Fiber length: None
+Allow intersections: True
+
+---------------------------- 
+Computing Volume Fraction
+---------------------------- 
+Domain Size: 414817200
+Cutoff: (0, 0)
+
+---------------------------- 
+Finished Volume Fraction Calculation
+---------------------------- 
+Volume Fraction: 0.4912198361109424
+
+---------------------------- 
+Finished Random Fiber Generation
+---------------------------- 
