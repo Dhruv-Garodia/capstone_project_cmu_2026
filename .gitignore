@@ -2,3 +2,8 @@
 /data
 *.tif
 *.npy
+*.txt
+*.zip
+*.png
+*.stl
+/synthetic_data
