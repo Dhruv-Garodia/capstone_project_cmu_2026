@@ -23,5 +23,11 @@ Region porosity statistics saved to scripts/output/region_porosity_stats.txt
 python script/convert_mesh.py \
   --png_dir output/puma_synthetic_sphere/png_slices \
   --out_mesh pfib_mesh.stl \
-  --solid_is_bright \
-  --step_size 2
+
+python script/mask_highlighted_segments.py \
+  --highlighted_tif data/pFIB-cropped/highlighted_stack.tif \
+  --segmented_tif data/pFIB-cropped/segmented_stack.tif \
+  --output_size 150 150 \
+  --start_slice 1 --max_slices 30 \
+  --out_tif data/pFIB-cropped/masked_segmented_stack.tif \
+  --out_png_dir data/pFIB-cropped/masked_png_slices

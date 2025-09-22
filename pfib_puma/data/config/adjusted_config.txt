@@ -1,6 +1,6 @@
 nx: 150
 ny: 150
-nz: 100
+nz: 30
 voxel_size_xy_nm: 10
 voxel_size_nm: 10
 
@@ -15,10 +15,10 @@ max_iters: 1
 random_seed: 42
 slice_axis: z
 
-psd_bins_nm: 120, 210, 330
-psd_weights: 0.25, 0.5, 0.25
+psd_bins_nm: 89, 105, 125, 150, 180, 215, 255, 300, 355, 420, 500, 600, 720, 860, 1030, 1240, 1500, 1800
+psd_weights: 0.010, 0.020, 0.040, 0.070, 0.100, 0.130, 0.145, 0.140, 0.120, 0.095, 0.050, 0.030, 0.020, 0.010, 0.007, 0.005, 0.003, 0.002
 
-out_dir: output/temp/
+out_dir: output/adjusted/
 export_png: true
 export_tiff3d: true
 sem_like: true
