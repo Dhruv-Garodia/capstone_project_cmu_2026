@@ -5,4 +5,5 @@
 *.zip
 *.png
 *.stl
+*/log
 /synthetic_data
