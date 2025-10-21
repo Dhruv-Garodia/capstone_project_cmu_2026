@@ -1,0 +1,8 @@
+{
+  "overall_porosity": 0.660628,
+  "mean_slice_porosity": 0.660628,
+  "std_slice_porosity": 0.036503,
+  "min_slice_porosity": 0.51,
+  "max_slice_porosity": 0.733911,
+  "nslices": 150
+}
