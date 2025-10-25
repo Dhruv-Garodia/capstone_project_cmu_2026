@@ -1,0 +1,2318 @@
+.
+├── blender
+│   ├── ClaudeMCP.blend
+│   ├── PorousMeshDifference2.blend
+│   ├── PorousMeshDifference2.blend1
+│   └── PorousMeshDifference3.blend
+├── blender.zip
+├── data
+│   ├── __MACOSX
+│   │   └── pFIB
+│   └── pFIB
+│       ├── comp_full.tif
+│       ├── pristine_full.tif
+│       └── uncomp_full.tif
+├── doc
+│   ├── description.txt
+│   ├── image.png
+│   ├── paper.pdf
+│   └── scripts.txt
+├── model
+│   └── task.txt
+├── pfib_puma
+│   ├── binary_volume.dat
+│   ├── data
+│   │   ├── __MACOSX
+│   │   │   └── pFIB
+│   │   ├── config
+│   │   │   ├── 9bin_lognomal.txt
+│   │   │   ├── adjusted_config.txt
+│   │   │   ├── example_config.txt
+│   │   │   └── log_normal_auto.txt
+│   │   ├── pFIB
+│   │   │   ├── comp_full.tif
+│   │   │   ├── pristine_full.tif
+│   │   │   └── uncomp_full.tif
+│   │   ├── pFIB-cropped
+│   │   │   ├── 200-230
+│   │   │   │   ├── slice_0000.png
+│   │   │   │   ├── slice_0001.png
+│   │   │   │   ├── slice_0002.png
+│   │   │   │   ├── slice_0003.png
+│   │   │   │   ├── slice_0004.png
+│   │   │   │   ├── slice_0005.png
+│   │   │   │   ├── slice_0006.png
+│   │   │   │   ├── slice_0007.png
+│   │   │   │   ├── slice_0008.png
+│   │   │   │   ├── slice_0009.png
+│   │   │   │   ├── slice_0010.png
+│   │   │   │   ├── slice_0011.png
+│   │   │   │   ├── slice_0012.png
+│   │   │   │   ├── slice_0013.png
+│   │   │   │   ├── slice_0014.png
+│   │   │   │   ├── slice_0015.png
+│   │   │   │   ├── slice_0016.png
+│   │   │   │   ├── slice_0017.png
+│   │   │   │   ├── slice_0018.png
+│   │   │   │   ├── slice_0019.png
+│   │   │   │   ├── slice_0020.png
+│   │   │   │   ├── slice_0021.png
+│   │   │   │   ├── slice_0022.png
+│   │   │   │   ├── slice_0023.png
+│   │   │   │   ├── slice_0024.png
+│   │   │   │   ├── slice_0025.png
+│   │   │   │   ├── slice_0026.png
+│   │   │   │   ├── slice_0027.png
+│   │   │   │   ├── slice_0028.png
+│   │   │   │   └── slice_0029.png
+│   │   │   ├── 400-430
+│   │   │   │   ├── slice_0000.png
+│   │   │   │   ├── slice_0001.png
+│   │   │   │   ├── slice_0002.png
+│   │   │   │   ├── slice_0003.png
+│   │   │   │   ├── slice_0004.png
+│   │   │   │   ├── slice_0005.png
+│   │   │   │   ├── slice_0006.png
+│   │   │   │   ├── slice_0007.png
+│   │   │   │   ├── slice_0008.png
+│   │   │   │   ├── slice_0009.png
+│   │   │   │   ├── slice_0010.png
+│   │   │   │   ├── slice_0011.png
+│   │   │   │   ├── slice_0012.png
+│   │   │   │   ├── slice_0013.png
+│   │   │   │   ├── slice_0014.png
+│   │   │   │   ├── slice_0015.png
+│   │   │   │   ├── slice_0016.png
+│   │   │   │   ├── slice_0017.png
+│   │   │   │   ├── slice_0018.png
+│   │   │   │   ├── slice_0019.png
+│   │   │   │   ├── slice_0020.png
+│   │   │   │   ├── slice_0021.png
+│   │   │   │   ├── slice_0022.png
+│   │   │   │   ├── slice_0023.png
+│   │   │   │   ├── slice_0024.png
+│   │   │   │   ├── slice_0025.png
+│   │   │   │   ├── slice_0026.png
+│   │   │   │   ├── slice_0027.png
+│   │   │   │   ├── slice_0028.png
+│   │   │   │   └── slice_0029.png
+│   │   │   ├── highlighted_stack.tif
+│   │   │   ├── labeled_regions.npy
+│   │   │   ├── labeled_regions.tif
+│   │   │   ├── masked_segmented_stack.tif
+│   │   │   ├── overlays
+│   │   │   │   ├── composite_overlay.png
+│   │   │   │   ├── overlay_slice_0000.png
+│   │   │   │   ├── overlay_slice_0034.png
+│   │   │   │   ├── overlay_slice_0069.png
+│   │   │   │   ├── overlay_slice_0104.png
+│   │   │   │   ├── overlay_slice_0139.png
+│   │   │   │   ├── overlay_slice_0174.png
+│   │   │   │   ├── overlay_slice_0209.png
+│   │   │   │   ├── overlay_slice_0244.png
+│   │   │   │   ├── overlay_slice_0279.png
+│   │   │   │   ├── overlay_slice_0314.png
+│   │   │   │   ├── overlay_slice_0349.png
+│   │   │   │   ├── overlay_slice_0384.png
+│   │   │   │   ├── overlay_slice_0419.png
+│   │   │   │   ├── overlay_slice_0454.png
+│   │   │   │   ├── overlay_slice_0489.png
+│   │   │   │   ├── overlay_slice_0524.png
+│   │   │   │   ├── overlay_slice_0559.png
+│   │   │   │   ├── overlay_slice_0594.png
+│   │   │   │   ├── overlay_slice_0629.png
+│   │   │   │   └── overlay_slice_0664.png
+│   │   │   ├── segmented_stack.tif
+│   │   │   └── segmented_volume.npy
+│   │   └── pFIB-segmented
+│   │       └── segmented_volume.npy
+│   ├── logs
+│   │   ├── pumapy_log_2025-09-22_14;13;02.txt
+│   │   ├── pumapy_log_2025-09-22_14;13;03.txt
+│   │   ├── pumapy_log_2025-09-22_14;13;04.txt
+│   │   ├── pumapy_log_2025-09-22_14;13;05.txt
+│   │   ├── pumapy_log_2025-09-22_15;18;55.txt
+│   │   ├── pumapy_log_2025-09-22_15;18;56.txt
+│   │   ├── pumapy_log_2025-09-22_15;18;57.txt
+│   │   ├── pumapy_log_2025-09-22_15;18;58.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;01.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;03.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;05.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;24.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;25.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;26.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;27.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;28.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;29.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;32.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;53.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;54.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;55.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;56.txt
+│   │   ├── pumapy_log_2025-09-22_15;19;58.txt
+│   │   ├── pumapy_log_2025-09-22_15;20;00.txt
+│   │   ├── pumapy_log_2025-09-22_15;29;18.txt
+│   │   ├── pumapy_log_2025-09-22_15;29;19.txt
+│   │   ├── pumapy_log_2025-09-22_15;37;54.txt
+│   │   ├── pumapy_log_2025-09-22_15;37;55.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;32.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;34.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;35.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;36.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;37.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;38.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;40.txt
+│   │   ├── pumapy_log_2025-09-22_15;39;41.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;46.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;47.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;48.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;49.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;50.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;51.txt
+│   │   ├── pumapy_log_2025-09-22_16;04;52.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;27.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;28.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;29.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;30.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;31.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;32.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;34.txt
+│   │   ├── pumapy_log_2025-09-22_16;15;35.txt
+│   │   ├── pumapy_log_2025-09-22_16;31;55.txt
+│   │   ├── pumapy_log_2025-09-22_16;31;56.txt
+│   │   ├── pumapy_log_2025-09-22_16;34;15.txt
+│   │   ├── pumapy_log_2025-09-22_16;34;16.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;31.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;32.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;33.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;34.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;35.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;36.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;37.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;38.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;39.txt
+│   │   ├── pumapy_log_2025-09-22_16;37;40.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;35.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;36.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;37.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;38.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;39.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;40.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;41.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;42.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;43.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;44.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;45.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;46.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;47.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;48.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;49.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;50.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;51.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;53.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;54.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;55.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;56.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;57.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;58.txt
+│   │   ├── pumapy_log_2025-09-22_16;59;59.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;00.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;01.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;02.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;03.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;04.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;05.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;06.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;07.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;08.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;09.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;10.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;11.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;12.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;13.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;14.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;15.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;16.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;17.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;18.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;19.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;20.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;21.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;22.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;23.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;24.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;25.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;26.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;27.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;28.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;29.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;30.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;31.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;32.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;33.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;34.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;35.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;36.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;37.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;38.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;39.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;40.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;41.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;42.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;43.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;44.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;45.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;46.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;47.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;48.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;49.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;50.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;51.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;52.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;53.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;54.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;55.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;56.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;57.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;58.txt
+│   │   ├── pumapy_log_2025-09-22_17;00;59.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;00.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;01.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;02.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;03.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;04.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;05.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;06.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;07.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;08.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;09.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;10.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;11.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;12.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;13.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;14.txt
+│   │   ├── pumapy_log_2025-09-22_17;01;15.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;40.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;41.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;42.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;43.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;44.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;45.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;46.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;47.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;48.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;49.txt
+│   │   ├── pumapy_log_2025-09-27_21;16;51.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;53.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;55.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;56.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;57.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;58.txt
+│   │   ├── pumapy_log_2025-09-27_21;18;59.txt
+│   │   ├── pumapy_log_2025-09-27_21;19;00.txt
+│   │   ├── pumapy_log_2025-09-27_21;19;01.txt
+│   │   ├── pumapy_log_2025-09-27_21;19;02.txt
+│   │   ├── pumapy_log_2025-09-27_21;19;03.txt
+│   │   ├── pumapy_log_2025-09-27_21;19;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;19.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;21.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;22.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;23.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;24.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;25.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;26.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;27.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;28.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;29.txt
+│   │   ├── pumapy_log_2025-09-27_21;21;31.txt
+│   │   ├── pumapy_log_2025-09-27_21;23;58.txt
+│   │   ├── pumapy_log_2025-09-27_21;23;59.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;00.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;01.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;02.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;45.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;46.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;47.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;48.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;49.txt
+│   │   ├── pumapy_log_2025-09-27_21;24;50.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;15.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;16.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;17.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;18.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;19.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;20.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;37.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;38.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;40.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;41.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;42.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;53.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;54.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;55.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;56.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;57.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;58.txt
+│   │   ├── pumapy_log_2025-09-27_21;25;59.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;22.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;23.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;24.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;25.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;26.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;27.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;29.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;47.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;48.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;49.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;50.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;51.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;52.txt
+│   │   ├── pumapy_log_2025-09-27_21;26;53.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;26.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;27.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;28.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;29.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;30.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;31.txt
+│   │   ├── pumapy_log_2025-09-27_21;27;32.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;03.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;05.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;06.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;07.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;08.txt
+│   │   ├── pumapy_log_2025-09-27_21;28;09.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;41.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;42.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;43.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;44.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;45.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;46.txt
+│   │   ├── pumapy_log_2025-09-27_21;30;48.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;10.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;12.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;13.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;14.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;15.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;16.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;17.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;18.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;20.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;41.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;42.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;43.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;44.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;45.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;46.txt
+│   │   ├── pumapy_log_2025-09-27_21;32;48.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;06.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;07.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;08.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;09.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;10.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;12.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;32.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;34.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;35.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;36.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;37.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;38.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;33;40.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;00.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;02.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;03.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;05.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;06.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;07.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;35.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;37.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;38.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;40.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;41.txt
+│   │   ├── pumapy_log_2025-09-27_21;34;42.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;02.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;03.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;05.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;06.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;07.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;08.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;32.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;33.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;34.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;35.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;36.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;37.txt
+│   │   ├── pumapy_log_2025-09-27_21;35;39.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;06.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;07.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;08.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;09.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;10.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;11.txt
+│   │   ├── pumapy_log_2025-09-27_21;36;12.txt
+│   │   ├── pumapy_log_2025-09-27_21;38;02.txt
+│   │   ├── pumapy_log_2025-09-27_21;38;03.txt
+│   │   ├── pumapy_log_2025-09-27_21;38;04.txt
+│   │   ├── pumapy_log_2025-09-27_21;38;05.txt
+│   │   ├── pumapy_log_2025-09-27_21;38;06.txt
+│   │   └── pumapy_log_2025-09-27_21;38;07.txt
+│   ├── make_synthetic_meth.sh
+│   ├── orig_mesh_200_230.stl
+│   ├── orig_mesh_400_430.stl
+│   ├── output
+│   │   ├── adjusted
+│   │   │   ├── png_slices
+│   │   │   │   ├── slice_0000.png
+│   │   │   │   ├── slice_0001.png
+│   │   │   │   ├── slice_0002.png
+│   │   │   │   ├── slice_0003.png
+│   │   │   │   ├── slice_0004.png
+│   │   │   │   ├── slice_0005.png
+│   │   │   │   ├── slice_0006.png
+│   │   │   │   ├── slice_0007.png
+│   │   │   │   ├── slice_0008.png
+│   │   │   │   ├── slice_0009.png
+│   │   │   │   ├── slice_0010.png
+│   │   │   │   ├── slice_0011.png
+│   │   │   │   ├── slice_0012.png
+│   │   │   │   ├── slice_0013.png
+│   │   │   │   ├── slice_0014.png
+│   │   │   │   ├── slice_0015.png
+│   │   │   │   ├── slice_0016.png
+│   │   │   │   ├── slice_0017.png
+│   │   │   │   ├── slice_0018.png
+│   │   │   │   ├── slice_0019.png
+│   │   │   │   ├── slice_0020.png
+│   │   │   │   ├── slice_0021.png
+│   │   │   │   ├── slice_0022.png
+│   │   │   │   ├── slice_0023.png
+│   │   │   │   ├── slice_0024.png
+│   │   │   │   ├── slice_0025.png
+│   │   │   │   ├── slice_0026.png
+│   │   │   │   ├── slice_0027.png
+│   │   │   │   ├── slice_0028.png
+│   │   │   │   ├── slice_0029.png
+│   │   │   │   ├── slice_0030.png
+│   │   │   │   ├── slice_0031.png
+│   │   │   │   ├── slice_0032.png
+│   │   │   │   ├── slice_0033.png
+│   │   │   │   ├── slice_0034.png
+│   │   │   │   ├── slice_0035.png
+│   │   │   │   ├── slice_0036.png
+│   │   │   │   ├── slice_0037.png
+│   │   │   │   ├── slice_0038.png
+│   │   │   │   ├── slice_0039.png
+│   │   │   │   ├── slice_0040.png
+│   │   │   │   ├── slice_0041.png
+│   │   │   │   ├── slice_0042.png
+│   │   │   │   ├── slice_0043.png
+│   │   │   │   ├── slice_0044.png
+│   │   │   │   ├── slice_0045.png
+│   │   │   │   ├── slice_0046.png
+│   │   │   │   ├── slice_0047.png
+│   │   │   │   ├── slice_0048.png
+│   │   │   │   ├── slice_0049.png
+│   │   │   │   ├── slice_0050.png
+│   │   │   │   ├── slice_0051.png
+│   │   │   │   ├── slice_0052.png
+│   │   │   │   ├── slice_0053.png
+│   │   │   │   ├── slice_0054.png
+│   │   │   │   ├── slice_0055.png
+│   │   │   │   ├── slice_0056.png
+│   │   │   │   ├── slice_0057.png
+│   │   │   │   ├── slice_0058.png
+│   │   │   │   ├── slice_0059.png
+│   │   │   │   ├── slice_0060.png
+│   │   │   │   ├── slice_0061.png
+│   │   │   │   ├── slice_0062.png
+│   │   │   │   ├── slice_0063.png
+│   │   │   │   ├── slice_0064.png
+│   │   │   │   ├── slice_0065.png
+│   │   │   │   ├── slice_0066.png
+│   │   │   │   ├── slice_0067.png
+│   │   │   │   ├── slice_0068.png
+│   │   │   │   ├── slice_0069.png
+│   │   │   │   ├── slice_0070.png
+│   │   │   │   ├── slice_0071.png
+│   │   │   │   ├── slice_0072.png
+│   │   │   │   ├── slice_0073.png
+│   │   │   │   ├── slice_0074.png
+│   │   │   │   ├── slice_0075.png
+│   │   │   │   ├── slice_0076.png
+│   │   │   │   ├── slice_0077.png
+│   │   │   │   ├── slice_0078.png
+│   │   │   │   ├── slice_0079.png
+│   │   │   │   ├── slice_0080.png
+│   │   │   │   ├── slice_0081.png
+│   │   │   │   ├── slice_0082.png
+│   │   │   │   ├── slice_0083.png
+│   │   │   │   ├── slice_0084.png
+│   │   │   │   ├── slice_0085.png
+│   │   │   │   ├── slice_0086.png
+│   │   │   │   ├── slice_0087.png
+│   │   │   │   ├── slice_0088.png
+│   │   │   │   ├── slice_0089.png
+│   │   │   │   ├── slice_0090.png
+│   │   │   │   ├── slice_0091.png
+│   │   │   │   ├── slice_0092.png
+│   │   │   │   ├── slice_0093.png
+│   │   │   │   ├── slice_0094.png
+│   │   │   │   ├── slice_0095.png
+│   │   │   │   ├── slice_0096.png
+│   │   │   │   ├── slice_0097.png
+│   │   │   │   ├── slice_0098.png
+│   │   │   │   └── slice_0099.png
+│   │   │   ├── realized_stats.json
+│   │   │   └── volume_stack.tif
+│   │   ├── lognormal
+│   │   │   ├── png_slices
+│   │   │   │   ├── slice_0000.png
+│   │   │   │   ├── slice_0001.png
+│   │   │   │   ├── slice_0002.png
+│   │   │   │   ├── slice_0003.png
+│   │   │   │   ├── slice_0004.png
+│   │   │   │   ├── slice_0005.png
+│   │   │   │   ├── slice_0006.png
+│   │   │   │   ├── slice_0007.png
+│   │   │   │   ├── slice_0008.png
+│   │   │   │   ├── slice_0009.png
+│   │   │   │   ├── slice_0010.png
+│   │   │   │   ├── slice_0011.png
+│   │   │   │   ├── slice_0012.png
+│   │   │   │   ├── slice_0013.png
+│   │   │   │   ├── slice_0014.png
+│   │   │   │   ├── slice_0015.png
+│   │   │   │   ├── slice_0016.png
+│   │   │   │   ├── slice_0017.png
+│   │   │   │   ├── slice_0018.png
+│   │   │   │   ├── slice_0019.png
+│   │   │   │   ├── slice_0020.png
+│   │   │   │   ├── slice_0021.png
+│   │   │   │   ├── slice_0022.png
+│   │   │   │   ├── slice_0023.png
+│   │   │   │   ├── slice_0024.png
+│   │   │   │   ├── slice_0025.png
+│   │   │   │   ├── slice_0026.png
+│   │   │   │   ├── slice_0027.png
+│   │   │   │   ├── slice_0028.png
+│   │   │   │   └── slice_0029.png
+│   │   │   ├── realized_stats.json
+│   │   │   └── volume_stack.tif
+│   │   └── synthetic_pfibs
+│   │       ├── meshes
+│   │       │   ├── synthetic_0.stl
+│   │       │   ├── synthetic_1.stl
+│   │       │   ├── synthetic_10.stl
+│   │       │   ├── synthetic_2.stl
+│   │       │   ├── synthetic_3.stl
+│   │       │   ├── synthetic_4.stl
+│   │       │   ├── synthetic_5.stl
+│   │       │   ├── synthetic_6.stl
+│   │       │   ├── synthetic_7.stl
+│   │       │   ├── synthetic_8.stl
+│   │       │   └── synthetic_9.stl
+│   │       ├── synthetic_0
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_1
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_10
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   └── slice_0099.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_2
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_3
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_4
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_5
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_6
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_7
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       ├── synthetic_8
+│   │       │   ├── adjusted_config.txt
+│   │       │   ├── png_slices
+│   │       │   │   ├── slice_0000.png
+│   │       │   │   ├── slice_0001.png
+│   │       │   │   ├── slice_0002.png
+│   │       │   │   ├── slice_0003.png
+│   │       │   │   ├── slice_0004.png
+│   │       │   │   ├── slice_0005.png
+│   │       │   │   ├── slice_0006.png
+│   │       │   │   ├── slice_0007.png
+│   │       │   │   ├── slice_0008.png
+│   │       │   │   ├── slice_0009.png
+│   │       │   │   ├── slice_0010.png
+│   │       │   │   ├── slice_0011.png
+│   │       │   │   ├── slice_0012.png
+│   │       │   │   ├── slice_0013.png
+│   │       │   │   ├── slice_0014.png
+│   │       │   │   ├── slice_0015.png
+│   │       │   │   ├── slice_0016.png
+│   │       │   │   ├── slice_0017.png
+│   │       │   │   ├── slice_0018.png
+│   │       │   │   ├── slice_0019.png
+│   │       │   │   ├── slice_0020.png
+│   │       │   │   ├── slice_0021.png
+│   │       │   │   ├── slice_0022.png
+│   │       │   │   ├── slice_0023.png
+│   │       │   │   ├── slice_0024.png
+│   │       │   │   ├── slice_0025.png
+│   │       │   │   ├── slice_0026.png
+│   │       │   │   ├── slice_0027.png
+│   │       │   │   ├── slice_0028.png
+│   │       │   │   ├── slice_0029.png
+│   │       │   │   ├── slice_0030.png
+│   │       │   │   ├── slice_0031.png
+│   │       │   │   ├── slice_0032.png
+│   │       │   │   ├── slice_0033.png
+│   │       │   │   ├── slice_0034.png
+│   │       │   │   ├── slice_0035.png
+│   │       │   │   ├── slice_0036.png
+│   │       │   │   ├── slice_0037.png
+│   │       │   │   ├── slice_0038.png
+│   │       │   │   ├── slice_0039.png
+│   │       │   │   ├── slice_0040.png
+│   │       │   │   ├── slice_0041.png
+│   │       │   │   ├── slice_0042.png
+│   │       │   │   ├── slice_0043.png
+│   │       │   │   ├── slice_0044.png
+│   │       │   │   ├── slice_0045.png
+│   │       │   │   ├── slice_0046.png
+│   │       │   │   ├── slice_0047.png
+│   │       │   │   ├── slice_0048.png
+│   │       │   │   ├── slice_0049.png
+│   │       │   │   ├── slice_0050.png
+│   │       │   │   ├── slice_0051.png
+│   │       │   │   ├── slice_0052.png
+│   │       │   │   ├── slice_0053.png
+│   │       │   │   ├── slice_0054.png
+│   │       │   │   ├── slice_0055.png
+│   │       │   │   ├── slice_0056.png
+│   │       │   │   ├── slice_0057.png
+│   │       │   │   ├── slice_0058.png
+│   │       │   │   ├── slice_0059.png
+│   │       │   │   ├── slice_0060.png
+│   │       │   │   ├── slice_0061.png
+│   │       │   │   ├── slice_0062.png
+│   │       │   │   ├── slice_0063.png
+│   │       │   │   ├── slice_0064.png
+│   │       │   │   ├── slice_0065.png
+│   │       │   │   ├── slice_0066.png
+│   │       │   │   ├── slice_0067.png
+│   │       │   │   ├── slice_0068.png
+│   │       │   │   ├── slice_0069.png
+│   │       │   │   ├── slice_0070.png
+│   │       │   │   ├── slice_0071.png
+│   │       │   │   ├── slice_0072.png
+│   │       │   │   ├── slice_0073.png
+│   │       │   │   ├── slice_0074.png
+│   │       │   │   ├── slice_0075.png
+│   │       │   │   ├── slice_0076.png
+│   │       │   │   ├── slice_0077.png
+│   │       │   │   ├── slice_0078.png
+│   │       │   │   ├── slice_0079.png
+│   │       │   │   ├── slice_0080.png
+│   │       │   │   ├── slice_0081.png
+│   │       │   │   ├── slice_0082.png
+│   │       │   │   ├── slice_0083.png
+│   │       │   │   ├── slice_0084.png
+│   │       │   │   ├── slice_0085.png
+│   │       │   │   ├── slice_0086.png
+│   │       │   │   ├── slice_0087.png
+│   │       │   │   ├── slice_0088.png
+│   │       │   │   ├── slice_0089.png
+│   │       │   │   ├── slice_0090.png
+│   │       │   │   ├── slice_0091.png
+│   │       │   │   ├── slice_0092.png
+│   │       │   │   ├── slice_0093.png
+│   │       │   │   ├── slice_0094.png
+│   │       │   │   ├── slice_0095.png
+│   │       │   │   ├── slice_0096.png
+│   │       │   │   ├── slice_0097.png
+│   │       │   │   ├── slice_0098.png
+│   │       │   │   ├── slice_0099.png
+│   │       │   │   ├── slice_0100.png
+│   │       │   │   ├── slice_0101.png
+│   │       │   │   ├── slice_0102.png
+│   │       │   │   ├── slice_0103.png
+│   │       │   │   ├── slice_0104.png
+│   │       │   │   ├── slice_0105.png
+│   │       │   │   ├── slice_0106.png
+│   │       │   │   ├── slice_0107.png
+│   │       │   │   ├── slice_0108.png
+│   │       │   │   ├── slice_0109.png
+│   │       │   │   ├── slice_0110.png
+│   │       │   │   ├── slice_0111.png
+│   │       │   │   ├── slice_0112.png
+│   │       │   │   ├── slice_0113.png
+│   │       │   │   ├── slice_0114.png
+│   │       │   │   ├── slice_0115.png
+│   │       │   │   ├── slice_0116.png
+│   │       │   │   ├── slice_0117.png
+│   │       │   │   ├── slice_0118.png
+│   │       │   │   ├── slice_0119.png
+│   │       │   │   ├── slice_0120.png
+│   │       │   │   ├── slice_0121.png
+│   │       │   │   ├── slice_0122.png
+│   │       │   │   ├── slice_0123.png
+│   │       │   │   ├── slice_0124.png
+│   │       │   │   ├── slice_0125.png
+│   │       │   │   ├── slice_0126.png
+│   │       │   │   ├── slice_0127.png
+│   │       │   │   ├── slice_0128.png
+│   │       │   │   ├── slice_0129.png
+│   │       │   │   ├── slice_0130.png
+│   │       │   │   ├── slice_0131.png
+│   │       │   │   ├── slice_0132.png
+│   │       │   │   ├── slice_0133.png
+│   │       │   │   ├── slice_0134.png
+│   │       │   │   ├── slice_0135.png
+│   │       │   │   ├── slice_0136.png
+│   │       │   │   ├── slice_0137.png
+│   │       │   │   ├── slice_0138.png
+│   │       │   │   ├── slice_0139.png
+│   │       │   │   ├── slice_0140.png
+│   │       │   │   ├── slice_0141.png
+│   │       │   │   ├── slice_0142.png
+│   │       │   │   ├── slice_0143.png
+│   │       │   │   ├── slice_0144.png
+│   │       │   │   ├── slice_0145.png
+│   │       │   │   ├── slice_0146.png
+│   │       │   │   ├── slice_0147.png
+│   │       │   │   ├── slice_0148.png
+│   │       │   │   └── slice_0149.png
+│   │       │   ├── realized_stats.json
+│   │       │   └── volume_stack.tif
+│   │       └── synthetic_9
+│   │           ├── adjusted_config.txt
+│   │           ├── png_slices
+│   │           │   ├── slice_0000.png
+│   │           │   ├── slice_0001.png
+│   │           │   ├── slice_0002.png
+│   │           │   ├── slice_0003.png
+│   │           │   ├── slice_0004.png
+│   │           │   ├── slice_0005.png
+│   │           │   ├── slice_0006.png
+│   │           │   ├── slice_0007.png
+│   │           │   ├── slice_0008.png
+│   │           │   ├── slice_0009.png
+│   │           │   ├── slice_0010.png
+│   │           │   ├── slice_0011.png
+│   │           │   ├── slice_0012.png
+│   │           │   ├── slice_0013.png
+│   │           │   ├── slice_0014.png
+│   │           │   ├── slice_0015.png
+│   │           │   ├── slice_0016.png
+│   │           │   ├── slice_0017.png
+│   │           │   ├── slice_0018.png
+│   │           │   ├── slice_0019.png
+│   │           │   ├── slice_0020.png
+│   │           │   ├── slice_0021.png
+│   │           │   ├── slice_0022.png
+│   │           │   ├── slice_0023.png
+│   │           │   ├── slice_0024.png
+│   │           │   ├── slice_0025.png
+│   │           │   ├── slice_0026.png
+│   │           │   ├── slice_0027.png
+│   │           │   ├── slice_0028.png
+│   │           │   ├── slice_0029.png
+│   │           │   ├── slice_0030.png
+│   │           │   ├── slice_0031.png
+│   │           │   ├── slice_0032.png
+│   │           │   ├── slice_0033.png
+│   │           │   ├── slice_0034.png
+│   │           │   ├── slice_0035.png
+│   │           │   ├── slice_0036.png
+│   │           │   ├── slice_0037.png
+│   │           │   ├── slice_0038.png
+│   │           │   ├── slice_0039.png
+│   │           │   ├── slice_0040.png
+│   │           │   ├── slice_0041.png
+│   │           │   ├── slice_0042.png
+│   │           │   ├── slice_0043.png
+│   │           │   ├── slice_0044.png
+│   │           │   ├── slice_0045.png
+│   │           │   ├── slice_0046.png
+│   │           │   ├── slice_0047.png
+│   │           │   ├── slice_0048.png
+│   │           │   ├── slice_0049.png
+│   │           │   ├── slice_0050.png
+│   │           │   ├── slice_0051.png
+│   │           │   ├── slice_0052.png
+│   │           │   ├── slice_0053.png
+│   │           │   ├── slice_0054.png
+│   │           │   ├── slice_0055.png
+│   │           │   ├── slice_0056.png
+│   │           │   ├── slice_0057.png
+│   │           │   ├── slice_0058.png
+│   │           │   ├── slice_0059.png
+│   │           │   ├── slice_0060.png
+│   │           │   ├── slice_0061.png
+│   │           │   ├── slice_0062.png
+│   │           │   ├── slice_0063.png
+│   │           │   ├── slice_0064.png
+│   │           │   ├── slice_0065.png
+│   │           │   ├── slice_0066.png
+│   │           │   ├── slice_0067.png
+│   │           │   ├── slice_0068.png
+│   │           │   ├── slice_0069.png
+│   │           │   ├── slice_0070.png
+│   │           │   ├── slice_0071.png
+│   │           │   ├── slice_0072.png
+│   │           │   ├── slice_0073.png
+│   │           │   ├── slice_0074.png
+│   │           │   ├── slice_0075.png
+│   │           │   ├── slice_0076.png
+│   │           │   ├── slice_0077.png
+│   │           │   ├── slice_0078.png
+│   │           │   ├── slice_0079.png
+│   │           │   ├── slice_0080.png
+│   │           │   ├── slice_0081.png
+│   │           │   ├── slice_0082.png
+│   │           │   ├── slice_0083.png
+│   │           │   ├── slice_0084.png
+│   │           │   ├── slice_0085.png
+│   │           │   ├── slice_0086.png
+│   │           │   ├── slice_0087.png
+│   │           │   ├── slice_0088.png
+│   │           │   ├── slice_0089.png
+│   │           │   ├── slice_0090.png
+│   │           │   ├── slice_0091.png
+│   │           │   ├── slice_0092.png
+│   │           │   ├── slice_0093.png
+│   │           │   ├── slice_0094.png
+│   │           │   ├── slice_0095.png
+│   │           │   ├── slice_0096.png
+│   │           │   ├── slice_0097.png
+│   │           │   ├── slice_0098.png
+│   │           │   ├── slice_0099.png
+│   │           │   ├── slice_0100.png
+│   │           │   ├── slice_0101.png
+│   │           │   ├── slice_0102.png
+│   │           │   ├── slice_0103.png
+│   │           │   ├── slice_0104.png
+│   │           │   ├── slice_0105.png
+│   │           │   ├── slice_0106.png
+│   │           │   ├── slice_0107.png
+│   │           │   ├── slice_0108.png
+│   │           │   ├── slice_0109.png
+│   │           │   ├── slice_0110.png
+│   │           │   ├── slice_0111.png
+│   │           │   ├── slice_0112.png
+│   │           │   ├── slice_0113.png
+│   │           │   ├── slice_0114.png
+│   │           │   ├── slice_0115.png
+│   │           │   ├── slice_0116.png
+│   │           │   ├── slice_0117.png
+│   │           │   ├── slice_0118.png
+│   │           │   ├── slice_0119.png
+│   │           │   ├── slice_0120.png
+│   │           │   ├── slice_0121.png
+│   │           │   ├── slice_0122.png
+│   │           │   ├── slice_0123.png
+│   │           │   ├── slice_0124.png
+│   │           │   ├── slice_0125.png
+│   │           │   ├── slice_0126.png
+│   │           │   ├── slice_0127.png
+│   │           │   ├── slice_0128.png
+│   │           │   ├── slice_0129.png
+│   │           │   ├── slice_0130.png
+│   │           │   ├── slice_0131.png
+│   │           │   ├── slice_0132.png
+│   │           │   ├── slice_0133.png
+│   │           │   ├── slice_0134.png
+│   │           │   ├── slice_0135.png
+│   │           │   ├── slice_0136.png
+│   │           │   ├── slice_0137.png
+│   │           │   ├── slice_0138.png
+│   │           │   ├── slice_0139.png
+│   │           │   ├── slice_0140.png
+│   │           │   ├── slice_0141.png
+│   │           │   ├── slice_0142.png
+│   │           │   ├── slice_0143.png
+│   │           │   ├── slice_0144.png
+│   │           │   ├── slice_0145.png
+│   │           │   ├── slice_0146.png
+│   │           │   ├── slice_0147.png
+│   │           │   ├── slice_0148.png
+│   │           │   └── slice_0149.png
+│   │           ├── realized_stats.json
+│   │           └── volume_stack.tif
+│   ├── script
+│   │   ├── __pycache__
+│   │   │   └── reproduce.cpython-38.pyc
+│   │   ├── auto_generate_synthetic.py
+│   │   ├── convert_mesh.py
+│   │   ├── generate_synthetic_pfib.py
+│   │   ├── mask_highlighted_segments.py
+│   │   └── visualize.py
+│   ├── task.txt
+│   ├── usage.txt
+│   └── utilities
+│       ├── convert.py
+│       ├── cropping.py
+│       ├── eval.py
+│       ├── plot.py
+│       └── reproduce.py
+├── README.md
+├── scripts
+│   ├── cropping.py
+│   ├── eval.py
+│   ├── output
+│   │   ├── cropped_stack_cropped.npy
+│   │   ├── cropped_stack_cropped.tif
+│   │   ├── cropped_stack.npy
+│   │   ├── cropped_stack.tif
+│   │   ├── evaluation_stats.txt
+│   │   ├── highlighted_stack.tif
+│   │   ├── labeled_regions.npy
+│   │   ├── labeled_regions.tif
+│   │   ├── porosity_profile.png
+│   │   ├── porosity_stats.txt
+│   │   ├── region_porosity_profile.png
+│   │   ├── region_porosity_stats.txt
+│   │   ├── segmented_stack.tif
+│   │   └── segmented_volume.npy
+│   ├── reproduce.py
+│   └── visualize.py
+├── tree.txt
+└── useful_commands.txt
+
+54 directories, 2262 files

@@ -1,0 +1,26 @@
+nx: 150
+ny: 150
+nz: 150
+voxel_size_xy_nm: 10
+voxel_size_nm: 10
+
+overall_porosity: 0.37
+mean_slice_porosity: 0.37
+std_slice_porosity: 0.02
+min_slice_porosity: 0.33
+max_slice_porosity: 0.41
+
+generator: sphere
+max_iters: 1
+random_seed: 42
+slice_axis: z
+
+psd_bins_nm: 89.0, 119.25, 159.75, 213.75, 285.75, 382.25, 511.75, 685.5, 918.0, 1229.5, 1646.75
+psd_weights: 0.027, 0.061, 0.122, 0.174, 0.212, 0.181, 0.121, 0.065, 0.027, 0.009, 0.001
+
+out_dir: output/synthetic_pfibs/synthetic_2
+export_png: true
+export_tiff3d: true
+sem_like: true
+sem_blur_sigma: 0.8
+sem_poisson_scale: 10.0

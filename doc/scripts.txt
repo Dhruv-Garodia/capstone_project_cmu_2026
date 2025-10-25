@@ -1,8 +1,0 @@
-catalyst_layer.py
-- generate the 3D structure of the catalyst layer by inputting the parameters and porosity
-
-reproduce.py
-- reproduce the results of the paper
-
-output/
-- store the output of the reproduce.py and catalyst_layer.py
