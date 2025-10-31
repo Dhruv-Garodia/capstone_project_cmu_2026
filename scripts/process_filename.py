@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 import argparse
 
-PATTERN = re.compile(r"^synthetic_7_(\d+)\.png$", re.IGNORECASE)
+PATTERN = re.compile(r"^synthetic_(?:[0-9]|10)_(\d+)\.png$", re.IGNORECASE)
 
 def rename_in_dir(d: Path, dry_run: bool):
     changed, skipped = 0, 0

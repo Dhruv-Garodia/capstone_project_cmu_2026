@@ -1,20 +1,17 @@
 # model/dataset.py
 from typing import Callable, Optional, List
-import os
+from pathlib import Path
 from PIL import Image
 import torch
 from torch.utils.data import Dataset
-
+from torchvision.transforms.functional import pil_to_tensor, to_tensor as tv_to_tensor
 
 IMG_EXTS = {".png", ".jpg", ".jpeg", ".tif", ".tiff"}
 
 
-def default_mask_mapper(img_path: str, img_dir: str, mask_dir: str) -> str:
-    """
-    mask & image has same file name, different folder name
-    """
-    fname = os.path.basename(img_path)
-    return os.path.join(mask_dir, fname)
+def default_mask_mapper(img_path: Path, img_root: Path, mask_root: Path) -> Path:
+    rel = img_path.relative_to(img_root)
+    return mask_root / rel
 
 
 class PFIBSliceDataset(Dataset):
@@ -31,19 +28,18 @@ class PFIBSliceDataset(Dataset):
         mask_mapper: Callable = default_mask_mapper,
         grayscale: bool = True,
     ):
-        self.img_dir = img_dir
-        self.mask_dir = mask_dir
+        self.img_dir = Path(img_dir)
+        self.mask_dir = Path(mask_dir)
         self.transform_pair = transform_pair
         self.to_tensor = to_tensor
         self.mask_mapper = mask_mapper
         self.grayscale = grayscale
 
-        self.img_paths: List[str] = [
-            os.path.join(img_dir, f)
-            for f in sorted(os.listdir(img_dir))
-            if os.path.splitext(f)[1].lower() in IMG_EXTS
-        ]
-        if len(self.img_paths) == 0:
+        self.img_paths = sorted([
+            p for p in self.img_dir.rglob("*")
+            if p.is_file() and p.suffix.lower() in IMG_EXTS
+        ])
+        if not self.img_paths:
             raise FileNotFoundError(f"No images found under {img_dir}")
 
     def __len__(self):
@@ -58,9 +54,7 @@ class PFIBSliceDataset(Dataset):
         return img
 
     def _open_mask(self, path: str) -> Image.Image:
-        # nonzero -> 1
-        m = Image.open(path).convert("L")
-        return m
+        return Image.open(path).convert("L")
 
     def __getitem__(self, idx: int):
         ip = self.img_paths[idx]
@@ -68,19 +62,25 @@ class PFIBSliceDataset(Dataset):
 
         img = self._open_img(ip)
         mask = self._open_mask(mp)
+        
+        # check shape
+        if img.size != mask.size:
+            raise ValueError(
+            f"[PFIBDataset] Image/mask size mismatch for '{ip}': "
+            f"img={img.size}, mask={mask.size}"
+        )
 
         if self.transform_pair is not None:
             img, mask = self.transform_pair(img, mask)
 
         # to_tensor
         if self.to_tensor is not None:
-            img = self.to_tensor(img)  # [C,H,W] float32
+            img_tensor = self.to_tensor(img)
         else:
-            from torchvision.transforms.functional import to_tensor
-            img = to_tensor(img)
+            img_tensor = tv_to_tensor(img)  # [C,H,W], float32
 
-        from torchvision.transforms.functional import pil_to_tensor
-        mask = pil_to_tensor(mask).squeeze(0)  # [H,W], uint8
-        mask = (mask > 0).long()               # {0,1} -> LongTensor
+        # mask -> tensor {0,1} long
+        mask_tensor = pil_to_tensor(mask).squeeze(0)  # [H,W], uint8
+        mask_tensor = (mask_tensor > 0).long()
 
-        return img, mask
+        return img_tensor, mask_tensor

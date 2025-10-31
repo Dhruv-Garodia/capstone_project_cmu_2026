@@ -4,10 +4,12 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 
+import sys, os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 from model.unet import UNet
 from model.dataset import PFIBSliceDataset
 from model.transforms import ComposePair, HFlip, VFlip, RandomGamma, ToTensor
-
 
 # ---------------- Utility ----------------
 def set_seed(seed: int = 2025):
@@ -17,6 +19,12 @@ def set_seed(seed: int = 2025):
 
 
 def pick_device() -> torch.device:
+    # 1) manual override for debugging
+    force = os.environ.get("PFIB_FORCE_DEVICE")
+    if force:
+        return torch.device(force)
+
+    # 2) otherwise auto-pick
     if torch.cuda.is_available():
         return torch.device("cuda")
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():

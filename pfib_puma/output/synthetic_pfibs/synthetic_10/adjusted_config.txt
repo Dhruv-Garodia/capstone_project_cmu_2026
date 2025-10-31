@@ -1,6 +1,6 @@
 nx: 150
 ny: 150
-nz: 100
+nz: 150
 voxel_size_xy_nm: 10
 voxel_size_nm: 10
 
