@@ -9,3 +9,4 @@
 */logs
 /synthetic_data
 /checkpoints
+__pycache__/
