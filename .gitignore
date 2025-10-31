@@ -2,7 +2,6 @@
 */data
 /data
 /test_out
-*.tif
 *.npy
 *.zip
 *.png
@@ -12,3 +11,6 @@
 /checkpoints
 __pycache__/
 *.txt
+*.obj
+*.tif
+*.mtl
