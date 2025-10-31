@@ -1,5 +1,6 @@
 *.pdf
 /data
+/test_out
 *.tif
 *.npy
 *.zip
@@ -7,3 +8,4 @@
 *.stl
 */logs
 /synthetic_data
+/checkpoints
