@@ -4,7 +4,7 @@
 
 export KMP_DUPLICATE_LIB_OK=TRUE
 export OMP_NUM_THREADS=1
-export PFIB_FORCE_DEVICE=cpu
+export PFIB_FORCE_DEVICE=cuda
 python scripts/train.py \
-  --img_dir data/synthetic_pfibs_resized \
-  --mask_dir data/synthetic_pfibs 
+  --img_dir data/lightened_pfibs_500 \
+  --mask_dir data/synthetic_pfibs_500 
