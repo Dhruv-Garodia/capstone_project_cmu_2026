@@ -3,9 +3,9 @@ from pathlib import Path
 from PIL import Image
 
 # === Config ===
-INPUT_DIR = "data/synthetic_pfibs"   # your source directory
-OUTPUT_DIR = "data/synthetic_pfibs_300"    # where resized images go
-SIZE = (300, 300)
+INPUT_DIR = "test_out_real_nocropping"   # your source directory
+OUTPUT_DIR = "test_out_real_nocropping_resized"    # where resized images go
+SIZE = (1000, 300)
 OVERWRITE = False  # set True if you want to replace original files
 
 # === Script ===

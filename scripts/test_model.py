@@ -21,13 +21,20 @@ import torch
 import torch.nn.functional as F
 from torchvision.transforms.functional import to_tensor
 from torchvision.utils import save_image
-from PIL import Image
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 # import UNet from project
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 from model.unet import UNet
 
+def dilate_pore(pred, radius=1):
+    # pred: [B,1,H,W] float 0/1 (0=pore, 1=solid)
+    inv = 1 - pred                                   # 反转，让 pore 变成 1
+    dil = F.max_pool2d(inv, kernel_size=2*radius+1,
+                       stride=1, padding=radius)    # 普通 dilation
+    return 1 - dil                                   # 再反转回来
 
 def pick_device(force: str | None = None) -> torch.device:
     """Pick device with optional override."""
@@ -56,14 +63,32 @@ def list_images(root: Path):
     return [p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in exts]
 
 
-def infer_one(model: torch.nn.Module, device: torch.device, pil_img: Image.Image):
+# def infer_one(model: torch.nn.Module, device: torch.device, pil_img: Image.Image):
+#     """Full-image inference -> binary mask [1,1,H,W] float {0,1}."""
+#     model.eval()
+#     with torch.no_grad():
+#         x = to_tensor(pil_img.convert("L")).unsqueeze(0).to(device)   # [1,1,H,W]
+#         logits = model(x)                                             # [1,2,H,W]
+#         pred = logits.argmax(dim=1, keepdim=True).float()             # [1,1,H,W]
+#         return pred
+
+def infer_one(model: torch.nn.Module, device: torch.device, pil_img: Image.Image, thresh: float = 0.5):
     """Full-image inference -> binary mask [1,1,H,W] float {0,1}."""
     model.eval()
     with torch.no_grad():
-        x = to_tensor(pil_img.convert("L")).unsqueeze(0).to(device)   # [1,1,H,W]
-        x_pad, (H, W) = pad_to_16(x)
-        logits = model(x_pad)[:, :, :H, :W]                           # [1,2,H,W]
-        pred = logits.argmax(dim=1, keepdim=True).float()             # [1,1,H,W]
+        x = to_tensor(pil_img.convert("L")).unsqueeze(0).to(device)   # [1,1,H,W]                      # [1,2,H,W]
+        logits = model(x)
+        # ← 新增：softmax 得到 foreground 概率
+        probs = F.softmax(logits, dim=1)[:, 1:2]                      # [1,1,H,W]
+        # ← 用你传进来的阈值
+        # 大于thresh是白色
+        pred = (probs > thresh).float()                               # [1,1,H,W]
+        # print("thresh =", thresh)
+        # print("probs min/max/mean:", probs.min().item(), probs.max().item(), probs.mean().item())
+        # for t in [0.1, 0.3, 0.5, 0.7, 0.9]:
+        #     frac = (probs > t).float().mean().item()
+        #     print(f"  fraction of pixels with prob > {t}: {frac:.4f}")
+        # pred = dilate_pore(pred, radius=1)
         return pred
 
 
@@ -79,6 +104,7 @@ def main():
     ap.add_argument("--base_ch", type=int, default=32)
     ap.add_argument("--bilinear", action="store_true", default=True)
     # Device
+    ap.add_argument("--thresh", type=float, default=0.45, help="probability threshold for pore (foreground)")
     ap.add_argument("--device", type=str, default=None, choices=["cpu", "cuda", "mps"])
     args = ap.parse_args()
 
@@ -117,8 +143,13 @@ def main():
     # Run
     with torch.no_grad():
         for p in img_list:
-            img = Image.open(p).convert("L")
-            pred = infer_one(model, device, img)                # [1,1,H,W]
+            try:
+                with Image.open(p) as im:
+                        img = im.convert("L")
+            except OSError as e:
+                print(f"[WARN] skipping corrupted image {p}: {e}")
+                continue
+            pred = infer_one(model, device, img, thresh=args.thresh)                # [1,1,H,W]
             out_path = out_root / p.relative_to(root_for_rel)
             out_path.parent.mkdir(parents=True, exist_ok=True)
             save_image(pred, out_path)                          # saves {0,1} mask

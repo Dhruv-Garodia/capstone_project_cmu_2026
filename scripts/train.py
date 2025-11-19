@@ -80,20 +80,80 @@ def iou_class1(logits: torch.Tensor, mask: torch.Tensor) -> float:
 
 
 # ---------------- Loss building blocks ----------------
+# def soft_dice_loss(logits: torch.Tensor, target: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
+#     """
+#     Soft Dice loss on the positive class.
+#       logits: [B,2,H,W]
+#       target: [B,H,W] in {0,1}
+#     Returns 1 - Dice(pos).
+#     """
+#     probs1 = F.softmax(logits, dim=1)[:, 1]  # [B,H,W]
+#     tgt = target.float()
+#     inter = (probs1 * tgt).sum(dim=(1, 2))
+#     union = probs1.sum(dim=(1, 2)) + tgt.sum(dim=(1, 2)) + eps
+#     dice = (2 * inter + eps) / union
+#     return 1.0 - dice.mean()
+
 def soft_dice_loss(logits: torch.Tensor, target: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
     """
-    Soft Dice loss on the positive class.
+    Symmetric Soft Dice loss over BOTH classes (0: background, 1: foreground).
       logits: [B,2,H,W]
       target: [B,H,W] in {0,1}
-    Returns 1 - Dice(pos).
+    Returns 1 - 0.5*(Dice(bg) + Dice(fg)).
     """
-    probs1 = F.softmax(logits, dim=1)[:, 1]  # [B,H,W]
-    tgt = target.float()
-    inter = (probs1 * tgt).sum(dim=(1, 2))
-    union = probs1.sum(dim=(1, 2)) + tgt.sum(dim=(1, 2)) + eps
-    dice = (2 * inter + eps) / union
-    return 1.0 - dice.mean()
+    probs = F.softmax(logits, dim=1)        # [B,2,H,W]
+    p1 = probs[:, 1]                        # foreground prob
+    p0 = probs[:, 0]                        # background prob
 
+    t = target.float()                      # [B,H,W]
+    t1 = t                                  # foreground gt
+    t0 = 1.0 - t                            # background gt
+
+    # Dice for a single class
+    def _dice(p, g):
+        inter = (p * g).sum(dim=(1, 2))
+        denom = p.sum(dim=(1, 2)) + g.sum(dim=(1, 2)) + eps
+        return (2.0 * inter + eps) / denom   # [B]
+
+    dice1 = _dice(p1, t1)                   # foreground dice
+    dice0 = _dice(p0, t0)                   # background dice
+
+    dice_sym = 0.5 * (dice1 + dice0)       # [B]
+    return 1.0 - dice_sym.mean()
+
+def tversky_loss(logits: torch.Tensor, target: torch.Tensor,
+                 alpha: float = 0.3, beta: float = 0.7, eps: float = 1e-6) -> torch.Tensor:
+    """
+    Tversky loss (generalized Dice).
+    alpha weights FP, beta weights FN. beta > alpha => more penalty on FN (under-segmentation).
+    """
+    probs = F.softmax(logits, dim=1)[:, 1]       # foreground prob [B,H,W]
+    t = target.float()                           # [B,H,W]
+
+    # TP, FP, FN
+    TP = (probs * t).sum(dim=(1, 2))
+    FP = (probs * (1.0 - t)).sum(dim=(1, 2))
+    FN = ((1.0 - probs) * t).sum(dim=(1, 2))
+
+    tversky = (TP + eps) / (TP + alpha * FP + beta * FN + eps)
+    return 1.0 - tversky.mean()
+
+def focal_tversky_loss(logits: torch.Tensor, target: torch.Tensor,
+                       alpha: float = 0.3, beta: float = 0.7, gamma: float = 1.0, eps: float = 1e-6) -> torch.Tensor:
+    """
+    Focal Tversky Loss.
+    gamma > 1 amplifies focus on hard examples.
+    """
+    probs = F.softmax(logits, dim=1)[:, 1]
+    t = target.float()
+
+    TP = (probs * t).sum(dim=(1, 2))
+    FP = (probs * (1.0 - t)).sum(dim=(1, 2))
+    FN = ((1.0 - probs) * t).sum(dim=(1, 2))
+
+    tversky = (TP + eps) / (TP + alpha * FP + beta * FN + eps)
+    focal_ti = (1.0 - tversky).pow(gamma)
+    return focal_ti.mean()
 
 def compute_class_weights(dataloader: DataLoader, max_batches: int = 10) -> torch.Tensor:
     """
@@ -158,8 +218,8 @@ def main():
                         help="Weight decay (set 0 for Adam if you prefer)")
 
     # Loss options
-    parser.add_argument("--loss", type=str, default="ce", choices=["ce", "cedice", "focal"],
-                        help="Loss type: ce=CrossEntropy, cedice=CE+Dice, focal=FocalLoss")
+    parser.add_argument("--loss", type=str, default="ce", choices=["ce", "cedice", "focal", "focaldice", "tversky", "focaltversky"],
+                        help="Loss type: ce, cedice, focal, focaldice, tversky, focaltversky")
     parser.add_argument("--dice_w", type=float, default=0.5,
                         help="Weight for Dice in CE+Dice: total = (1-dice_w)*CE + dice_w*Dice")
     parser.add_argument("--use_class_weight", action="store_true",
@@ -251,14 +311,33 @@ def main():
     def total_loss(logits, masks):
         if args.loss == "ce":
             return ce_loss_fn(logits, masks)
+
         elif args.loss == "cedice":
             ce = ce_loss_fn(logits, masks)
             dice = soft_dice_loss(logits, masks)
-            return (1 - args.dice_w) * ce + args.dice_w * dice
+            return (1.0 - args.dice_w) * ce + args.dice_w * dice
+
         elif args.loss == "focal":
-            return focal_loss_softmax(logits, masks, gamma=args.focal_gamma, alpha=args.focal_alpha)
+            return focal_loss_softmax(logits, masks,
+                                    gamma=args.focal_gamma,
+                                    alpha=args.focal_alpha)
+
+        elif args.loss == "focaldice":
+            focal = focal_loss_softmax(logits, masks,
+                                    gamma=args.focal_gamma,
+                                    alpha=args.focal_alpha)
+            dice = soft_dice_loss(logits, masks)
+            return (1.0 - args.dice_w) * focal + args.dice_w * dice
+
+        elif args.loss == "tversky":
+            return tversky_loss(logits, masks, alpha=0.3, beta=0.7)
+
+        elif args.loss == "focaltversky":
+            return focal_tversky_loss(logits, masks, alpha=0.3, beta=0.7, gamma=1.5)
+
         else:
-            raise ValueError("Unknown --loss")
+            raise ValueError(f"Unknown --loss {args.loss}")
+
 
     # Optimizer & Scheduler
     if args.optimizer == "adam":

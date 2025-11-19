@@ -5,7 +5,20 @@ export PFIB_FORCE_DEVICE=cpu
 
 
 python scripts/test_model.py \
-  --img_dir data/lightened_pfibs_300/synthetic_10 \
-  --ckpt checkpoints/unet_best_300_final.pt \
-  --out_dir test_out_300_final
+  --img_dir data/pFIB-pristine \
+  --ckpt checkpoints/celoss-single/unet_best_300_final.pt \
+  --out_dir test_out_real_nocropping \
+  --thresh 0.6
 
+# python scripts/eval.py \
+#   test_out_single_300_nopadding/ \
+#   --pores-are-black \
+#   --label Pred300
+
+# python scripts/eval_porosity.py \
+#   data/synthetic_pfibs_300/synthetic_10/ \
+#   --pores-are-black \
+#   --label GroundTruth300
+
+# python scripts/convert.py 
+# python scripts/eval_pore_distribution.py --mesh ground_truth.stl --axis z --n_slices 150
