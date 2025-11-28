@@ -4,6 +4,38 @@ import numpy as np
 import tifffile
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
+import imageio.v2 as imageio
+
+def load_any(path):
+    """Load npy, tiff, or PNG directory."""
+    if os.path.isdir(path):
+        print(f"Detected PNG folder: {path}")
+        return load_png_folder(path)
+
+    if path.endswith(".npy"):
+        return np.load(path)
+
+    # Otherwise assume TIFF-like
+    return tifffile.imread(path)
+
+def load_png_folder(path):
+    """Load a folder of PNGs into a 3D stack [Z, H, W]."""
+    files = sorted([
+        os.path.join(path, f)
+        for f in os.listdir(path)
+        if f.lower().endswith(".png")
+    ])
+    if len(files) == 0:
+        raise ValueError(f"No PNG files found in directory: {path}")
+
+    slices = []
+    for p in files:
+        img = imageio.imread(p)
+        if img.ndim == 3:      # RGB → grayscale
+            img = img[..., 0]
+        slices.append(img)
+
+    return np.stack(slices, axis=0)
 
 def visualize_stack(data, title="Slice", cmap='gray'):
     """
@@ -23,7 +55,7 @@ def visualize_stack(data, title="Slice", cmap='gray'):
     im = ax.imshow(data[slice_index], cmap=cmap)
     ax.set_title(f"{title} {slice_index}")
     
-    # Add information about the data
+    # Add information about the dataf
     info_text = f"Shape: {data.shape}\n"
     if data.dtype == bool:
         info_text += f"Type: boolean\n"
@@ -203,68 +235,16 @@ def main():
     try:
         # Try to load first file
         print(f"Loading {file_paths[0]}...")
-        try:
-            if file_paths[0].endswith('.npy'):
-                data1 = np.load(file_paths[0])
-            else:
-                data1 = tifffile.imread(file_paths[0])
-            print(f"Loaded {file_paths[0]} with shape: {data1.shape}, dtype: {data1.dtype}")
-        except FileNotFoundError:
-            # If file not found, check common directories
-            common_dirs = [".", "scripts/output", "output", "data/pFIB"]
-            found = False
-            for directory in common_dirs:
-                try_path = os.path.join(directory, os.path.basename(file_paths[0]))
-                if os.path.exists(try_path):
-                    print(f"File not found at original path, but found at: {try_path}")
-                    if try_path.endswith('.npy'):
-                        data1 = np.load(try_path)
-                    else:
-                        data1 = tifffile.imread(try_path)
-                    print(f"Loaded {try_path} with shape: {data1.shape}, dtype: {data1.dtype}")
-                    found = True
-                    break
-            if not found:
-                print(f"Error: Could not find {file_paths[0]} in any common directories.")
-                print("Current working directory:", os.getcwd())
-                print("Try using an absolute path or check that the file exists.")
-                return
+        data1 = load_any(file_paths[0])
+        print(f"Loaded {file_paths[0]} with shape: {data1.shape}, dtype: {data1.dtype}")
         
         # If two files are provided, load the second file and display side by side
         if len(file_paths) == 2:
             print(f"Loading {file_paths[1]}...")
-            try:
-                if file_paths[1].endswith('.npy'):
-                    data2 = np.load(file_paths[1])
-                else:
-                    data2 = tifffile.imread(file_paths[1])
-                print(f"Loaded {file_paths[1]} with shape: {data2.shape}, dtype: {data2.dtype}")
-            except FileNotFoundError:
-                # If file not found, check common directories
-                common_dirs = [".", "scripts/output", "output", "data/pFIB"]
-                found = False
-                for directory in common_dirs:
-                    try_path = os.path.join(directory, os.path.basename(file_paths[1]))
-                    if os.path.exists(try_path):
-                        print(f"File not found at original path, but found at: {try_path}")
-                        if try_path.endswith('.npy'):
-                            data2 = np.load(try_path)
-                        else:
-                            data2 = tifffile.imread(try_path)
-                        print(f"Loaded {try_path} with shape: {data2.shape}, dtype: {data2.dtype}")
-                        found = True
-                        break
-                if not found:
-                    print(f"Error: Could not find {file_paths[1]} in any common directories.")
-                    print("Current working directory:", os.getcwd())
-                    print("Try using an absolute path or check that the file exists.")
-                    return
-            
-            print("Displaying side-by-side comparison...")
+            data2 = load_any(file_paths[1])
+            print(f"Loaded {file_paths[1]} with shape: {data2.shape}, dtype: {data2.dtype}")
             visualize_side_by_side(data1, data2, title1=titles[0], title2=titles[1])
         else:
-            # Visualize single file
-            print("Displaying single stack...")
             visualize_stack(data1, title=titles[0])
             
     except Exception as e:

@@ -4,21 +4,21 @@ export OMP_NUM_THREADS=1
 export PFIB_FORCE_DEVICE=cpu
 
 
-python scripts/test_model.py \
+python utils/test_model.py \
   --img_dir data/pFIB-pristine \
   --ckpt checkpoints/celoss-single/unet_best_300_final.pt \
   --out_dir test_out_real_nocropping \
   --thresh 0.6
 
-# python scripts/eval.py \
+# python utils/eval.py \
 #   test_out_single_300_nopadding/ \
 #   --pores-are-black \
 #   --label Pred300
 
-# python scripts/eval_porosity.py \
+# python utils/eval_porosity.py \
 #   data/synthetic_pfibs_300/synthetic_10/ \
 #   --pores-are-black \
 #   --label GroundTruth300
 
-# python scripts/convert.py 
-# python scripts/eval_pore_distribution.py --mesh ground_truth.stl --axis z --n_slices 150
+# python utils/convert.py 
+# python utils/eval_pore_distribution.py --mesh ground_truth.stl --axis z --n_slices 150

@@ -18,14 +18,39 @@ import imageio.v2 as imageio
 
 
 def load_stack_3d(path):
-    """Load a 3D stack (tif or npy), return array [Z, Y, X]."""
+    """Load a 3D stack (tif/npy OR a folder of PNGs), return array [Z, Y, X]."""
     if not os.path.exists(path):
         raise FileNotFoundError(path)
+
+    # Case 1: folder of PNGs
+    if os.path.isdir(path):
+        pngs = sorted(
+            [os.path.join(path, f)
+             for f in os.listdir(path)
+             if f.lower().endswith(".png")]
+        )
+        if len(pngs) == 0:
+            raise ValueError(f"No PNG files found in folder: {path}")
+
+        slices = []
+        for p in pngs:
+            img = imageio.imread(p)
+            if img.ndim == 3:
+                # convert RGB to grayscale
+                img = img[..., 0]
+            slices.append(img)
+
+        arr = np.stack(slices, axis=0)  # [Z, H, W]
+        return arr
+
+    # Case 2: .npy file
     if path.lower().endswith(".npy"):
         arr = np.load(path)
     else:
+        # Case 3: tif / any other image readable by tifffile
         arr = tifffile.imread(path)
 
+    # Normalize to [Z, Y, X]
     if arr.ndim == 2:
         arr = arr[None, ...]
     if arr.ndim != 3:

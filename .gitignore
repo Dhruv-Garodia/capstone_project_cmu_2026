@@ -1,16 +1,10 @@
-*.pdf
-*/data
-/data
-/test_out
 *.npy
 *.zip
-*.png
 *.stl
 */logs
-/synthetic_data
-/checkpoints
 __pycache__/
 *.txt
 *.obj
 *.tif
 *.mtl
+report/
