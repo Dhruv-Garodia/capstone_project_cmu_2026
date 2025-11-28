@@ -3,7 +3,6 @@
 *.stl
 */logs
 __pycache__/
-*.txt
 *.obj
 *.tif
 *.mtl
