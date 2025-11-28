@@ -1,39 +1,25 @@
-log normal bins
-1. create synthetic data (puma / blender)
-2. generate model -> having testing / training dataset
-3. move on real dataset
+PuMA Synthetic Data Generation
+==================
 
+This folder holds all scripts and tools used to generate synthetic PFIB datasets
+with PuMA (Porous Materials Analysis).
 
-python eval.py output/segmented_volume.npy output/highlighted_stack.tif 
+These synthetic volumes are used for:
+- U-Net segmentation training
+- Testing segmentation pipelines
+- Producing synthetic lightened images and ground-truth masks
 
-=====
-Parameters:
-rotation_angle = 52        # Keep this the same (matches the paper methodology)
-sigma_initial = 0.8        # Slightly reduced to preserve more pore details
-gradient_threshold = 15.0  # Lowered to classify more regions as pores
-low_threshold = 40         # Lowered to classify more low-intensity regions as pores
-high_threshold = 170       # Lowered to classify fewer regions as solid
-morph_radius = 1           # Reduced to preserve more pore structures
-sigma_final = 0.7          # Reduced to prevent excessive smoothing of pore boundaries
+What this folder does:
+- Generates 3D porous microstructures
+- Creates ground-truth segmentation masks
+- Configure pore distributions and pore structures
 
-Total highlighted voxels: 479938492
-Pore voxels within highlighted regions: 236129927
-Overall region porosity: 49.2000%
-Min slice porosity: 30.3673%
-Max slice porosity: 60.1061%
-Mean slice porosity: 48.6515%
-Std dev of slice porosity: 3.9238%
-Region porosity statistics saved to scripts/output/region_porosity_stats.txt
+Notes:
+- This module is standalone and has its own README and configs.
+- Used only for generating data, not model training.
 
+Basic usage:
+Modify and run the supplied generation script, for example:
+    ./make_synthetic_mesh.sh
 
-python script/convert_mesh.py \
-  --png_dir output/puma_synthetic_sphere/png_slices \
-  --out_mesh pfib_mesh.stl \
-
-python script/mask_highlighted_segments.py \
-  --highlighted_tif data/pFIB-cropped/highlighted_stack.tif \
-  --segmented_tif data/pFIB-cropped/segmented_stack.tif \
-  --output_size 150 150 \
-  --start_slice 1 --max_slices 30 \
-  --out_tif data/pFIB-cropped/masked_segmented_stack.tif \
-  --out_png_dir data/pFIB-cropped/masked_png_slices
+This folder is only for synthetic data generation.

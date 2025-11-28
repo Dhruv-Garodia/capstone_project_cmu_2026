@@ -4,7 +4,7 @@ This repository contains a full pipeline for **synthetic microstructure generati
 ---
 
 ## 🌳 Project Structure
-
+```
 .
 ├── checkpoints/             # Stores trained model weights & checkpoints
 │
@@ -42,7 +42,7 @@ This repository contains a full pipeline for **synthetic microstructure generati
     ├── test_model.py
     ├── tif_to_png.py
     └── visualize.py
-
+```
 ---
 
 ## 🔧 Utilities (utils/ folder)
