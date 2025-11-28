@@ -1,4 +1,4 @@
-puma-synthetic-gen
+PuMA Synthetic Data Generation
 ==================
 
 This folder holds all scripts and tools used to generate synthetic PFIB datasets
