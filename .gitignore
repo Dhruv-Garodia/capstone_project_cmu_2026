@@ -7,5 +7,5 @@ __pycache__/
 *.tif
 *.mtl
 report/
-*.png
+*png
 *.pt

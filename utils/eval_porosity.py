@@ -5,35 +5,37 @@ import numpy as np
 import tifffile
 import matplotlib.pyplot as plt
 from pathlib import Path
+import numpy as np
 from PIL import Image
+
 
 def analyze_porosity(stack, label="Stack", pores_are_black=True, threshold=None):
     """
-    计算整个 3D 体的孔隙率（0~100%），并画 slice-by-slice 的剖面图。
-    支持:
-      - bool 体: True/1 是孔隙 or 实心由 pores_are_black 控制
-      - uint8 图像: 0/255 或一般灰度, 需要二值化
+    Compute porosity (0–100%) for an entire 3D volume, and plot slice-by-slice porosity.
+
+    Supports:
+      - Boolean array: True/1 = pore or solid depending on pores_are_black
+      - uint8 images: 0/255 or general grayscale (threshold applied)
     """
     print(f"{label} shape:", stack.shape, "dtype:", stack.dtype)
 
-    # --- 1. 先得到 0/1 的 pore_mask ---
+    # --- 1. Convert to a 0/1 pore mask ---
     if stack.dtype == bool:
-        # bool 的时候，True 是 1，False 是 0
+        # Boolean array: True = 1, False = 0
         if pores_are_black:
-            # 黑是孔隙 => 假设 False(0) 是黑，那孔隙=~stack
+            # If black means pore → assume False(0) is black, so pores = ~stack
             pore_mask = ~stack
         else:
             pore_mask = stack
     else:
-        # 非 bool -> 先转 float
+        # Non-boolean → convert to float first
         arr = stack.astype(np.float32)
 
-        # 如果值在 [0,1]，就按 0.5 二值化
+        # If values are in [0,1], use 0.5 as threshold
         if arr.max() <= 1.0:
             solid_mask = arr > 0.5
         else:
-            # 常见 0~255 灰度：默认用 127 作为阈值，
-            # 或者你可以传 threshold 手动覆盖
+            # Common 0–255 grayscale: default threshold = 127 unless overridden
             if threshold is None:
                 thr = 127.0
             else:
@@ -41,19 +43,19 @@ def analyze_porosity(stack, label="Stack", pores_are_black=True, threshold=None)
             solid_mask = arr > thr
 
         if pores_are_black:
-            # 黑是孔隙 => solid = 白 => pore = 非 solid
+            # If black means pore → solid = white → pore = not solid
             pore_mask = ~solid_mask
         else:
             pore_mask = solid_mask
 
-    # pore_mask 是 bool，True = pore
+    # pore_mask is bool; True = pore
     pore_mask = pore_mask.astype(bool)
 
-    # --- 2. 计算整体孔隙率 ---
+    # --- 2. Compute overall porosity ---
     porosity = pore_mask.mean() * 100.0
     print(f"Overall porosity: {porosity:.4f}%")
 
-    # --- 3. 每一层的孔隙率 ---
+    # --- 3. Compute each slice's porosity ---
     slice_porosities = []
     Z = pore_mask.shape[0]
     for z in range(Z):
@@ -69,13 +71,13 @@ def analyze_porosity(stack, label="Stack", pores_are_black=True, threshold=None)
         f.write(f"=== {label} Porosity Analysis ===\n\n")
         f.write(f"Shape: {stack.shape}, dtype: {stack.dtype}\n")
         f.write(f"Overall porosity: {porosity:.4f}%\n\n")
-        f.write(f"Slice porosity - \n")
+        f.write("Slice porosity:\n")
         f.write(f"  Min: {min(slice_porosities):.4f}%\n")
         f.write(f"  Max: {max(slice_porosities):.4f}%\n")
         f.write(f"  Mean: {np.mean(slice_porosities):.4f}%\n")
         f.write(f"  StdDev: {np.std(slice_porosities):.4f}%\n")
 
-    # --- 4. 画剖面图 ---
+    # --- 4. Create porosity plot ---
     plt.figure(figsize=(10, 6))
     plt.plot(slice_porosities, 'b-', alpha=0.7)
     plt.xlabel('Slice Index')
@@ -104,14 +106,15 @@ def analyze_region_porosity(
     threshold_factor=0.8,
 ):
     """
-    Calculate porosity metrics for a specific region of interest in an image stack.
+    Calculate porosity metrics for a region of interest in a stack.
     """
     print(f"Stack shape: {stack.shape}")
     print(f"Highlighted regions shape: {highlighted_regions.shape}")
 
-    # Convert highlighted regions to boolean mask if needed
+    # Convert highlighted region to boolean mask if needed
     if highlighted_regions.dtype != bool:
         max_val = np.max(highlighted_regions)
+        # Use the maximum value as the "highlighted" indicator
         if max_val > 0:
             highlighted_mask = highlighted_regions == max_val
         else:
@@ -122,7 +125,7 @@ def analyze_region_porosity(
     total_highlighted_voxels = np.sum(highlighted_mask)
 
     if total_highlighted_voxels == 0:
-        print("Error: No highlighted regions found in the mask")
+        print("Error: No highlighted regions found in mask")
         return {
             "shape": stack.shape,
             "porosity": 0,
@@ -133,13 +136,14 @@ def analyze_region_porosity(
             "highlighted_voxels": 0,
         }
 
-    # Determine pore voxels based on pore_is_white and whether stack is binary or grayscale
+    # Determine pore voxels depending on pore_is_white & binary/grayscale stack
     if stack.dtype == bool:
         if pore_is_white:
             pore_mask = stack & highlighted_mask
         else:
             pore_mask = (~stack) & highlighted_mask
     else:
+        # Threshold based on global mean * factor
         threshold = np.mean(stack) * threshold_factor
         if pore_is_white:
             pore_mask = (stack > threshold) & highlighted_mask
@@ -149,7 +153,7 @@ def analyze_region_porosity(
     pore_voxels = np.sum(pore_mask)
     porosity = pore_voxels / total_highlighted_voxels * 100
     print(f"Total highlighted voxels: {total_highlighted_voxels}")
-    print(f"Pore voxels within highlighted regions: {pore_voxels}")
+    print(f"Pore voxels in highlighted regions: {pore_voxels}")
     print(f"Overall region porosity: {porosity:.4f}%")
 
     slice_porosities = []
@@ -163,8 +167,7 @@ def analyze_region_porosity(
             continue
 
         slice_pores = np.sum(pore_mask[i])
-        slice_porosity = slice_pores / slice_total * 100
-        slice_porosities.append(slice_porosity)
+        slice_porosities.append(slice_pores / slice_total * 100)
 
     if not slice_porosities:
         print("Warning: No slices with highlighted regions found")
@@ -182,12 +185,12 @@ def analyze_region_porosity(
 
     os.makedirs("scripts/output", exist_ok=True)
     with open("scripts/output/region_porosity_stats.txt", "w") as f:
-        f.write(f"=== {label} Porosity Analysis ===\n\n")
+        f.write(f"=== {label} Region Porosity Analysis ===\n\n")
         f.write(f"Stack shape: {stack.shape}\n")
         f.write(f"Total highlighted voxels: {total_highlighted_voxels}\n")
         f.write(f"Pore voxels within highlighted regions: {pore_voxels}\n")
         f.write(f"Overall region porosity: {porosity:.4f}%\n\n")
-        f.write("Slice porosity within highlighted regions - \n")
+        f.write("Slice porosity within highlighted regions:\n")
         f.write(f"  Min: {min_porosity:.4f}%\n")
         f.write(f"  Max: {max_porosity:.4f}%\n")
         f.write(f"  Mean: {mean_porosity:.4f}%\n")
@@ -210,7 +213,11 @@ def analyze_region_porosity(
 
 
 def create_porosity_profile(slice_porosities, slice_highlighted_voxels, total_slices):
-    """Create a plot showing the porosity profile and highlighted region size through the stack"""
+    """
+    Create a 2-panel plot showing:
+      (1) porosity vs slice index
+      (2) number of highlighted voxels per slice
+    """
     valid_indices = [i for i, count in enumerate(slice_highlighted_voxels) if count > 0]
 
     if not valid_indices:
@@ -221,12 +228,14 @@ def create_porosity_profile(slice_porosities, slice_highlighted_voxels, total_sl
         2, 1, figsize=(10, 8), sharex=True, gridspec_kw={"height_ratios": [3, 1]}
     )
 
+    # Align porosity values to valid slice indices
     porosity_values = [slice_porosities[valid_indices.index(i)] for i in valid_indices]
     ax1.plot(valid_indices, porosity_values, "b-", marker="o", alpha=0.7)
     ax1.set_ylabel("Porosity (%)")
     ax1.set_title("Porosity Profile within Highlighted Regions")
     ax1.grid(True, alpha=0.3)
 
+    # Plot size of highlighted regions
     nonzero_counts = [slice_highlighted_voxels[i] for i in valid_indices]
     ax2.bar(valid_indices, nonzero_counts, alpha=0.5, color="green")
     ax2.set_xlabel("Slice Index")
@@ -245,7 +254,8 @@ def load_image_folder(folder_path: str) -> np.ndarray:
     Slices are sorted by filename.
     """
     folder = Path(folder_path)
-    exts = {".tif", ".tiff", ".png", ".jpg", ".jpeg"}
+    exts = {".ttif", ".tiff", ".png", ".jpg", ".jpeg"}
+
     files = sorted(
         f for f in folder.iterdir()
         if f.is_file() and f.suffix.lower() in exts
@@ -257,31 +267,32 @@ def load_image_folder(folder_path: str) -> np.ndarray:
     for f in files:
         suffix = f.suffix.lower()
         if suffix in {".tif", ".tiff"}:
-            img = tifffile.imread(str(f))  # true TIFF
+            img = tifffile.imread(str(f))  # raw TIFF
         else:
-            # PNG / JPG → use PIL, convert to grayscale
+            # PNG/JPG → read via PIL and convert to grayscale
             img = Image.open(f).convert("L")
             img = np.array(img)
 
-        if img.ndim == 3:  # e.g. RGB
+        if img.ndim == 3:  # RGB fallback
             img = img[..., 0]
+
         slices.append(img)
 
-    stack = np.stack(slices, axis=0)  # [Z,H,W]
+    stack = np.stack(slices, axis=0)
     print(f"Loaded {len(files)} slices from folder {folder_path}, stack shape {stack.shape}")
     return stack
 
 
 def load_stack(path):
     """
-    Load an image stack with smart path handling.
+    Load an image stack with flexible path handling.
 
     Supports:
       - .npy volume
       - 3D .tif/.tiff stack
       - folder of 2D PNG/TIFF/JPG slices
     """
-    # First: if path exists directly
+    # Try direct path first
     if os.path.exists(path):
         if os.path.isdir(path):
             # Folder of slices
@@ -291,10 +302,9 @@ def load_stack(path):
         if path.endswith(".npy"):
             return np.load(path)
         else:
-            # Single TIFF stack (3D or 2D)
             return tifffile.imread(path)
 
-    # If not found directly, try common locations
+    # Try common fallback directories
     filename = os.path.basename(path)
     common_locations = [
         os.path.join("scripts/output", filename),
@@ -313,20 +323,21 @@ def load_stack(path):
 
     raise FileNotFoundError(f"Could not find {filename} in any common directory")
 
+
 def main():
     parser = argparse.ArgumentParser(description="Calculate porosity of image stacks")
-    parser.add_argument("stack_file", help="Path to image stack file (TIFF/PNG folder, 3D TIFF, or NPY)")
+    parser.add_argument("stack_file", help="Path to image stack (TIFF/PNG folder, 3D TIFF, or NPY)")
     parser.add_argument(
         "highlight_file",
         nargs="?",
         default=None,
-        help="Path to highlighted regions file (optional, same shape as stack or folder)",
+        help="Optional: highlighted region mask (same shape as stack)",
     )
     parser.add_argument(
         "--pores-are-black",
         "-b",
         action="store_true",
-        help="Treat black/dark areas as pores (default: white/bright areas are pores)",
+        help="Interpret black/dark areas as pores (default: white = pores)",
     )
     parser.add_argument(
         "--label",
@@ -340,12 +351,12 @@ def main():
         "-t",
         type=float,
         default=0.8,
-        help="Threshold factor for porosity detection in grayscale (0-1, default: 0.8)",
+        help="Threshold factor for grayscale porosity (0–1, default 0.8)",
     )
     parser.add_argument(
         "--no-chdir",
         action="store_true",
-        help="Do not change to project root directory",
+        help="Do not change working directory to project root",
     )
 
     args = parser.parse_args()
@@ -358,27 +369,26 @@ def main():
 
     os.makedirs("scripts/output", exist_ok=True)
 
+    # Default label from filename
     if args.label is None:
         args.label = os.path.basename(args.stack_file).split(".")[0].capitalize()
 
     try:
         print(f"Loading image stack from {args.stack_file}...")
         stack = load_stack(args.stack_file)
-        print(f"Loaded stack with shape: {stack.shape}, type: {stack.dtype}")
+        print(f"Loaded stack with shape: {stack.shape}, dtype: {stack.dtype}")
 
         if args.highlight_file is None:
-            print("No highlight file provided, analyzing entire stack...")
+            print("No highlight file provided. Analyzing entire stack...")
             analyze_porosity(stack, label=args.label)
         else:
             print(f"Loading highlighted regions from {args.highlight_file}...")
             highlighted = load_stack(args.highlight_file)
-            print(
-                f"Loaded highlighted regions with shape: {highlighted.shape}, "
-                f"type: {highlighted.dtype}"
-            )
+            print(f"Loaded highlighted mask with shape: {highlighted.shape}, dtype: {highlighted.dtype}")
 
+            # Crop if mismatched shapes
             if stack.shape != highlighted.shape:
-                print("Warning: Stack and highlighted regions have different shapes")
+                print("Warning: Stack and highlighted mask have different shapes")
                 print(f"Stack: {stack.shape}, Highlighted: {highlighted.shape}")
 
                 min_z = min(stack.shape[0], highlighted.shape[0])

@@ -20,5 +20,9 @@ python utils/test_model.py \
 #   --pores-are-black \
 #   --label GroundTruth300
 
+python utils/eval_porosity.py \
+  data/model-recon-output/synthetic_0/convex_hull.obj \
+  --pores-are-black
+
 # python utils/convert.py 
 # python utils/eval_pore_distribution.py --mesh ground_truth.stl --axis z --n_slices 150

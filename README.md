@@ -9,7 +9,6 @@ This repository contains a full pipeline for **synthetic microstructure generati
 ├── checkpoints/             # Stores trained model weights & checkpoints
 │
 ├── data/                    # All datasets used in the project
-│   ├── __MACOSX/            # (Ignore) macOS metadata directory
 │   ├── model-recon-output/  # Model-based reconstructed volume outputs
 │   ├── model-seg-output/    # Model-predicted segmentation masks
 │   ├── paper-seg-output/    # Reproduced segmentation from original paper
@@ -35,6 +34,7 @@ This repository contains a full pipeline for **synthetic microstructure generati
     ├── crop_real_stack.py
     ├── cropping.py
     ├── eval_porosity.py
+    ├── eval_obj_porosity.py
     ├── eval_pore_distribution.py
     ├── process_filename.py
     ├── reproduce.py
