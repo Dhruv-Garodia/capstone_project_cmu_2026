@@ -1,0 +1,113 @@
+[
+    {
+      "id": "synthetic_0",
+      "golden_porosity": 0.425199,
+      "mean_slice_porosity": 0.425199,
+      "std_slice_porosity": 0.045559,
+      "min_slice_porosity": 0.244133,
+      "max_slice_porosity": 0.4988,
+      "nslices": 150,
+      "actual_result": 0.3516312222222222
+    },
+    {
+      "id": "synthetic_1",
+      "golden_porosity": 0.471001,
+      "mean_slice_porosity": 0.471001,
+      "std_slice_porosity": 0.037559,
+      "min_slice_porosity": 0.342133,
+      "max_slice_porosity": 0.532,
+      "nslices": 150,
+      "actual_result": 0.39724590123456793
+    },
+    {
+      "id": "synthetic_2",
+      "golden_porosity": 0.506801,
+      "mean_slice_porosity": 0.506801,
+      "std_slice_porosity": 0.049369,
+      "min_slice_porosity": 0.3124,
+      "max_slice_porosity": 0.619067,
+      "nslices": 150,
+      "actual_result": 0.43498564197530865
+    },
+    {
+      "id": "synthetic_3",
+      "golden_porosity": 0.54663,
+      "mean_slice_porosity": 0.54663,
+      "std_slice_porosity": 0.051714,
+      "min_slice_porosity": 0.333244,
+      "max_slice_porosity": 0.626889,
+      "nslices": 150,
+      "actual_result": 0.4768557901234568
+    },
+    {
+      "id": "synthetic_4",
+      "golden_porosity": 0.593496,
+      "mean_slice_porosity": 0.593496,
+      "std_slice_porosity": 0.023299,
+      "min_slice_porosity": 0.461022,
+      "max_slice_porosity": 0.631867,
+      "nslices": 150,
+      "actual_result": 0.5254917530864198
+    },
+    {
+      "id": "synthetic_5",
+      "golden_porosity": 0.630187,
+      "mean_slice_porosity": 0.630187,
+      "std_slice_porosity": 0.064509,
+      "min_slice_porosity": 0.492444,
+      "max_slice_porosity": 0.755244,
+      "nslices": 150,
+      "actual_result": 0.5664025679012346
+    },
+    {
+      "id": "synthetic_6",
+      "golden_porosity": 0.66629,
+      "mean_slice_porosity": 0.66629,
+      "std_slice_porosity": 0.038418,
+      "min_slice_porosity": 0.471867,
+      "max_slice_porosity": 0.728756,
+      "nslices": 150,
+      "actual_result": 0.6049473950617283
+    },
+    {
+      "id": "synthetic_7",
+      "golden_porosity": 0.705457,
+      "mean_slice_porosity": 0.705457,
+      "std_slice_porosity": 0.040048,
+      "min_slice_porosity": 0.568044,
+      "max_slice_porosity": 0.807556,
+      "nslices": 150,
+      "actual_result": 0.6488245432098765
+    },
+    {
+      "id": "synthetic_8",
+      "golden_porosity": 0.721459,
+      "mean_slice_porosity": 0.721459,
+      "std_slice_porosity": 0.02958,
+      "min_slice_porosity": 0.555067,
+      "max_slice_porosity": 0.776133,
+      "nslices": 150,
+      "actual_result": 0.6675697530864199
+    },
+    {
+      "id": "synthetic_9",
+      "golden_porosity": 0.755679,
+      "mean_slice_porosity": 0.755679,
+      "std_slice_porosity": 0.04138,
+      "min_slice_porosity": 0.587778,
+      "max_slice_porosity": 0.824756,
+      "nslices": 150,
+      "actual_result": 0.7062724814814815
+    },
+    {
+      "id": "synthetic_10",
+      "golden_porosity": 0.629814,
+      "mean_slice_porosity": 0.629814,
+      "std_slice_porosity": 0.04335,
+      "min_slice_porosity": 0.451644,
+      "max_slice_porosity": 0.691156,
+      "nslices": 150,
+      "actual_result": 0.5648207530864198
+    }
+  ]
+  
