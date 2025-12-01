@@ -7,7 +7,7 @@ import numpy as np
 from scipy.ndimage import distance_transform_edt
 
 base = "data/model-recon-output"
-VOXEL_PITCH = 0.01
+VOXEL_PITCH = 0.5
 BIN_EDGES = np.geomspace(0.05, 5.0, 12)  # diameters in microns (example)
 
 for i in range(0, 11):
@@ -17,12 +17,21 @@ for i in range(0, 11):
     try:
         # Porosity
         mesh = trimesh.load(path)
-        solid_volume = mesh.volume
-        bbox_volume = mesh.bounding_box.volume
-        pore_volume = bbox_volume - solid_volume
-        porosity = pore_volume / bbox_volume
-        print("porosity:", porosity)
+        vox = mesh.voxelized(pitch=VOXEL_PITCH)
+        mask = vox.matrix    # Boolean 3D array
+
+        solid_vol = mask.sum() * VOXEL_PITCH**3
         
+        x,y,z=vox.shape
+        print("x:",x, "y:",y, "z:", z)
+        total_vol = x*y*z* VOXEL_PITCH**3
+        
+        porosity = 1 - solid_vol / total_vol
+        print("total_vol:", total_vol)
+        print("solid_vol:", solid_vol)
+
+        print("porosity:", porosity)
+                
         # # PSD
         # vox = mesh.voxelized(pitch=VOXEL_PITCH)
         # solid = vox.matrix.astype(np.uint8)  # 1 = solid, 0 = pore
