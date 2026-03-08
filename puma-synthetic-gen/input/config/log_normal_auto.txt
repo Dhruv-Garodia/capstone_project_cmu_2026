@@ -12,7 +12,7 @@ max_slice_porosity: 0.601061
 
 generator: lognormal
 max_iters: 1
-random_seed: 42
+seed: 42
 slice_axis: z
 
 # log-normal PSD parameters

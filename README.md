@@ -76,6 +76,23 @@ conda activate pfib_sem
 pip install -r requirements.txt
 
 ```
+
+If `scikit-umfpack` fails to build on macOS, install it with a native file:
+```
+cat > nativefile.ini <<'EOF'
+[properties]
+umfpack-libdir = '/opt/anaconda3/envs/pfib_sem/lib'
+umfpack-includedir = '/opt/anaconda3/envs/pfib_sem/include/suitesparse'
+EOF
+
+export CPPFLAGS="-I/opt/anaconda3/envs/pfib_sem/include/suitesparse"
+export CFLAGS="-Wno-error=int-conversion"
+export LDFLAGS="-L/opt/anaconda3/envs/pfib_sem/lib"
+
+python -m pip install --no-build-isolation \
+  -Csetup-args=--native-file=$(pwd)/nativefile.ini \
+  "scikit-umfpack==0.4.2"
+```
 ---
 
 ## 📊 Data Preparation
@@ -100,11 +117,11 @@ bash scripts/start_training.sh
 
 or directly:
 
-```
-python utils/train.py 
---data_dir data/synthetic_lightened 
---mask_dir data/synthetic_mask 
---save_dir checkpoints/
+```bash
+python utils/train.py \
+  --img_dir <path_to_lightened_png_slices> \
+  --mask_dir <path_to_binary_mask_png_slices> \
+  --out checkpoints/
 ```
 You may provide custom parameters if needed
 
@@ -117,10 +134,11 @@ bash scripts/validate_model.sh
 ```
 
 Or manually:
-```
-python utils/test_model.py 
---checkpoint checkpoints/best_model.pth 
---input data/real/
+```bash
+python utils/test_model.py \
+  --ckpt checkpoints/unet_best.pt \
+  --img_dir <path_to_input_images> \
+  --out_dir <path_to_save_predictions>
 ```
 
 ---
@@ -128,13 +146,13 @@ python utils/test_model.py
 ## 📊 Evaluation
 
 ### Porosity
-```
-python utils/eval_porosity.py --input data/model_segmented/
+```bash
+python utils/eval_porosity.py data/model_segmented/
 ```
 
 ### Pore size distribution
-```
-python utils/eval_pore_distribution.py --input data/model_segmented/
+```bash
+python utils/eval_pore_distribution.py --mesh <path_to_mesh.obj> --axis z --n_slices 150
 ```
 
 ---

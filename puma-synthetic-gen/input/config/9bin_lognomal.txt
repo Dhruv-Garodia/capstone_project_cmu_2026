@@ -12,7 +12,7 @@ max_slice_porosity: 0.601061
 
 generator: sphere
 max_iters: 1
-random_seed: 42
+seed: 42
 slice_axis: z
 
 psd_bins_nm: 89.0, 119.25, 159.75, 213.75, 285.75, 382.25, 511.75, 685.5, 918.0, 1229.5, 1646.75

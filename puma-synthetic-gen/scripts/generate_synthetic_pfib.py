@@ -215,8 +215,10 @@ def generate_until_match(specs: Dict[str, str]) -> Tuple[puma.Workspace, Dict[st
     slice_axis = get_axis_index(specs.get("slice_axis", "z"))
     target_phi = float(specs.get("overall_porosity", 0.5))
 
-    # base seed from spec; <0 or missing => nondeterministic
-    base_seed = int(specs.get("seed", "-1"))
+    # base seed from spec; support both "seed" and legacy "random_seed"
+    # <0 or missing => nondeterministic
+    seed_key = "seed" if "seed" in specs else "random_seed"
+    base_seed = int(specs.get(seed_key, "-1"))
 
     best_ws, best_loss, best_stats, best_overall = None, float("inf"), None, None
 
@@ -274,7 +276,7 @@ def export_outputs(ws: puma.Workspace, specs: Dict[str, str], sstats: Dict[str, 
     slice_axis = get_axis_index(specs.get("slice_axis", "z"))
 
     # deterministic SEM noise, if requested
-    sem_noise_seed = specs.get("sem_noise_seed", specs.get("seed", None))
+    sem_noise_seed = specs.get("sem_noise_seed", specs.get("seed", specs.get("random_seed", None)))
     rng = None
     if sem_noise_seed is not None:
         try:
@@ -349,8 +351,9 @@ def main():
         specs.get("nx"), specs.get("ny"), specs.get("nz"),
         "slice_axis:", specs.get("slice_axis"))
 
-    # Set a global/base seed once (optional)
-    base_seed = int(specs.get("seed", "-1")) if "seed" in specs else -1
+    # Set a global/base seed once (optional), supporting legacy random_seed key.
+    seed_key = "seed" if "seed" in specs else "random_seed"
+    base_seed = int(specs.get(seed_key, "-1"))
     if base_seed >= 0:
         _set_all_seeds(base_seed)
         print(f"[seed] Using base seed = {base_seed}")

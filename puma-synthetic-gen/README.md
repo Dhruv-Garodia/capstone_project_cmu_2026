@@ -20,6 +20,8 @@ Notes:
 
 Basic usage:
 Modify and run the supplied generation script, for example:
-    ./make_synthetic_mesh.sh
+    ./make_synthetic_meth.sh
+or directly:
+    python scripts/generate_synthetic_pfib.py --spec input/config/adjusted_config.txt
 
 This folder is only for synthetic data generation.
