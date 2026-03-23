@@ -18,9 +18,19 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 
 # PuMA / pumapy
-import pumapy as puma
-from pumapy.generation.random_spheres import generate_random_spheres
-from pumapy.generation.random_fibers import generate_random_fibers
+try:
+    import pumapy as puma
+    from pumapy.generation.random_spheres import generate_random_spheres
+    from pumapy.generation.random_fibers import generate_random_fibers
+except Exception as e:
+    raise SystemExit(
+        "Failed to import NASA PuMA generation modules.\n"
+        "This project requires a pumapy build that contains 'pumapy.generation.*'.\n"
+        f"Original error: {e}\n"
+        "Try reinstalling with:\n"
+        "  pip uninstall -y pumapy\n"
+        "  pip install 'pumapy==3.2.2'\n"
+    )
 
 # Export / SEM-like filters
 from scipy.ndimage import gaussian_filter

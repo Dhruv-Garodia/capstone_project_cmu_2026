@@ -54,7 +54,8 @@ multidict
 munkres==1.1.4
 networkx
 numba==0.62.1
-numpy
+numpy<2
+Cython<3
 openpnm==3.5.2
 packaging
 pandas==2.3.3
@@ -69,7 +70,7 @@ prompt_toolkit==3.0.52
 propcache
 psutil==7.1.3
 ptyprocess==0.7.0
-pumapy==3.0.0
+pumapy @ git+https://github.com/nasa/puma.git
 pure_eval==0.2.3
 pyamg==5.3.0
 pycparser

@@ -4,15 +4,15 @@ nz: 150
 voxel_size_xy_nm: 10
 voxel_size_nm: 10
 
-overall_porosity: 0.30
-mean_slice_porosity: 0.30
+overall_porosity: 0.6
+mean_slice_porosity: 0.6
 std_slice_porosity: 0.02
-min_slice_porosity: 0.26
-max_slice_porosity: 0.34
+min_slice_porosity: 0.56
+max_slice_porosity: 0.64
 
 generator: sphere
 max_iters: 1
-random_seed: 42
+seed: 41
 slice_axis: z
 
 psd_bins_nm: 89.0, 119.25, 159.75, 213.75, 285.75, 382.25, 511.75, 685.5, 918.0, 1229.5, 1646.75
