@@ -1,0 +1,13 @@
+{
+    "radius": 2.411415668105832,
+    "height": 3.3759819353481646,
+    "theta": 92.8665661047408,
+    "light_intensity": 900.0,
+    "obj_path": "D:\\capstone_project_cmu_2026\\mesh-slicing\\voxel_direct_syn1.obj",
+    "scale_applied": true,
+    "applied_scale_xyz": [
+        0.01,
+        0.01,
+        0.01
+    ]
+}

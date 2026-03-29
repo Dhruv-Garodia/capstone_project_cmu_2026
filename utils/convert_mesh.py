@@ -19,7 +19,7 @@ import trimesh
 # =================== CONFIG ===================
 
 # Path to the folder containing slice images
-INPUT_FOLDER = "data/pFIB-segmented_resized"
+INPUT_FOLDER = r"D:\capstone_project_cmu_2026\puma-synthetic-gen\output\synthetic_pfibs\synthetic_8\png_slices"
 # INPUT_FOLDER = "test_out_single_300_nopadding"
 
 # Supported image extensions
@@ -39,6 +39,10 @@ PORE_IS_DARK = True       # True: pores are dark → solid is bright
 VOXEL_SIZE_Z = 1.0
 VOXEL_SIZE_Y = 1.0
 VOXEL_SIZE_X = 1.0
+
+# Match the coordinate convention and scale of PuMA's synthetic_volume.obj.
+ALIGN_TO_SYNTHETIC_VOLUME_OBJ = True
+TARGET_VOXEL_LENGTH = 1e-2
 
 # Marching cubes step size (1 = highest resolution)
 MARCHING_STEP_SIZE = 1
@@ -60,7 +64,7 @@ def load_image_stack(folder, exts):
     if not files:
         raise FileNotFoundError(f"No images found in {folder}")
 
-    files = sorted(files)
+    files = sorted(set(files))
 
     print(f"Found {len(files)} slices.")
     imgs = []
@@ -118,6 +122,19 @@ def volume_to_stl(volume_bool, out_path, voxel_size_xyz=(1.0, 1.0, 1.0),
         spacing=voxel_size_xyz,  # voxel scaling in (Z, Y, X)
         step_size=step_size
     )
+
+    if ALIGN_TO_SYNTHETIC_VOLUME_OBJ:
+        # generate_synthetic_pfib.py exports png_slices with slice_axis=z by moving
+        # ws.matrix from (X, Y, Z) to slices-first (Z, X, Y). marching_cubes then
+        # returns vertices in that same order, so convert back to (X, Y, Z).
+        verts = verts[:, [1, 2, 0]]
+        verts *= TARGET_VOXEL_LENGTH
+        mins = verts.min(axis=0)
+        verts = verts - mins
+        print(
+            "Aligned mesh axes to synthetic_volume.obj convention"
+            f"; bbox min moved from {mins.tolist()} to {[0.0, 0.0, 0.0]}"
+        )
 
     print(f"Mesh vertices: {verts.shape[0]}, faces: {faces.shape[0]}")
 

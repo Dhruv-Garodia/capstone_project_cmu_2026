@@ -1,0 +1,10 @@
+{
+    "radius": 2.411415668105832,
+    "height": 3.3759819353481646,
+    "theta": 92.8665661047408,
+    "light_intensity": 900.0,
+    "stl_path": "D:\\capstone_project_cmu_2026\\real_groundtruth.stl",
+    "intermediate_obj_path": "D:\\capstone_project_cmu_2026\\mesh-slicing\\test.obj",
+    "expected_volume_size": 150,
+    "target_voxel_length": 0.01
+}
