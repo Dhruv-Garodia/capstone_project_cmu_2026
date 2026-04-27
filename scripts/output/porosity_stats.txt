@@ -1,0 +1,10 @@
+===  Porosity Analysis ===
+
+Shape: (354, 630, 1860), dtype: uint8
+Overall porosity: 30.4279%
+
+Slice porosity:
+  Min: 24.2154%
+  Max: 35.6857%
+  Mean: 30.4279%
+  StdDev: 2.3244%

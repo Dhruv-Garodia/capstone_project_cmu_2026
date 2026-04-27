@@ -2,9 +2,12 @@
 # scripts/train.py
 
 import argparse
+import csv
+import json
 import os
 import random
 import sys
+from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -201,6 +204,8 @@ def main():
     parser.add_argument("--img_dir", type=str, required=True, help="Input 2D slice directory (lightened images)")
     parser.add_argument("--mask_dir", type=str, required=True, help="Binary mask directory (1=solid, 0=pore)")
     parser.add_argument("--out", type=str, default="checkpoints")
+    parser.add_argument("--experiment_name", type=str, default=None,
+                        help="Optional subdirectory name under --out for this run")
 
     # Train config
     parser.add_argument("--val_split", type=float, default=0.1)
@@ -208,8 +213,11 @@ def main():
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--in_channels", type=int, default=1)
+    parser.add_argument("--base_ch", type=int, default=32)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=2025)
+    parser.add_argument("--device", type=str, default=None,
+                        help="Optional manual device override, e.g. cpu, cuda, mps")
 
     # Optimizer
     parser.add_argument("--optimizer", type=str, default="adamw", choices=["adam", "adamw"],
@@ -226,6 +234,11 @@ def main():
                         help="Enable class weights for CE (computed from pixel frequencies)")
     parser.add_argument("--focal_gamma", type=float, default=2.0, help="Focal loss gamma")
     parser.add_argument("--focal_alpha", type=float, default=0.5, help="Focal loss alpha for positive class")
+    parser.add_argument("--tversky_alpha", type=float, default=0.3, help="Tversky FP weight alpha")
+    parser.add_argument("--tversky_beta", type=float, default=0.7, help="Tversky FN weight beta")
+    parser.add_argument("--tversky_gamma", type=float, default=1.5, help="Focal Tversky gamma")
+    parser.add_argument("--save_by", type=str, default="pixacc", choices=["pixacc", "iou"],
+                        help="Metric used to select the best checkpoint")
 
     # Debug: overfit one
     parser.add_argument("--overfit_one", action="store_true",
@@ -243,8 +256,13 @@ def main():
     args = parser.parse_args()
 
     # Setup
-    os.makedirs(args.out, exist_ok=True)
+    out_dir = Path(args.out)
+    if args.experiment_name:
+        out_dir = out_dir / args.experiment_name
+    out_dir.mkdir(parents=True, exist_ok=True)
     set_seed(args.seed)
+    if args.device:
+        os.environ["PFIB_FORCE_DEVICE"] = args.device
     device = pick_device()
     print(f"[Info] Using device: {device}")
 
@@ -295,7 +313,7 @@ def main():
         )
 
     # Model
-    model = UNet(in_channels=args.in_channels, num_classes=2, base_ch=32, bilinear=True).to(device)
+    model = UNet(in_channels=args.in_channels, num_classes=2, base_ch=args.base_ch, bilinear=True).to(device)
 
     # Build loss
     if args.use_class_weight:
@@ -330,10 +348,15 @@ def main():
             return (1.0 - args.dice_w) * focal + args.dice_w * dice
 
         elif args.loss == "tversky":
-            return tversky_loss(logits, masks, alpha=0.3, beta=0.7)
+            return tversky_loss(logits, masks, alpha=args.tversky_alpha, beta=args.tversky_beta)
 
         elif args.loss == "focaltversky":
-            return focal_tversky_loss(logits, masks, alpha=0.3, beta=0.7, gamma=1.5)
+            return focal_tversky_loss(
+                logits, masks,
+                alpha=args.tversky_alpha,
+                beta=args.tversky_beta,
+                gamma=args.tversky_gamma,
+            )
 
         else:
             raise ValueError(f"Unknown --loss {args.loss}")
@@ -350,6 +373,8 @@ def main():
 
     # Training loop
     best_val_acc = 0.0
+    best_val_iou = -1.0
+    history = []
     for epoch in range(1, args.epochs + 1):
         model.train()
         loss_sum = 0.0
@@ -381,17 +406,29 @@ def main():
         val_iou = val_iou_sum / max(1, val_n)
         scheduler.step()
 
+        epoch_record = {
+            "epoch": epoch,
+            "train_loss": float(loss_sum / len(train_loader)),
+            "val_pixAcc": float(val_acc),
+            "val_IoU_pos": float(val_iou),
+            "lr": float(optimizer.param_groups[0]["lr"]),
+        }
+        history.append(epoch_record)
+
         print(f"[Epoch {epoch:03d}] "
-              f"train_loss={loss_sum/len(train_loader):.4f}  "
+              f"train_loss={epoch_record['train_loss']:.4f}  "
               f"val_pixAcc={val_acc:.4f}  val_IoU(1)={val_iou:.4f}")
 
-        # Save best by pixel accuracy (you may switch to IoU if preferred)
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
-            ckpt = os.path.join(args.out, "unet_best.pt")
+        current_score = val_acc if args.save_by == "pixacc" else val_iou
+        best_score = best_val_acc if args.save_by == "pixacc" else best_val_iou
+
+        if current_score > best_score:
+            best_val_acc = max(best_val_acc, val_acc)
+            best_val_iou = max(best_val_iou, val_iou)
+            ckpt = out_dir / "unet_best.pt"
             torch.save({"model": model.state_dict(), "epoch": epoch,
                         "val_pixAcc": val_acc, "val_IoU_pos": val_iou}, ckpt)
-            print(f"  ✓ Saved best model (pixAcc={val_acc:.4f})")
+            print(f"  ✓ Saved best model ({args.save_by}={current_score:.4f})")
 
         # Optional early stop for overfit_one when it's essentially solved
         if args.overfit_one and val_acc >= 0.99:
@@ -399,9 +436,50 @@ def main():
             break
 
     # Save last checkpoint
-    last_ckpt = os.path.join(args.out, "unet_last.pt")
+    last_ckpt = out_dir / "unet_last.pt"
     torch.save({"model": model.state_dict(), "epoch": epoch}, last_ckpt)
+
+    history_json = out_dir / "history.json"
+    metrics_csv = out_dir / "history.csv"
+    summary_json = out_dir / "summary.json"
+
+    with history_json.open("w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2)
+
+    with metrics_csv.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["epoch", "train_loss", "val_pixAcc", "val_IoU_pos", "lr"])
+        writer.writeheader()
+        writer.writerows(history)
+
+    summary = {
+        "img_dir": args.img_dir,
+        "mask_dir": args.mask_dir,
+        "out_dir": str(out_dir),
+        "loss": args.loss,
+        "optimizer": args.optimizer,
+        "save_by": args.save_by,
+        "lr": args.lr,
+        "weight_decay": args.weight_decay,
+        "batch_size": args.batch_size,
+        "epochs": args.epochs,
+        "seed": args.seed,
+        "base_ch": args.base_ch,
+        "focal_gamma": args.focal_gamma,
+        "focal_alpha": args.focal_alpha,
+        "tversky_alpha": args.tversky_alpha,
+        "tversky_beta": args.tversky_beta,
+        "tversky_gamma": args.tversky_gamma,
+        "best_val_pixAcc": best_val_acc,
+        "best_val_IoU_pos": best_val_iou,
+        "best_checkpoint": str(out_dir / "unet_best.pt"),
+        "last_checkpoint": str(last_ckpt),
+    }
+    with summary_json.open("w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2)
+
     print(f"Done. Last checkpoint: {last_ckpt}")
+    print(f"[Info] Saved run history to: {history_json}")
+    print(f"[Info] Saved run summary to: {summary_json}")
 
 
 if __name__ == "__main__":
