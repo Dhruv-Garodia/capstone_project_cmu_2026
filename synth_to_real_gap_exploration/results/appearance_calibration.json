@@ -1,0 +1,243 @@
+{
+  "mudcrack": {
+    "params": {
+      "tilt_deg": 52.0,
+      "beam_sign": -1,
+      "max_depth_nm": 317.1129141136827,
+      "atten_nm": 55.58955554265063,
+      "bright_catalyst": 1.0,
+      "bright_ionomer": 0.6311603778192473,
+      "bright_dense": 1.0517290265150434,
+      "pore_floor": 0.01364874351539992,
+      "lambert_min": 0.3792105510003638,
+      "edge_enh": 0.1908109128375369,
+      "edge_width_px": 2.2270632246648736,
+      "grain_amp": 0.2286960725518697,
+      "grain_sigma_px": 0.9425691408168506,
+      "charge_amp": 0.05342818573741752,
+      "charge_sigma_px": 52.28854143914861,
+      "curtain_amp": 0.10877117389483028,
+      "curtain_sigma_px": 1.3690938995487945,
+      "psf_sigma_px": 1.4277402858811163,
+      "poisson_scale": 251.82222816607185,
+      "gauss_sigma": 0.023175104390391915,
+      "gain": 0.4556900376491877,
+      "offset": 0.01678586296718671,
+      "drift_gain": 0.02,
+      "drift_offset": 0.01
+    },
+    "distance": 0.7470390573004697,
+    "stats": {
+      "best": {
+        "mean": 73.35271453857422,
+        "std": 34.574127197265625,
+        "entropy_bits": 4.0321474936529516,
+        "extreme_fraction": 0.06459259259259259,
+        "grad_mag_mean": 15.00326156616211,
+        "laplacian_var": 665.7515869140625,
+        "spectrum_slope": -3.318160765955608,
+        "local_contrast": 22.223915100097656
+      },
+      "real": {
+        "mean": 71.39750671386719,
+        "std": 58.65058898925781,
+        "entropy_bits": 4.43793184021587,
+        "extreme_fraction": 0.12049464314268962,
+        "grad_mag_mean": 10.955643653869629,
+        "spectrum_slope": -3.487916217812842,
+        "local_contrast": 17.298871994018555
+      }
+    }
+  },
+  "faceted": {
+    "params": {
+      "tilt_deg": 52.0,
+      "beam_sign": 1,
+      "max_depth_nm": 394.189794989215,
+      "atten_nm": 112.92835585412068,
+      "bright_catalyst": 0.8,
+      "bright_ionomer": 0.4640501217140498,
+      "bright_dense": 0.9740459008456159,
+      "pore_floor": 0.046043022603306984,
+      "lambert_min": 0.3629695128438092,
+      "edge_enh": 0.5620709204285848,
+      "edge_width_px": 2.4987326526840894,
+      "grain_amp": 0.1762809201496172,
+      "grain_sigma_px": 0.847915269130615,
+      "charge_amp": 0.35609734065441395,
+      "charge_sigma_px": 15.102869051354048,
+      "curtain_amp": 0.11551822785143216,
+      "curtain_sigma_px": 2.7861215039484475,
+      "psf_sigma_px": 1.5319424033677282,
+      "poisson_scale": 135.04104353814222,
+      "gauss_sigma": 0.018017451431799156,
+      "gain": 0.8401674882562564,
+      "offset": 0.09660072191685577,
+      "drift_gain": 0.02,
+      "drift_offset": 0.01
+    },
+    "distance": 0.28850077443784167,
+    "stats": {
+      "best": {
+        "mean": 99.1819839477539,
+        "std": 63.1838264465332,
+        "entropy_bits": 4.5517391943964,
+        "extreme_fraction": 0.03911111111111111,
+        "grad_mag_mean": 14.729171752929688,
+        "laplacian_var": 987.1578979492188,
+        "spectrum_slope": -3.3540531528426096,
+        "local_contrast": 25.269134521484375
+      },
+      "real": {
+        "mean": 100.93561553955078,
+        "std": 64.31249237060547,
+        "entropy_bits": 4.773145328478513,
+        "extreme_fraction": 0.05989666390253237,
+        "grad_mag_mean": 14.354462623596191,
+        "spectrum_slope": -3.591832406525655,
+        "local_contrast": 24.537660598754883
+      }
+    }
+  },
+  "flake": {
+    "params": {
+      "tilt_deg": 52.0,
+      "beam_sign": 1,
+      "max_depth_nm": 300.25307431905253,
+      "atten_nm": 111.73344237840602,
+      "bright_catalyst": 1.0,
+      "bright_ionomer": 0.49003159008558084,
+      "bright_dense": 1.054003403116346,
+      "pore_floor": 0.010280095588552075,
+      "lambert_min": 0.3706829438263156,
+      "edge_enh": 0.31512951823678986,
+      "edge_width_px": 2.093705724895417,
+      "grain_amp": 0.26638917470520146,
+      "grain_sigma_px": 1.4199334691844636,
+      "charge_amp": 0.3837533579986395,
+      "charge_sigma_px": 15.282227861238132,
+      "curtain_amp": 0.023994331537972962,
+      "curtain_sigma_px": 2.914977584759443,
+      "psf_sigma_px": 0.904772315774247,
+      "poisson_scale": 101.42919670048701,
+      "gauss_sigma": 0.03135198875674652,
+      "gain": 0.28061303519329095,
+      "offset": 0.0906530568585456,
+      "drift_gain": 0.02,
+      "drift_offset": 0.01
+    },
+    "distance": 0.3656417098032559,
+    "stats": {
+      "best": {
+        "mean": 49.11211395263672,
+        "std": 39.343231201171875,
+        "entropy_bits": 3.2359788389362096,
+        "extreme_fraction": 0.00022605613425925926,
+        "grad_mag_mean": 8.365104675292969,
+        "laplacian_var": 584.4622802734375,
+        "spectrum_slope": -3.1110852328058987,
+        "local_contrast": 14.005566596984863
+      },
+      "real": {
+        "mean": 54.643959045410156,
+        "std": 25.420764923095703,
+        "entropy_bits": 3.4989507805870277,
+        "extreme_fraction": 9.210526315789474e-05,
+        "grad_mag_mean": 7.944602012634277,
+        "spectrum_slope": -2.9395113575649843,
+        "local_contrast": 12.677576065063477
+      }
+    }
+  },
+  "felt": {
+    "params": {
+      "tilt_deg": 90,
+      "max_depth_nm": 25000,
+      "atten_nm": 2500,
+      "edge_enh": 5.0,
+      "secant_weight": 0.7,
+      "grain_amp": 0.02,
+      "grain_sigma_px": 4.0,
+      "charge_amp": 0.2,
+      "curtain_amp": 0.0,
+      "psf_sigma_px": 2.0,
+      "poisson_scale": 2000,
+      "gain": 0.53,
+      "offset": 0.03,
+      "pore_floor": 0.075,
+      "lambert_min": 0.05,
+      "gamma": 1.1,
+      "occlusion_k": 0.12,
+      "occlusion_sigma_px": 1.5,
+      "transmittance": 0.35,
+      "gauss_sigma": 0.004,
+      "secant_max": 5.0,
+      "charge_sigma_px": 100.0,
+      "edge_blur_px": 2.5
+    },
+    "generator": {
+      "settle_quantile": 0.12,
+      "compaction": 0.88,
+      "tilt_spread_deg": 55,
+      "crumple": 0.2,
+      "n_modes": 2,
+      "mode_freq": [
+        0.3,
+        1.0
+      ],
+      "curl": 0.25,
+      "roll_ratio": [
+        1.05,
+        2.5
+      ],
+      "fold_prob": 0.4,
+      "fold_amp": 0.5,
+      "outline_modes": 7,
+      "edge_waviness": 0.4,
+      "length_um": [
+        10,
+        0.55
+      ],
+      "width_ratio": [
+        0.35,
+        0.9
+      ],
+      "thickness_um": [
+        0.22,
+        0.3
+      ],
+      "coverage_stop": 1.0,
+      "fill_top_fraction": 0.75,
+      "micro_crumple": 0.0
+    },
+    "voxel_um": 0.125,
+    "shape": [
+      96,
+      512,
+      512
+    ],
+    "normal_sigma": 1.6,
+    "use_edge_map": true,
+    "c2st": {
+      "seed3": {
+        "texture_11px_knn": 0.5916666666666667,
+        "texture_11px_rf_auc": 0.7044918888888888,
+        "structure_33px_knn": 0.8307,
+        "structure_33px_rf_auc": 0.8399401111111111
+      },
+      "seed4": {
+        "texture_11px_knn": 0.6129,
+        "texture_11px_rf_auc": 0.7241683888888889,
+        "structure_33px_knn": 0.8538,
+        "structure_33px_rf_auc": 0.8941606111111111
+      },
+      "control": {
+        "texture_11px_knn": 0.5843666666666667,
+        "texture_11px_rf_auc": 0.6573447777777778,
+        "structure_33px_knn": 0.8121666666666667,
+        "structure_33px_rf_auc": 0.8260596666666666
+      }
+    },
+    "note": "v24b: plan view (tilt 90), low shot noise, deep-void scatter floor, crevice-scale occlusion, wide SE edge highlights, large-scale illumination field, thin-flake transmission 0.35"
+  }
+}

@@ -1,0 +1,7 @@
+# keep images and json results in this directory under version control
+!*.png
+!*.json
+!*.md
+*.npy
+*.tif
+__pycache__/

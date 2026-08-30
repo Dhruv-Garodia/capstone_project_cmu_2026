@@ -1,0 +1,71 @@
+{
+  "pristine": {
+    "gen_seconds": 16.3,
+    "describe_seconds": 8.1,
+    "synthetic": {
+      "porosity": 0.5115197037037037,
+      "pore_mean_nm": 128.46238708496094,
+      "pore_std_nm": 68.14667510986328,
+      "pore_max_nm": 276.0,
+      "lognormal_mu": 4.6656904220581055,
+      "lognormal_sigma": 0.6828462481498718,
+      "pore_connected_fraction": 0.9994421850590166,
+      "specific_surface_um_inv": 19.39506172839506,
+      "s2_corr_length_nm": 84.0
+    },
+    "target": {
+      "porosity": 0.515,
+      "mean_pore_nm": 123.0,
+      "std_pore_nm": null,
+      "max_pore_nm": 600.0,
+      "lognormal_mu": 4.657,
+      "lognormal_sigma": 0.6352
+    }
+  },
+  "uncomp": {
+    "gen_seconds": 14.5,
+    "describe_seconds": 8.6,
+    "synthetic": {
+      "porosity": 0.5560240000000001,
+      "pore_mean_nm": 185.4883270263672,
+      "pore_std_nm": 90.97660827636719,
+      "pore_max_nm": 300.0,
+      "lognormal_mu": 5.015613079071045,
+      "lognormal_sigma": 0.7579382658004761,
+      "pore_connected_fraction": 0.9989107850926765,
+      "specific_surface_um_inv": 15.653432098765432,
+      "s2_corr_length_nm": 120.0
+    },
+    "target": {
+      "porosity": 0.558,
+      "mean_pore_nm": 166.0,
+      "std_pore_nm": 114.0,
+      "max_pore_nm": 600.0,
+      "lognormal_mu": 4.926,
+      "lognormal_sigma": 0.7396
+    }
+  },
+  "comp": {
+    "gen_seconds": 13.0,
+    "describe_seconds": 7.4,
+    "synthetic": {
+      "porosity": 0.41386755555555554,
+      "pore_mean_nm": 117.40484619140625,
+      "pore_std_nm": 61.89438247680664,
+      "pore_max_nm": 216.0,
+      "lognormal_mu": 4.563821792602539,
+      "lognormal_sigma": 0.7090479731559753,
+      "pore_connected_fraction": 0.9964082265000863,
+      "specific_surface_um_inv": 18.39743209876543,
+      "s2_corr_length_nm": 96.0
+    },
+    "target": {
+      "porosity": 0.417,
+      "mean_pore_nm": 104.0,
+      "std_pore_nm": 55.8,
+      "max_pore_nm": 300.0,
+      "lognormal_mu": 4.572,
+      "lognormal_sigma": 0.6127
+    }
+  }
+}

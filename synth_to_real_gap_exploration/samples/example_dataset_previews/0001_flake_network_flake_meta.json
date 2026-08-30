@@ -1,0 +1,58 @@
+{
+  "family": "flake_network",
+  "preset": "flake",
+  "voxel_nm": 30.0,
+  "sem_params": {
+    "tilt_deg": 52.0,
+    "beam_sign": 1,
+    "max_depth_nm": 395.2088346940575,
+    "atten_nm": 109.77679486313689,
+    "bright_catalyst": 1.0,
+    "bright_ionomer": 0.5399396945682431,
+    "bright_dense": 1.0800918552535632,
+    "pore_floor": 0.068844673057094,
+    "lambert_min": 0.3166764271937311,
+    "edge_enh": 0.16754825251120561,
+    "edge_width_px": 2.0822325102911226,
+    "grain_amp": 0.3269165315635912,
+    "grain_sigma_px": 1.234338625782538,
+    "charge_amp": 0.17145883970794729,
+    "charge_sigma_px": 55.02695254570501,
+    "curtain_amp": 0.11208522191474996,
+    "curtain_sigma_px": 1.7155903934181405,
+    "psf_sigma_px": 1.0143768476567847,
+    "poisson_scale": 91.49910257215075,
+    "gauss_sigma": 0.03377200120798787,
+    "gain": 0.50343341913035,
+    "offset": 0.05874285007922418,
+    "drift_gain": 0.02,
+    "drift_offset": 0.01
+  },
+  "beam_sign_random": false,
+  "generator_meta": {
+    "generator": "flake_network",
+    "voxel_nm": 30.0,
+    "target_porosity": 0.6676561036734076,
+    "realized_porosity": 0.6251446759259259,
+    "flake_length_nm": [
+      3941.56853472275,
+      0.5
+    ],
+    "aspect_min": 0.35,
+    "thickness_nm": [
+      600.0,
+      0.3
+    ],
+    "curl": 0.607692555740627,
+    "orientation": "random",
+    "inplane_spread_deg": 25.0,
+    "seed": 40973523,
+    "n_flakes": 3,
+    "shape": [
+      48,
+      96,
+      96
+    ]
+  },
+  "realized_porosity": 0.6251446759259259
+}

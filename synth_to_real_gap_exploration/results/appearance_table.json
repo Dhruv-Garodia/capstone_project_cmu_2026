@@ -1,0 +1,52 @@
+{
+  "real_agglomerate_L": {
+    "mean": 71.39750671386719,
+    "std": 58.65058898925781,
+    "entropy_bits": 4.43793184021587,
+    "extreme_fraction": 0.12049464314268962,
+    "grad_mag_mean": 10.955643653869629,
+    "laplacian_var": 195.50979614257812,
+    "spectrum_slope": -3.487916217812842,
+    "local_contrast": 17.298871994018555
+  },
+  "old_synthetic_slice": {
+    "mean": 166.12452697753906,
+    "std": 108.35371398925781,
+    "entropy_bits": 2.7104995968870726,
+    "extreme_fraction": 0.7540444444444444,
+    "grad_mag_mean": 37.7547721862793,
+    "laplacian_var": 13679.208984375,
+    "spectrum_slope": -2.61550299601945,
+    "local_contrast": 68.64869689941406
+  },
+  "new_mudcrack_calibrated": {
+    "mean": 48.641910552978516,
+    "std": 20.608535766601562,
+    "entropy_bits": 3.393142004418202,
+    "extreme_fraction": 0.052755555555555556,
+    "grad_mag_mean": 6.805890083312988,
+    "laplacian_var": 491.40765380859375,
+    "spectrum_slope": -2.702036994723132,
+    "local_contrast": 10.414082527160645
+  },
+  "real_felt": {
+    "mean": 54.643959045410156,
+    "std": 25.420764923095703,
+    "entropy_bits": 3.4989507805870277,
+    "extreme_fraction": 9.210526315789474e-05,
+    "grad_mag_mean": 7.944602012634277,
+    "laplacian_var": 165.9816131591797,
+    "spectrum_slope": -2.9395113575649843,
+    "local_contrast": 12.677576065063477
+  },
+  "new_flake_calibrated": {
+    "mean": 81.54326629638672,
+    "std": 40.95516586303711,
+    "entropy_bits": 4.217977984244998,
+    "extreme_fraction": 0.0,
+    "grad_mag_mean": 9.548868179321289,
+    "laplacian_var": 884.8388671875,
+    "spectrum_slope": -2.888531296304015,
+    "local_contrast": 15.089128494262695
+  }
+}

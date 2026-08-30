@@ -1,0 +1,90 @@
+{
+  "pristine": {
+    "objective": 0.08151597219870346,
+    "params": {
+      "agglomerate_nm": 95,
+      "macro_weight": 0.25,
+      "fine_scale_weight": 0.1,
+      "macro_scale_nm": 250,
+      "particle_radius_nm": [
+        26,
+        0.35
+      ]
+    },
+    "realized": {
+      "porosity": 0.5176186964741254,
+      "pore_mean_nm": 122.58470153808594,
+      "pore_std_nm": 67.60031127929688,
+      "pore_max_nm": 264.0,
+      "lognormal_mu": 4.617858409881592,
+      "lognormal_sigma": 0.6741979718208313
+    },
+    "target": {
+      "porosity": 0.515,
+      "mean_pore_nm": 123.0,
+      "std_pore_nm": null,
+      "max_pore_nm": 600.0,
+      "lognormal_mu": 4.657,
+      "lognormal_sigma": 0.6352
+    }
+  },
+  "uncomp": {
+    "objective": 0.04040430311754513,
+    "params": {
+      "agglomerate_nm": 130,
+      "macro_weight": 0.3,
+      "fine_scale_weight": 0.1,
+      "macro_scale_nm": 250,
+      "particle_radius_nm": [
+        26,
+        0.35
+      ]
+    },
+    "realized": {
+      "porosity": 0.5568000637755102,
+      "pore_mean_nm": 168.29080200195312,
+      "pore_std_nm": 86.23676300048828,
+      "pore_max_nm": 324.0,
+      "lognormal_mu": 4.929900169372559,
+      "lognormal_sigma": 0.7168958783149719
+    },
+    "target": {
+      "porosity": 0.558,
+      "mean_pore_nm": 166.0,
+      "std_pore_nm": 114.0,
+      "max_pore_nm": 600.0,
+      "lognormal_mu": 4.926,
+      "lognormal_sigma": 0.7396
+    }
+  },
+  "comp": {
+    "objective": 0.6539970239199125,
+    "params": {
+      "agglomerate_nm": 90,
+      "compression_z": 0.7,
+      "macro_weight": 0.15,
+      "fine_scale_weight": 0.1,
+      "macro_scale_nm": 250,
+      "particle_radius_nm": [
+        26,
+        0.35
+      ]
+    },
+    "realized": {
+      "porosity": 0.42128564595481055,
+      "pore_mean_nm": 77.50489807128906,
+      "pore_std_nm": 39.34743881225586,
+      "pore_max_nm": 204.0,
+      "lognormal_mu": 4.196589946746826,
+      "lognormal_sigma": 0.5888736248016357
+    },
+    "target": {
+      "porosity": 0.417,
+      "mean_pore_nm": 104.0,
+      "std_pore_nm": 55.8,
+      "max_pore_nm": 300.0,
+      "lognormal_mu": 4.572,
+      "lognormal_sigma": 0.6127
+    }
+  }
+}

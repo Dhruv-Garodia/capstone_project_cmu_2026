@@ -1,0 +1,70 @@
+{
+  "family": "catalyst_layer",
+  "preset": "mudcrack",
+  "voxel_nm": 6.0,
+  "sem_params": {
+    "tilt_deg": 52.0,
+    "beam_sign": 1,
+    "max_depth_nm": 353.3175598000681,
+    "atten_nm": 31.322210842282328,
+    "bright_catalyst": 1.0,
+    "bright_ionomer": 0.6194644520472026,
+    "bright_dense": 1.071327155153436,
+    "pore_floor": 0.07294965609839985,
+    "lambert_min": 0.36308749743962687,
+    "edge_enh": 0.5675362118938841,
+    "edge_width_px": 2.223780331182298,
+    "grain_amp": 0.0812870950799696,
+    "grain_sigma_px": 2.0003659872225974,
+    "charge_amp": 0.05839639382636609,
+    "charge_sigma_px": 47.834495089347485,
+    "curtain_amp": 0.02107867447230708,
+    "curtain_sigma_px": 2.7263578446997734,
+    "psf_sigma_px": 0.9873150982241825,
+    "poisson_scale": 87.95390248598156,
+    "gauss_sigma": 0.026907488847906336,
+    "gain": 0.2712397533590972,
+    "offset": 0.018642491474934592,
+    "drift_gain": 0.02,
+    "drift_offset": 0.01
+  },
+  "beam_sign_random": false,
+  "generator_meta": {
+    "generator": "catalyst_layer",
+    "voxel_nm": 6.0,
+    "target_porosity": 0.396036854101261,
+    "realized_porosity": 0.3927747938368056,
+    "agglomerate_nm": 90,
+    "fine_scale_weight": 0.25,
+    "fine_scale_nm": 35,
+    "macro_weight": 0.0,
+    "macro_scale_nm": 250,
+    "particle_radius_nm": [
+      24,
+      0.35
+    ],
+    "particle_overlap": 2.5,
+    "ionomer_nm": 6.0,
+    "ionomer_coverage": 0.55,
+    "domain_nm": 720,
+    "crack_nm": 40,
+    "crack_roughness": 0.7,
+    "crack_ionomer_fill": 0.4,
+    "dense_inclusions": 0,
+    "inclusion_radius_nm": [
+      150.0,
+      320.0
+    ],
+    "inclusion_shape": "ellipsoid",
+    "compression_z": 1.0,
+    "seed": 850624225,
+    "skeleton_quantile": 0.30875,
+    "shape": [
+      48,
+      96,
+      96
+    ],
+    "crack_fraction": 0.3556202076099537
+  },
+  "realized_porosity": 0.3927747938368056
+}
