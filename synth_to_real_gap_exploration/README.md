@@ -116,7 +116,18 @@ harmonisation (blurs), JPEG-pipeline matching (no effect — verified with a rea
 
 ![ML attempts](gallery/11_felt_ml_harmonisation_attempts.png)
 
-## 6. What is assumed vs measured
+## 6. Layer-by-layer: mesh ground truth vs the simulated micrograph
+
+[`docs/LAYER_BY_LAYER.md`](docs/LAYER_BY_LAYER.md) shows, for the felt, the fibre mat and two
+catalyst presets: the ground-truth geometry as 3-D meshes, and at six depths per family a
+side-by-side of **clean structure render | exact mask | material map | calibrated SEM simulation**.
+Two takeaways visible at a glance: labels and images are pixel-aligned by construction, and for the
+~94 %-porous felt the mask is sparse while the image is full of shine-through — the visual proof that
+per-slice 2-D segmentation is nearly ill-posed and 2.5-D/3-D context is required.
+
+![mesh ground truth](gallery/12_mesh_groundtruth_3d.png)
+
+## 7. What is assumed vs measured
 
 `docs/EVIDENCE_AUDIT.md` lists, item by item: 14 real-data features the old synthetic lacked (each
 with its evidence source), and every number in the new pipeline that is **assumed or fitted rather
@@ -125,7 +136,7 @@ shine-through attenuation, noise/PSF magnitudes, compression mechanism, all felt
 those should be quoted as fact. The three region presets are calibrated to the paper's published
 numbers, **not** yet to the raw stacks in the Drive.
 
-## 7. What to do next (ranked)
+## 8. What to do next (ranked)
 
 1. **Alignment test on the old Blender renders** (1 h) — decides whether every historical IoU was noise.
 2. Pull 3–5 **native-resolution real slices** per region: re-run `calibrate_appearance` and replace the
@@ -138,7 +149,7 @@ numbers, **not** yet to the raw stacks in the Drive.
    the input masks at > 0.95 IoU on translated images.
 5. Tortuosity module (porespy/taufactor) so predictions are scored on the physics the mentor cares about.
 
-## 8. Reproducing
+## 9. Reproducing
 
 ```bash
 pip install -r requirements.txt
