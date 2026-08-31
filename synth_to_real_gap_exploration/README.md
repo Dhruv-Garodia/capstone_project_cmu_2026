@@ -138,7 +138,31 @@ shine-through attenuation, noise/PSF magnitudes, compression mechanism, all felt
 those should be quoted as fact. The three region presets are calibrated to the paper's published
 numbers, **not** yet to the raw stacks in the Drive.
 
-## 8. What to do next (ranked)
+## 8. The real stacks (Drive folder `Experimental data`) and how to inspect them
+
+`pristine_full.tif` (1.50 GB), `uncomp_full.tif` (453 MB), `comp_full.tif` (412 MB) are the raw pFIB-SEM
+stacks behind Ferner et al. 2024 (pristine / PTL-pore-area / PTL-fibre-compressed). If they are
+uncompressed 8-bit ImageJ stacks, file size ≈ voxel count: ≈ 1.50 G, 453 M and 412 M voxels, i.e. at 6 nm
+≈ 323, 98 and 89 µm³ — cubes of roughly 6.9, 4.6 and 4.5 µm on a side. Nothing in this directory has yet
+been measured on them; the presets are calibrated to the paper's published numbers.
+
+`scripts/inspect_real_stacks.py` closes that gap. It reads the TIFFs page by page (memory-safe for
+1.5 GB), and writes per stack: metadata (shape, dtype, ImageJ tags, byte/voxel check), per-slice drift,
+shot-noise fit (variance vs mean in flat windows → Poisson scale and read noise), PSF from edge spread,
+charging/illumination field (amplitude, correlation length, slice-to-slice correlation), curtaining
+(column-mean spectrum), shine-through anisotropy and directional decay (beam direction + attenuation
+length), structure through the paper-like operator (porosity, PSD, lognormal μ/σ), the real-vs-real
+C2ST floor between disjoint z-blocks, native 512² crops at three depths, and overview figures —
+under 10 MB per stack, so the results can be shared back through Drive or chat. Every number maps to a
+`SEMParams` field or a `FERNER_2024` target (see `docs/FINDINGS_AND_TRANSFER.md` §5.2).
+
+```bash
+# Google Colab: mount Drive, then (repeat per stack)
+pip install tifffile scikit-image scipy scikit-learn matplotlib
+python scripts/inspect_real_stacks.py --tif "/content/drive/MyDrive/.../comp_full.tif" --out /content/drive/MyDrive/inspection
+```
+
+## 9. What to do next (ranked)
 
 1. **Alignment test on the old Blender renders** (1 h) — decides whether every historical IoU was noise.
 2. Pull 3–5 **native-resolution real slices** per region: re-run `calibrate_appearance` and replace the
@@ -151,7 +175,7 @@ numbers, **not** yet to the raw stacks in the Drive.
    the input masks at > 0.95 IoU on translated images.
 5. Tortuosity module (porespy/taufactor) so predictions are scored on the physics the mentor cares about.
 
-## 9. Reproducing
+## 10. Reproducing
 
 ```bash
 pip install -r requirements.txt
