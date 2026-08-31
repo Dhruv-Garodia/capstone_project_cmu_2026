@@ -8,7 +8,9 @@ ground-truth masks by construction — plus an honest, measurable definition of 
 Everything here was produced in an iterative loop: generate → render → measure the gap → diagnose →
 fix → repeat. All numbers below are reproducible from the code in this directory.
 
-Full documents: [`docs/REEVALUATION.md`](docs/REEVALUATION.md) (project re-evaluation and plan),
+Full documents: [`docs/FINDINGS_AND_TRANSFER.md`](docs/FINDINGS_AND_TRANSFER.md) (**every finding, choice, caveat, and the playbook for transferring this to the real pFIB-SEM stacks**),
+[`docs/LAYER_BY_LAYER.md`](docs/LAYER_BY_LAYER.md) (mesh ground truth and per-layer ground-truth vs microscope views),
+[`docs/REEVALUATION.md`](docs/REEVALUATION.md) (project re-evaluation and plan),
 [`docs/EVIDENCE_AUDIT.md`](docs/EVIDENCE_AUDIT.md) (what is grounded vs assumed — no made-up facts),
 [`docs/APPEARANCE_ML.md`](docs/APPEARANCE_ML.md) (the appearance-gap methodology and the ML route).
 
@@ -121,7 +123,7 @@ harmonisation (blurs), JPEG-pipeline matching (no effect — verified with a rea
 [`docs/LAYER_BY_LAYER.md`](docs/LAYER_BY_LAYER.md) shows, for the felt, the fibre mat and two
 catalyst presets: the ground-truth geometry as 3-D meshes, and at six depths per family a
 side-by-side of **clean structure render | exact mask | material map | calibrated SEM simulation**.
-Two takeaways visible at a glance: labels and images are pixel-aligned by construction, and for the
+It also proves, with a per-pixel depth map, that every simulated layer contains the 3-D structure *behind* the plane (shine-through), and adds two-column ground-truth vs EM-view sheets. Two takeaways visible at a glance: labels and images are pixel-aligned by construction, and for the
 ~94 %-porous felt the mask is sparse while the image is full of shine-through — the visual proof that
 per-slice 2-D segmentation is nearly ill-posed and 2.5-D/3-D context is required.
 

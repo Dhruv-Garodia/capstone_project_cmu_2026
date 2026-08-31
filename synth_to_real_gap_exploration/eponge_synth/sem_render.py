@@ -197,6 +197,37 @@ class SEMSimulator:
         S[ys, xs] = acc + p.pore_floor * wgt          # rays that never (fully) stopped see the pore floor
         return S
 
+    def depth_map(self, z0: int) -> np.ndarray:
+        """For every pixel of the cut plane: depth (nm below the plane) of the structure producing its
+        signal. 0 = solid on the cut plane itself; pore pixels = first-hit depth along the beam;
+        -1 = ray escaped (no solid within max_depth). Proof that the image at each layer contains the
+        3-D structure BEHIND the plane, exactly like a pFIB-SEM scan."""
+        p, mat, vox = self.p, self.material, self.voxel_nm
+        Z, Y, X = mat.shape
+        solid0 = mat[z0] > 0
+        D = np.where(solid0, 0.0, -1.0).astype(np.float32)
+        a = np.deg2rad(p.tilt_deg)
+        dz, dy = np.sin(a), p.beam_sign * np.cos(a)
+        ys, xs = np.nonzero(~solid0)
+        active = np.ones(len(ys), bool)
+        T = int(p.max_depth_nm / vox)
+        for t in range(1, T + 1):
+            zi = z0 + int(round(t * dz))
+            if zi >= Z:
+                break
+            yi = np.round(ys + t * dy).astype(int)
+            valid = active & (yi >= 0) & (yi < Y)
+            vidx = np.flatnonzero(valid)
+            if len(vidx) == 0:
+                break
+            hit = mat[zi, yi[vidx], xs[vidx]] > 0
+            h = vidx[hit]
+            D[ys[h], xs[h]] = t * vox
+            active[h] = False
+            if not active.any():
+                break
+        return D
+
     def image(self, z0: int, drift: bool = True) -> Tuple[np.ndarray, np.ndarray]:
         """(uint8 image, bool mask) for cut plane z0.  The mask is exactly material[z0] > 0."""
         p = self.p

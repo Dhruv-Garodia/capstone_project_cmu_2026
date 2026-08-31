@@ -25,7 +25,32 @@ workflow still applies).
 Left: the sedimented crumpled-sheet felt (layered pile, deep gaps). Middle: the fibre mat (nonwoven,
 in-plane). Right: the mud-crack catalyst layer (agglomerate domains with meandering cracks).
 
-## 2. How to read the layer sheets
+## 1b. Does each layer really see what is behind it? Yes — here is the proof
+
+The simulator marches a ray from every pore pixel of the cut plane into the 3-D volume along the beam
+direction (52° for the FIB cut, straight down for a plan view) and records the first solid it hits,
+attenuated with depth; thin flakes let part of the beam continue (transmission). The middle panels
+below colour every pixel by the depth of the structure that produces its signal.
+
+![shine-through proof](../gallery/20_shine_through_depth_proof.png)
+
+Numbers for the felt at z = 2 µm: **10 % of pixels are solid on the plane, 82 % show structure from
+below** (median 1.25 µm deeper), 8 % see nothing. For the catalyst layer the shine-through is displaced
+along +y by the 52° geometry — the "52° streak" the paper removes. The ground-truth mask is never
+altered by any of this; only the image is (see `FINDINGS_AND_TRANSFER.md` §1 on signal vs nuisance).
+
+## 1c. Ground truth vs electron-microscope view, side by side
+
+Two columns only — the label on the left, the simulated micrograph of the *same* plane on the right —
+at eight depths for the felt, six for the others. The red number is the fraction of the plane that is
+solid.
+
+![felt GT vs EM](../gallery/17_gt_vs_em_sheet_felt.png)
+![fiber GT vs EM](../gallery/18_gt_vs_em_fiber_felt.png)
+![mudcrack GT vs EM](../gallery/19_gt_vs_em_catalyst_mudcrack.png)
+![faceted GT vs EM](../gallery/19b_gt_vs_em_catalyst_faceted.png)
+
+## 2. How to read the four-column layer sheets
 
 Each row is one cut plane at depth *z* (everything above *z* has been milled away, exactly like
 FIB serial sectioning). Columns:
