@@ -1,0 +1,51 @@
+{
+  "stack": "data/pristine_full.tif",
+  "slices": [
+    0,
+    665
+  ],
+  "texture_threshold": 14.687936782836914,
+  "calibration": {
+    "otsu": 137.15585327148438,
+    "low": 115.29484558105469,
+    "high": 157.02947998046875
+  },
+  "destripe": true,
+  "normalize": true,
+  "reference_slice": 301,
+  "streak_shift_px_per_slice": 0.0,
+  "streak_blocks": 8282,
+  "gradient_threshold": 27.37803554534912,
+  "roi_fraction": {
+    "mean": 0.4521419879157908,
+    "std": 0.06317411953692689
+  },
+  "porosity_otsu": {
+    "mean": 0.3952652981988097,
+    "std": 0.007151404684304817
+  },
+  "porosity_ferner_style": {
+    "mean": 0.6594693725609762,
+    "std": 0.006382538051618587
+  },
+  "confident_pore": {
+    "mean": 0.39522432235795246,
+    "std": 0.007145084264339846
+  },
+  "confident_solid": {
+    "mean": 0.3404896515981666,
+    "std": 0.006378679777834731
+  },
+  "uncertain": {
+    "mean": 0.26428602604388096,
+    "std": 0.009193315634489881
+  },
+  "mean_intensity_roi_raw": {
+    "mean": 145.06848462014784,
+    "std": 11.506495270914389
+  },
+  "mean_intensity_roi_norm": {
+    "mean": 143.33297431200072,
+    "std": 0.4017383125259522
+  }
+}

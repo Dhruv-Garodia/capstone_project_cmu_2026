@@ -1,0 +1,38 @@
+{
+  "porosity_otsu": {
+    "mean": 0.44916449179544604,
+    "std": 0.011415590241994246,
+    "slope_per_100_slices": 0.0061771081884919084
+  },
+  "porosity_ferner_style": {
+    "mean": 0.6560929074946688,
+    "std": 0.007867068770591474,
+    "slope_per_100_slices": 0.004001934585338026
+  },
+  "confident_pore": {
+    "mean": 0.4487526502637589,
+    "std": 0.011874411851983345,
+    "slope_per_100_slices": 0.006523492456604299
+  },
+  "isotropy_otsu": {
+    "porosity_3d": 0.5271430015563965,
+    "xz_anisotropy": 0.2044926623562827,
+    "corr_len_x": 14.31053702478922,
+    "corr_len_z": 10.936574664559611,
+    "corr_len_y": 10.879005199705555
+  },
+  "isotropy_ferner_style": {
+    "porosity_3d": 0.7319719791412354,
+    "xz_anisotropy": 0.16974218683759898,
+    "corr_len_x": 15.761814104422122,
+    "corr_len_z": 12.774603612960666,
+    "corr_len_y": 12.462971419265383
+  },
+  "isotropy_consensus": {
+    "porosity_3d": 0.6630518436431885,
+    "xz_anisotropy": 0.2137847057385835,
+    "corr_len_x": 21.82020213176687,
+    "corr_len_z": 16.857266599346957,
+    "corr_len_y": 16.03705372005347
+  }
+}

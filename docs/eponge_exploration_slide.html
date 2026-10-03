@@ -1,0 +1,117 @@
+<title>Éponge Exploration Brief</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f3f5f7; --paper:#ffffff; --ink:#1b2430; --ink-2:#4a5566; --rule:#d5dbe3;
+    --accent:#1f4e79; --accent-soft:#e3ecf5; --pore:#b0392b; --pore-soft:#f6e4e1; --ok:#2e6b4f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141a21; --paper:#1c242e; --ink:#e8edf3; --ink-2:#aab5c3; --rule:#33404f;
+      --accent:#8fb8de; --accent-soft:#233245; --pore:#e08072; --pore-soft:#3a2622; --ok:#7cc2a0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141a21; --paper:#1c242e; --ink:#e8edf3; --ink-2:#aab5c3; --rule:#33404f;
+    --accent:#8fb8de; --accent-soft:#233245; --pore:#e08072; --pore-soft:#3a2622; --ok:#7cc2a0;
+  }
+  body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;
+       padding:24px 16px;font-size:14px;line-height:1.4}
+  .slide{max-width:1280px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);
+         padding:36px 40px;display:grid;gap:22px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+         border-bottom:2px solid var(--accent);padding-bottom:14px}
+  .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:30px;line-height:1.15;margin:4px 0 0;text-wrap:balance}
+  .meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);text-align:right}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+  h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin:0 0 8px;
+     font-weight:600;display:flex;align-items:center;gap:8px}
+  h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+  ul{margin:0;padding-left:16px;display:grid;gap:6px}
+  li{max-width:58ch}
+  li b{font-weight:600;color:var(--ink)}
+  .num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+  .pore{color:var(--pore);font-weight:600}
+  .verdict{background:var(--accent-soft);border-left:4px solid var(--accent);padding:12px 16px;
+           font-family:"Source Serif 4",Georgia,serif;font-size:16px;line-height:1.35;text-wrap:balance}
+  .bottom{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;align-items:start}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--rule)}
+  th:first-child,td:first-child{text-align:left}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+  td{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+  td:first-child{font-family:"IBM Plex Sans",system-ui,sans-serif}
+  .low{color:var(--pore)}
+  caption{caption-side:bottom;text-align:left;font-size:11px;color:var(--ink-2);padding-top:6px}
+  .tbl{overflow-x:auto}
+  .next ol{margin:0;padding-left:18px;display:grid;gap:5px}
+  footer{font-size:11px;color:var(--ink-2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+         border-top:1px solid var(--rule);padding-top:10px}
+  @media (max-width:820px){.cols,.bottom{grid-template-columns:1fr}.slide{padding:24px 18px}h1{font-size:24px}}
+</style>
+
+<div class="slide">
+  <header>
+    <div>
+      <div class="eyebrow">Éponge · MCDS capstone · pFIB-SEM porous electrodes</div>
+      <h1>What we audited, what the field knows, where we go next</h1>
+    </div>
+    <div class="meta">Sep 7–17, 2026<br>Dhruv Garodia · for mentor review</div>
+  </header>
+
+  <div class="cols">
+    <section>
+      <h2>What we audited</h2>
+      <ul>
+        <li><b>Seniors' pipeline:</b> the "4% vs 10%" claim compares synthetic MAE with real parameter bounds; no classical baseline was ever run; synthetic pores are 2–4× coarser than real; Blender render and mask are not pixel-aligned; the reconstruction JSON reports <span class="num">0.000</span> porosity error for every method.</li>
+        <li><b>Planning report:</b> promises an SE(3)-equivariant 3D U-Net while scoping a slice-wise model; drifted to fuel-cell cathodes although the data is PEMWE anode.</li>
+        <li><b>Real data:</b> three stacks on disk (comp 354, uncomp 410, pristine 665 slices) matching Ferner's three regions. Zero-knob Otsu lands within ~3 points of Ferner's hand-tuned value.</li>
+        <li><b>ChatGPT pseudo-masks:</b> aligned, but a conservative threshold: half of Ferner's porosity, wrong region ordering, Pt cap labelled as catalyst in one stack.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Literature, ≈30 sources</h2>
+      <ul>
+        <li><b>Consensus since 2012</b> (Salzer, Prill, Moroni–Thiele, Osenberg 2023): segment from intensity evolution across neighbouring slices. Osenberg: milling-evolution features <span class="num">6.1%</span> error vs threshold <span class="num">60.8%</span>.</li>
+        <li><b>The seniors' idea was tried in 2021</b> by Fraunhofer ITWM; their 2024 retrospective calls the synthetic data "too clean" and the gap unsolved.</li>
+        <li><b>What worked</b> (Sardhara 2022): physics-simulated shine-through, a 2D U-Net fed 3–9 adjacent slices (beat 3D nets on real data), label-free validation via xy-vs-z anisotropy.</li>
+        <li><b>Industry</b> segments with painted labels (Dragonfly, Avizo, ilastik) or fills pores physically. No public IrO₂ CL benchmark, no open pipeline with uncertainty bars.</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="verdict">
+    The gap is not a better architecture. It is validation: no one has shown a label-free method finds the cut face on unfilled IrO₂, and no one publishes the porosity with an error bar. That is the contribution we can own.
+  </div>
+
+  <div class="bottom">
+    <div class="tbl">
+      <table>
+        <caption>Porosity of the same three stacks. ChatGPT masks fall well below the published values; a one-line threshold does not.</caption>
+        <thead><tr><th>Region</th><th>Ferner 2024</th><th>ChatGPT masks</th><th>Otsu, same ROI</th></tr></thead>
+        <tbody>
+          <tr><td>PTL-fiber-compressed</td><td>0.417</td><td class="low">0.22</td><td>0.39</td></tr>
+          <tr><td>PTL-pore-area (uncomp)</td><td>0.558</td><td class="low">0.28</td><td>0.54</td></tr>
+          <tr><td>Pristine</td><td>0.515</td><td class="low">0.20</td><td>0.35</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <section class="next">
+      <h2>Proposed direction · Éponge v2</h2>
+      <ol>
+        <li>Deterministic preprocessing: layer detection, de-curtaining, normalization. No user knobs.</li>
+        <li>Classical baselines built in (Otsu, Ferner-style) with a pore / solid / <span class="pore">uncertain</span> consensus.</li>
+        <li>Sparse hand labels on random patches with ±3-slice context, two annotators, agreement reported.</li>
+        <li>2.5D z-aware U-Net trained on depth-shaded synthetic data plus confident labels; sub-surface ablation.</li>
+        <li>Ensemble uncertainty → porosity and tortuosity as median with 10–90 band. Cut: equivariant nets, mesh-method comparison.</li>
+      </ol>
+    </section>
+  </div>
+
+  <footer>
+    <span>Sources: Ferner 2024 IJHE · Salzer 2015 J. Microsc. · Osenberg 2023 J. Power Sources · Fend 2021 / Schladitz 2024 · Sardhara 2022 Front. Mater. · Röding 2021 · Norris 2024 (Sandia)</span>
+    <span>Full review: literature_review_and_proposal.md</span>
+  </footer>
+</div>

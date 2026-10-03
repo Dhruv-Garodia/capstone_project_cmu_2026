@@ -169,3 +169,11 @@ last_epoch.pth
 ...
 
 ```
+
+## pore_pipeline (Oct 2026)
+
+Knob-free classical segmentation of the real pFIB-SEM stacks, label-free evaluation, and a
+2.5D U-Net trained on the resulting labels. See `pore_pipeline/README.md`; literature review and
+proposal in `docs/`; text-only results in `results/`; Colab-over-SSH setup and the experiment grid
+in `pore_pipeline/colab/`. Raw TIFFs, masks, caches and model weights are git-ignored and live in
+`MyDrive/Eponge/`.

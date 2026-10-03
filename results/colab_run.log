@@ -1,0 +1,128 @@
+torch 2.11.0+cu130 cuda True NVIDIA A100-SXM4-40GB
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.3930  val IoU 0.5307  acc 0.5325  porosity pred 0.992 / label 0.533  [36s]
+step   500  loss 0.2676  val IoU 0.8499  acc 0.9064  porosity pred 0.620 / label 0.533  [67s]
+step   750  loss 0.2306  val IoU 0.9344  acc 0.9637  porosity pred 0.536 / label 0.533  [98s]
+step  1000  loss 0.2076  val IoU 0.9208  acc 0.9561  porosity pred 0.532 / label 0.533  [129s]
+step  1250  loss 0.1881  val IoU 0.6588  acc 0.7243  porosity pred 0.807 / label 0.533  [160s]
+step  1500  loss 0.1752  val IoU 0.9455  acc 0.9698  porosity pred 0.545 / label 0.533  [193s]
+step  1750  loss 0.1634  val IoU 0.9209  acc 0.9545  porosity pred 0.571 / label 0.533  [224s]
+step  2000  loss 0.1543  val IoU 0.9461  acc 0.9701  porosity pred 0.546 / label 0.533  [255s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.4263  val IoU 0.7829  acc 0.8526  porosity pred 0.678 / label 0.533  [32s]
+step   500  loss 0.2684  val IoU 0.9281  acc 0.9599  porosity pred 0.543 / label 0.533  [63s]
+step   750  loss 0.2314  val IoU 0.8658  acc 0.9282  porosity pred 0.465 / label 0.533  [94s]
+step  1000  loss 0.2144  val IoU 0.9090  acc 0.9469  porosity pred 0.580 / label 0.533  [125s]
+step  1250  loss 0.1911  val IoU 0.9406  acc 0.9678  porosity pred 0.517 / label 0.533  [156s]
+step  1500  loss 0.1777  val IoU 0.9386  acc 0.9656  porosity pred 0.555 / label 0.533  [187s]
+step  1750  loss 0.1643  val IoU 0.9490  acc 0.9720  porosity pred 0.538 / label 0.533  [217s]
+step  2000  loss 0.1594  val IoU 0.9476  acc 0.9711  porosity pred 0.540 / label 0.533  [248s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.4137  val IoU 0.8554  acc 0.9101  porosity pred 0.620 / label 0.533  [32s]
+step   500  loss 0.2666  val IoU 0.8854  acc 0.9335  porosity pred 0.561 / label 0.533  [63s]
+step   750  loss 0.2409  val IoU 0.8153  acc 0.8795  porosity pred 0.652 / label 0.533  [94s]
+step  1000  loss 0.2059  val IoU 0.9225  acc 0.9565  porosity pred 0.546 / label 0.533  [125s]
+step  1250  loss 0.1945  val IoU 0.9412  acc 0.9675  porosity pred 0.539 / label 0.533  [156s]
+step  1500  loss 0.1752  val IoU 0.9249  acc 0.9572  porosity pred 0.563 / label 0.533  [187s]
+step  1750  loss 0.1630  val IoU 0.9501  acc 0.9726  porosity pred 0.537 / label 0.533  [218s]
+step  2000  loss 0.1551  val IoU 0.9459  acc 0.9701  porosity pred 0.543 / label 0.533  [249s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.4259  val IoU 0.6439  acc 0.8101  porosity pred 0.344 / label 0.533  [21s]
+step   500  loss 0.3020  val IoU 0.8259  acc 0.8881  porosity pred 0.641 / label 0.533  [42s]
+step   750  loss 0.2711  val IoU 0.9239  acc 0.9586  porosity pred 0.514 / label 0.533  [63s]
+step  1000  loss 0.2555  val IoU 0.8482  acc 0.9052  porosity pred 0.622 / label 0.533  [84s]
+step  1250  loss 0.2434  val IoU 0.8491  acc 0.9059  porosity pred 0.620 / label 0.533  [104s]
+step  1500  loss 0.2371  val IoU 0.9296  acc 0.9609  porosity pred 0.540 / label 0.533  [125s]
+step  1750  loss 0.2267  val IoU 0.9042  acc 0.9442  porosity pred 0.575 / label 0.533  [146s]
+step  2000  loss 0.2202  val IoU 0.9235  acc 0.9567  porosity pred 0.556 / label 0.533  [166s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.3943  val IoU 0.6630  acc 0.7291  porosity pred 0.803 / label 0.533  [21s]
+step   500  loss 0.2950  val IoU 0.9184  acc 0.9551  porosity pred 0.523 / label 0.533  [42s]
+step   750  loss 0.2691  val IoU 0.9214  acc 0.9559  porosity pred 0.545 / label 0.533  [63s]
+step  1000  loss 0.2611  val IoU 0.9270  acc 0.9600  porosity pred 0.522 / label 0.533  [84s]
+step  1250  loss 0.2449  val IoU 0.9291  acc 0.9608  porosity pred 0.532 / label 0.533  [104s]
+step  1500  loss 0.2369  val IoU 0.9096  acc 0.9477  porosity pred 0.572 / label 0.533  [125s]
+step  1750  loss 0.2276  val IoU 0.9294  acc 0.9606  porosity pred 0.544 / label 0.533  [146s]
+step  2000  loss 0.2239  val IoU 0.9258  acc 0.9584  porosity pred 0.548 / label 0.533  [167s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.4184  val IoU 0.7819  acc 0.8836  porosity pred 0.418 / label 0.533  [21s]
+step   500  loss 0.2925  val IoU 0.7487  acc 0.8214  porosity pred 0.710 / label 0.533  [42s]
+step   750  loss 0.2708  val IoU 0.7567  acc 0.8289  porosity pred 0.702 / label 0.533  [62s]
+step  1000  loss 0.2523  val IoU 0.9249  acc 0.9587  porosity pred 0.525 / label 0.533  [83s]
+step  1250  loss 0.2448  val IoU 0.9106  acc 0.9487  porosity pred 0.564 / label 0.533  [104s]
+step  1500  loss 0.2337  val IoU 0.8979  acc 0.9402  porosity pred 0.578 / label 0.533  [124s]
+step  1750  loss 0.2270  val IoU 0.9329  acc 0.9629  porosity pred 0.537 / label 0.533  [145s]
+step  2000  loss 0.2215  val IoU 0.9254  acc 0.9580  porosity pred 0.551 / label 0.533  [165s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.4419  val IoU 0.3483  acc 0.3755  porosity pred 0.957 / label 0.334  [33s]
+step   500  loss 0.2476  val IoU 0.9238  acc 0.9734  porosity pred 0.338 / label 0.334  [64s]
+step   750  loss 0.1934  val IoU 0.8379  acc 0.9358  porosity pred 0.394 / label 0.334  [95s]
+step  1000  loss 0.1696  val IoU 0.9102  acc 0.9678  porosity pred 0.350 / label 0.334  [127s]
+step  1250  loss 0.1522  val IoU 0.8411  acc 0.9371  porosity pred 0.394 / label 0.334  [158s]
+step  1500  loss 0.1398  val IoU 0.9593  acc 0.9862  porosity pred 0.331 / label 0.334  [189s]
+step  1750  loss 0.1277  val IoU 0.9061  acc 0.9656  porosity pred 0.364 / label 0.334  [220s]
+step  2000  loss 0.1185  val IoU 0.9475  acc 0.9818  porosity pred 0.342 / label 0.334  [252s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.3913  val IoU 0.7334  acc 0.8790  porosity pred 0.452 / label 0.334  [32s]
+step   500  loss 0.2353  val IoU 0.8035  acc 0.9183  porosity pred 0.415 / label 0.334  [63s]
+step   750  loss 0.2062  val IoU 0.9368  acc 0.9786  porosity pred 0.322 / label 0.334  [94s]
+step  1000  loss 0.1754  val IoU 0.9075  acc 0.9664  porosity pred 0.358 / label 0.334  [125s]
+step  1250  loss 0.1540  val IoU 0.9448  acc 0.9810  porosity pred 0.334 / label 0.334  [156s]
+step  1500  loss 0.1414  val IoU 0.9424  acc 0.9806  porosity pred 0.321 / label 0.334  [187s]
+step  1750  loss 0.1284  val IoU 0.9543  acc 0.9844  porosity pred 0.331 / label 0.334  [218s]
+step  2000  loss 0.1218  val IoU 0.9492  acc 0.9825  porosity pred 0.335 / label 0.334  [249s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=3
+step   250  loss 0.4290  val IoU 0.8347  acc 0.9339  porosity pred 0.399 / label 0.334  [32s]
+step   500  loss 0.2442  val IoU 0.8693  acc 0.9561  porosity pred 0.293 / label 0.334  [63s]
+step   750  loss 0.2062  val IoU 0.9388  acc 0.9792  porosity pred 0.323 / label 0.334  [94s]
+step  1000  loss 0.1751  val IoU 0.9126  acc 0.9682  porosity pred 0.360 / label 0.334  [125s]
+step  1250  loss 0.1618  val IoU 0.9409  acc 0.9799  porosity pred 0.327 / label 0.334  [156s]
+step  1500  loss 0.1434  val IoU 0.9008  acc 0.9635  porosity pred 0.365 / label 0.334  [187s]
+step  1750  loss 0.1298  val IoU 0.9562  acc 0.9850  porosity pred 0.335 / label 0.334  [217s]
+step  2000  loss 0.1222  val IoU 0.9476  acc 0.9819  porosity pred 0.340 / label 0.334  [249s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.3856  val IoU 0.8967  acc 0.9649  porosity pred 0.310 / label 0.334  [21s]
+step   500  loss 0.2290  val IoU 0.8781  acc 0.9592  porosity pred 0.295 / label 0.334  [42s]
+step   750  loss 0.1853  val IoU 0.9059  acc 0.9656  porosity pred 0.362 / label 0.334  [63s]
+step  1000  loss 0.1639  val IoU 0.9348  acc 0.9779  porosity pred 0.321 / label 0.334  [84s]
+step  1250  loss 0.1460  val IoU 0.9149  acc 0.9693  porosity pred 0.356 / label 0.334  [104s]
+step  1500  loss 0.1351  val IoU 0.9384  acc 0.9782  porosity pred 0.353 / label 0.334  [125s]
+step  1750  loss 0.1237  val IoU 0.9201  acc 0.9711  porosity pred 0.360 / label 0.334  [146s]
+step  2000  loss 0.1142  val IoU 0.9469  acc 0.9814  porosity pred 0.347 / label 0.334  [166s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.3843  val IoU 0.9130  acc 0.9699  porosity pred 0.329 / label 0.334  [21s]
+step   500  loss 0.2274  val IoU 0.7476  acc 0.8875  porosity pred 0.445 / label 0.334  [42s]
+step   750  loss 0.1890  val IoU 0.9472  acc 0.9821  porosity pred 0.326 / label 0.334  [63s]
+step  1000  loss 0.1713  val IoU 0.8988  acc 0.9661  porosity pred 0.302 / label 0.334  [83s]
+step  1250  loss 0.1522  val IoU 0.9288  acc 0.9761  porosity pred 0.312 / label 0.334  [104s]
+step  1500  loss 0.1395  val IoU 0.9564  acc 0.9851  porosity pred 0.334 / label 0.334  [125s]
+step  1750  loss 0.1267  val IoU 0.9567  acc 0.9851  porosity pred 0.340 / label 0.334  [146s]
+step  2000  loss 0.1198  val IoU 0.9496  acc 0.9825  porosity pred 0.343 / label 0.334  [166s]
+device cuda | train 91 slices, val 18 slices, z-gap 10 | k=0
+step   250  loss 0.3798  val IoU 0.9116  acc 0.9701  porosity pred 0.312 / label 0.334  [21s]
+step   500  loss 0.2185  val IoU 0.6798  acc 0.8426  porosity pred 0.491 / label 0.334  [42s]
+step   750  loss 0.1888  val IoU 0.8229  acc 0.9283  porosity pred 0.404 / label 0.334  [63s]
+step  1000  loss 0.1626  val IoU 0.9214  acc 0.9736  porosity pred 0.311 / label 0.334  [83s]
+step  1250  loss 0.1545  val IoU 0.9343  acc 0.9779  porosity pred 0.316 / label 0.334  [104s]
+step  1500  loss 0.1357  val IoU 0.8697  acc 0.9502  porosity pred 0.380 / label 0.334  [125s]
+step  1750  loss 0.1241  val IoU 0.9608  acc 0.9867  porosity pred 0.333 / label 0.334  [146s]
+step  2000  loss 0.1174  val IoU 0.9476  acc 0.9817  porosity pred 0.346 / label 0.334  [167s]
+354 slices -> outputs/comp/pred_unet_high_k3_s0/masks  porosity mean 0.571 sd 0.012
+410 slices -> outputs/uncomp/pred_unet_high_k3_s0/masks  porosity mean 0.668 sd 0.009
+665 slices -> outputs/pristine/pred_unet_high_k3_s0/masks  porosity mean 0.771 sd 0.027
+354 slices -> outputs/comp/pred_unet_low_k3_s0/masks  porosity mean 0.348 sd 0.009
+410 slices -> outputs/uncomp/pred_unet_low_k3_s0/masks  porosity mean 0.456 sd 0.010
+665 slices -> outputs/pristine/pred_unet_low_k3_s0/masks  porosity mean 0.522 sd 0.037
+otsu {'porosity_3d': 0.345, 'xz_anisotropy': 0.205, 'corr_len_x': 9.301, 'corr_len_z': 6.62, 'corr_len_y': 5.502, 'slices': [128, 353]}
+ferner_style {'porosity_3d': 0.554, 'xz_anisotropy': 0.177, 'corr_len_x': 10.803, 'corr_len_z': 8.33, 'corr_len_y': 6.436, 'slices': [128, 353]}
+unet_high {'porosity_3d': 0.572, 'xz_anisotropy': 0.169, 'corr_len_x': 10.566, 'corr_len_z': 8.229, 'corr_len_y': 6.326, 'slices': [128, 353]}
+unet_low {'porosity_3d': 0.347, 'xz_anisotropy': 0.202, 'corr_len_x': 9.365, 'corr_len_z': 6.718, 'corr_len_y': 5.527, 'slices': [128, 353]}
+otsu {'porosity_3d': 0.527, 'xz_anisotropy': 0.204, 'corr_len_x': 14.311, 'corr_len_z': 10.937, 'corr_len_y': 10.879, 'slices': [0, 409]}
+ferner_style {'porosity_3d': 0.732, 'xz_anisotropy': 0.17, 'corr_len_x': 15.762, 'corr_len_z': 12.775, 'corr_len_y': 12.463, 'slices': [0, 409]}
+unet_high {'porosity_3d': 0.72, 'xz_anisotropy': 0.182, 'corr_len_x': 13.116, 'corr_len_z': 10.259, 'corr_len_y': 10.061, 'slices': [0, 409]}
+unet_low {'porosity_3d': 0.513, 'xz_anisotropy': 0.214, 'corr_len_x': 13.255, 'corr_len_z': 9.886, 'corr_len_y': 9.885, 'slices': [0, 409]}
+otsu {'porosity_3d': 0.365, 'xz_anisotropy': 0.242, 'corr_len_x': 10.028, 'corr_len_z': 12.742, 'corr_len_y': 6.908, 'slices': [0, 664]}
+ferner_style {'porosity_3d': 0.625, 'xz_anisotropy': 0.181, 'corr_len_x': 10.801, 'corr_len_z': 12.829, 'corr_len_y': 7.476, 'slices': [0, 664]}
+unet_high {'porosity_3d': 0.747, 'xz_anisotropy': 0.189, 'corr_len_x': 8.764, 'corr_len_z': 10.707, 'corr_len_y': 6.417, 'slices': [0, 664]}
+unet_low {'porosity_3d': 0.49, 'xz_anisotropy': 0.222, 'corr_len_x': 9.144, 'corr_len_z': 11.359, 'corr_len_y': 6.32, 'slices': [0, 664]}
+ALL DONE

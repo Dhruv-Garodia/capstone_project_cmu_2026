@@ -1,0 +1,51 @@
+{
+  "stack": "data/comp_full.tif",
+  "slices": [
+    0,
+    354
+  ],
+  "texture_threshold": 17.71828269958496,
+  "calibration": {
+    "otsu": 172.1290740966797,
+    "low": 140.51358032226562,
+    "high": 195.12216186523438
+  },
+  "destripe": true,
+  "normalize": true,
+  "reference_slice": 320,
+  "streak_shift_px_per_slice": 1.0,
+  "streak_blocks": 4052,
+  "gradient_threshold": 23.714434146881104,
+  "roi_fraction": {
+    "mean": 0.4568767085839257,
+    "std": 0.01220422346611828
+  },
+  "porosity_otsu": {
+    "mean": 0.3536907520408732,
+    "std": 0.008800459191129378
+  },
+  "porosity_ferner_style": {
+    "mean": 0.5631033580910193,
+    "std": 0.007776766650051916
+  },
+  "confident_pore": {
+    "mean": 0.3526947459931467,
+    "std": 0.009475270059385648
+  },
+  "confident_solid": {
+    "mean": 0.43590063586125427,
+    "std": 0.008087674540772395
+  },
+  "uncertain": {
+    "mean": 0.2114046181455989,
+    "std": 0.007113089826886259
+  },
+  "mean_intensity_roi_raw": {
+    "mean": 188.29706320680125,
+    "std": 4.038635974220471
+  },
+  "mean_intensity_roi_norm": {
+    "mean": 184.58512938763462,
+    "std": 1.2584925302627161
+  }
+}

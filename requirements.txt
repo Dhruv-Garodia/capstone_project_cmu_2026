@@ -113,3 +113,11 @@ wslink
 yarl
 zipp
 zstandard==0.24.0
+
+# pore_pipeline (classical pipeline, label-free evaluation, 2.5D U-Net)
+PyWavelets
+tifffile
+scikit-image
+scipy
+matplotlib
+torch

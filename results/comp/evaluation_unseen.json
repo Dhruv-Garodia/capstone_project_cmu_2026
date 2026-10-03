@@ -1,0 +1,46 @@
+{
+  "isotropy_otsu": {
+    "porosity_3d": 0.34477707743644714,
+    "xz_anisotropy": 0.2051842848339016,
+    "corr_len_x": 9.30051830739971,
+    "corr_len_z": 6.620262865725879,
+    "corr_len_y": 5.502441048631086,
+    "slices": [
+      128,
+      353
+    ]
+  },
+  "isotropy_ferner_style": {
+    "porosity_3d": 0.5535197257995605,
+    "xz_anisotropy": 0.17663131003691226,
+    "corr_len_x": 10.803298278895753,
+    "corr_len_z": 8.329546404918485,
+    "corr_len_y": 6.435817070031999,
+    "slices": [
+      128,
+      353
+    ]
+  },
+  "isotropy_unet_high": {
+    "porosity_3d": 0.5721060633659363,
+    "xz_anisotropy": 0.1691070983511241,
+    "corr_len_x": 10.565785451397462,
+    "corr_len_z": 8.229211379098803,
+    "corr_len_y": 6.325776567176867,
+    "slices": [
+      128,
+      353
+    ]
+  },
+  "isotropy_unet_low": {
+    "porosity_3d": 0.3474029302597046,
+    "xz_anisotropy": 0.20224783222247203,
+    "corr_len_x": 9.365384630123327,
+    "corr_len_z": 6.71790417697062,
+    "corr_len_y": 5.527415807615374,
+    "slices": [
+      128,
+      353
+    ]
+  }
+}

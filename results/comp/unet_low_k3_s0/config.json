@@ -1,0 +1,17 @@
+{
+  "tif": "data/comp_full.tif",
+  "run": "outputs/comp",
+  "labels": "outputs/comp/manual_borders/low",
+  "train_z": "0-90",
+  "val_z": "100-117",
+  "out": "outputs/comp/unet_low_k3_s0",
+  "k": 3,
+  "base": 32,
+  "depth": 4,
+  "patch": 256,
+  "batch": 16,
+  "iters": 2000,
+  "lr": 0.001,
+  "val_every": 250,
+  "seed": 0
+}
