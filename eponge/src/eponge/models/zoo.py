@@ -11,6 +11,7 @@ padded to a multiple of it at inference (``inference.predict_probs`` does this).
                    encoder pretrained on ImageNet-21k, cascaded upsampler (CUP) with skips.
 ``segformer``      SegFormer (Xie et al. 2021) with a MiT-B2 encoder (ImageNet), all-MLP decoder.
 ``unetpp_r34``     UNet++ (Zhou et al. 2018) with an ImageNet ResNet-34 encoder.
+``millnet``        MillNet (this project): physics-informed 2.5D network for serial sections; see the class.
 =================  ==========================================================================
 """
 
@@ -166,7 +167,7 @@ def _smp(kind: str, in_channels: int, num_classes: int, pretrained: bool):
 
 
 # ------------------------------------------------------------------------------- factory
-ARCHS = ("resunet", "unet_garodia", "transunet", "segformer", "unetpp_r34")
+ARCHS = ("resunet", "unet_garodia", "transunet", "segformer", "unetpp_r34", "millnet")
 
 
 def build_model(config: dict) -> nn.Module:
@@ -186,7 +187,131 @@ def build_model(config: dict) -> nn.Module:
         m = TransUNet(cin, nc, pretrained=pretrained, **cfg)
     elif arch in ("segformer", "unetpp_r34"):
         m = _smp(arch, cin, nc, pretrained)
+    elif arch == "millnet":
+        m = MillNet(cin, nc, **cfg)
     else:
         raise ValueError(f"unknown arch {arch!r}; choose from {ARCHS}")
     m.config = {"arch": arch, "in_channels": cin, "num_classes": nc, **cfg}
     return m
+
+
+# ------------------------------------------------------------------------------- MillNet
+class _AxialAttention(nn.Module):
+    """Row attention then column attention (Ho et al. 2019 / Wang et al. 2020): global context
+    along the catalyst layer (x) and through it (y) at O(HW(H+W)) cost."""
+
+    def __init__(self, ch: int, heads: int = 4):
+        super().__init__()
+        self.row = nn.MultiheadAttention(ch, heads, batch_first=True)
+        self.col = nn.MultiheadAttention(ch, heads, batch_first=True)
+        self.n1, self.n2 = nn.LayerNorm(ch), nn.LayerNorm(ch)
+
+    def forward(self, x):
+        b, c, h, w = x.shape
+        t = x.permute(0, 2, 3, 1).reshape(b * h, w, c).contiguous()
+        q = self.n1(t)
+        t = t + self.row(q, q, q, need_weights=False)[0]
+        t = t.reshape(b, h, w, c).permute(0, 2, 1, 3).reshape(b * w, h, c).contiguous()
+        q = self.n2(t)
+        t = t + self.col(q, q, q, need_weights=False)[0]
+        return t.reshape(b, w, h, c).permute(0, 3, 2, 1).contiguous()
+
+
+def _shift_y(img: torch.Tensor, s: int) -> torch.Tensor:
+    """Shift (B, H, W) by s rows (positive = down), replicating the edge row."""
+    if s == 0:
+        return img
+    if s > 0:
+        return torch.cat([img[:, :1].expand(-1, s, -1), img[:, :-s]], 1)
+    return torch.cat([img[:, -s:], img[:, -1:].expand(-1, -s, -1)], 1)
+
+
+class MillNet(nn.Module):
+    """Physics-informed 2.5D segmentation network for FIB-SEM serial sections.
+
+    1. Streak-hypothesis bank: neighbour slice z+d is shifted by s*d rows for s in ``streaks``
+       (default -1, 0, +1 px/slice), the ways sub-surface material can slide behind a stationary cut face.
+       Hypothesis s compensates material that moves by -s rows per slice (s = -1: sliding down).
+    2. Milling-evolution channels per hypothesis: forward difference (future - now), backward
+       difference (now - past) and future maximum - now (Salzer's last-occurrence idea).
+    3. Global histogram conditioning: FiLM from ``n_quant`` quantiles of the whole frame, so a
+       crop knows its frame's grey-level distribution (the labels use a per-frame threshold).
+    4. Axial attention at the bottleneck for long-range context along and through the layer.
+    5. Factorised head: P(outside) and P(pore | inside), composed into exact 3-class log-probabilities.
+    """
+
+    needs_stats = True
+
+    def __init__(self, in_channels: int = 7, num_classes: int = 3, base: int = 24, depth: int = 5,
+                 max_ch: int = 128, dropout: float = 0.1, streaks=(-1, 0, 1), n_quant: int = 16,
+                 use_bank: bool = True, use_stats: bool = True, use_axial: bool = True):
+        super().__init__()
+        assert num_classes == 3
+        self.k = (in_channels - 1) // 2
+        self.streaks = tuple(streaks) if (use_bank and self.k > 0) else (0,)
+        self.use_stats, self.use_axial, self.n_quant = use_stats, use_axial, n_quant
+        per = (2 * self.k + 3) if self.k > 0 else 0
+        cin = 1 + per * len(self.streaks)
+        self.depth, self.multiple = depth, 2 ** depth
+        chs = [min(base * 2 ** i, max_ch) for i in range(depth + 1)]
+        from .unet import ResBlock
+        self.stem = ResBlock(cin, chs[0])
+        self.down = nn.ModuleList([ResBlock(chs[i], chs[i + 1]) for i in range(depth)])
+        self.up = nn.ModuleList([ResBlock(chs[i + 1] + chs[i], chs[i], dropout=dropout if i >= 1 else 0.0)
+                                 for i in reversed(range(depth))])
+        self.axial = _AxialAttention(chs[-1]) if use_axial else nn.Identity()
+        if use_stats:
+            self.film = nn.Sequential(nn.Linear(n_quant, 64), nn.GELU(), nn.Linear(64, 2 * (chs[0] + chs[-1])))
+            nn.init.zeros_(self.film[-1].weight); nn.init.zeros_(self.film[-1].bias)
+        self.chs = chs
+        self.head_roi = nn.Conv2d(chs[0], 1, 1)
+        self.head_pore = nn.Conv2d(chs[0], 1, 1)
+
+    def features_in(self, x):
+        k = self.k
+        c = x[:, k]
+        feats = [c[:, None]]
+        if k == 0:
+            return torch.cat(feats, 1)
+        for s in self.streaks:
+            past = [_shift_y(x[:, k - d], -s * d) for d in range(1, k + 1)]
+            fut = [_shift_y(x[:, k + d], s * d) for d in range(1, k + 1)]
+            fwd = fut[0] - c
+            bwd = c - past[0]
+            fmax = torch.stack(fut, 1).amax(1) - c
+            feats += [torch.stack(past + fut, 1), fwd[:, None], bwd[:, None], fmax[:, None]]
+        return torch.cat(feats, 1)
+
+    def forward(self, x, stats=None):
+        h = self.stem(self.features_in(x))
+        if self.use_stats:
+            if stats is None:
+                stats = frame_quantiles(x[:, self.k], self.n_quant)
+            g = self.film(stats)
+            c0, cl = self.chs[0], self.chs[-1]
+            g0, b0, gl, bl = torch.split(g, [c0, c0, cl, cl], 1)
+            h = h * (1 + g0[:, :, None, None]) + b0[:, :, None, None]
+        skips = [h]
+        for blk in self.down:
+            skips.append(blk(F.max_pool2d(skips[-1], 2)))
+        y = skips.pop()
+        y = self.axial(y)
+        if self.use_stats:
+            y = y * (1 + gl[:, :, None, None]) + bl[:, :, None, None]
+        for blk in self.up:
+            s = skips.pop()
+            y = F.interpolate(y, size=s.shape[-2:], mode="bilinear", align_corners=False)
+            y = blk(torch.cat([y, s], 1))
+        r, u = self.head_roi(y), self.head_pore(y)
+        log_in = F.logsigmoid(-r)
+        # class order (solid, pore, outside); exact log-probabilities, so softmax() returns them unchanged
+        return torch.cat([log_in + F.logsigmoid(-u), log_in + F.logsigmoid(u), F.logsigmoid(r)], 1)
+
+
+def frame_quantiles(frames: torch.Tensor, n: int = 16) -> torch.Tensor:
+    """(B, H, W) normalised frames -> (B, n) quantiles of each whole frame (subsampled for speed)."""
+    flat = frames.flatten(1)
+    if flat.shape[1] > 65536:
+        flat = flat[:, :: flat.shape[1] // 65536]
+    qs = torch.linspace(0.02, 0.98, n, device=frames.device, dtype=frames.dtype)
+    return torch.quantile(flat.float().cpu(), qs.float().cpu(), dim=1).T.to(frames.device, frames.dtype)

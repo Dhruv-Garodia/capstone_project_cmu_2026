@@ -57,6 +57,15 @@ needs about 59 %), while in 3D most pore volume does. The website therefore repo
 tortuosity and the largest pore cluster for single images, and pore-phase tortuosity and
 percolation only for stacks.
 
+## 6. What makes a better network here is frame-level context, not size
+
+Five standard architectures from 2.4 M to 105 M parameters tie within 0.02 mIoU. MillNet, which adds
+whole-frame grey-level conditioning and axial attention to a 2.5 M-parameter U-Net, gains +0.02 mIoU
+and +0.04 pore IoU over all of them. Ablations show either mechanism alone gives the full gain: the
+network needs to know where a grey value sits within *this frame's* distribution, which a 256 px crop
+cannot tell it. Slice-context ideas (streak alignment, milling-evolution differences) gave no gain on
+slice-wise labels. Details in [MILLNET.md](MILLNET.md).
+
 ## Limits that remain
 
 * All labels are rule-based. Model scores measure agreement with a rule, so the physical checks

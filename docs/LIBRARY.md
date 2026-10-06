@@ -10,8 +10,9 @@ cd eponge
 pip install -e ".[export,viz3d,dev]"   # Python 3.10+; PyTorch is installed as a dependency
 ```
 
-The trained model ships in `eponge/src/eponge/weights/eponge_unet2d.pt`. Without it, train one
-(see [MODELS.md](MODELS.md)) or copy a `runs/*/best.pt` there.
+The library uses MillNet ([MILLNET.md](MILLNET.md)): `weights/eponge_millnet2d.pt` for single images and
+`weights/eponge_millnet25d_k3.pt` (7 slices) for stacks. Checkpoints are not in git; train them
+(`bash runs/run_millnet.sh`) or copy `runs/millnet_k0/best.pt` and `runs/millnet_k3_nobank/best.pt` there.
 
 ## Analyse an image or a stack
 
@@ -67,7 +68,7 @@ eponge audit-annotations --stack comp_full.tif --masks data/manual_annotation   
 eponge fix-annotations   --stack comp_full.tif --masks data/manual_annotation --out annotations_v2
 eponge train             --stack comp_full.tif --labels annotations_v2 --arch transunet --out runs/x
 eponge export-onnx       runs/x/best.pt model.onnx
-eponge export-web        runs/x/best.pt ../webapp/model       # browser weights (ResUNet only)
+eponge export-web        runs/x/best.pt ../webapp/model       # browser weights (MillNet 2D or ResUNet)
 ```
 
 Scripts in `eponge/scripts/`: `compare_models.py` (comparison table), `make_demo_mesh.py`

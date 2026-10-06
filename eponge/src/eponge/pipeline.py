@@ -25,7 +25,7 @@ WEIGHTS = Path(__file__).parent / "weights"
 
 
 def default_model(kind: str = "2d", device: str | None = None):
-    name = {"2d": "eponge_unet2d.pt", "2.5d": "eponge_unet25d_k3.pt"}[kind]
+    name = {"2d": "eponge_millnet2d.pt", "2.5d": "eponge_millnet25d_k3.pt"}[kind]   # see docs/MILLNET.md
     path = WEIGHTS / name
     if not path.exists():
         raise FileNotFoundError(f"{path} missing - train a model (eponge train) or copy runs/*/best.pt here")

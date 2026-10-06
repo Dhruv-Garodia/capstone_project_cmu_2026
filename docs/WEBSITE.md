@@ -26,7 +26,7 @@ Typical time for one 1860 × 630 frame on a laptop GPU: 3–8 s.
 |---|---|
 | `index.html` | the page body (styles, markup, scripts); `build_static.py` wraps it into a full HTML document |
 | `build_static.py` | wraps the page into a full document and assembles `dist/` for any static host |
-| `model/manifest.json`, `model/weights.bin` | ResUNet weights (BatchNorm folded, float16, 4.8 MB) from `eponge export-web` |
+| `model/manifest.json`, `model/weights.bin` | MillNet 2D weights (BatchNorm folded, float16, 5.1 MB) from `eponge export-web` |
 | `model/results.json` | model-card table, written by `eponge/scripts/compare_models.py` |
 | `samples/` | sample frames and the 3D mesh (`pore_mesh.bin/json`, plus `pore_mesh.glb` for Blender/ParaView) |
 
@@ -56,4 +56,5 @@ eponge export-web runs/<run>/best.pt webapp/model
 python eponge/scripts/make_demo_mesh.py --ckpt runs/<run>/best.pt
 python webapp/build_static.py
 ```
-Only the ResUNet architecture is implemented in the page; the larger zoo models run in the Python library.
+The page implements MillNet 2D (histogram FiLM, axial attention, factorised head) and the ResUNet in
+TensorFlow.js; its output matches PyTorch to 5e-4 in probability. The larger zoo models run in the Python library.

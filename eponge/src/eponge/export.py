@@ -44,15 +44,40 @@ def export_web_weights(ckpt_path: str | Path, out_dir: str | Path) -> dict:
         if isinstance(blk.skip, torch.nn.Conv2d):
             add(prefix + ".skip", blk.skip, None)
 
+    def add_raw(name, t):  # dense tensors (linear, attention, layer norm), stored as-is
+        a = t.detach().float().numpy()
+        layers.append({"name": name, "shape": list(a.shape), "raw": True})
+        tensors.append(a.ravel())
+
     block("stem", model.stem)
     for i, b in enumerate(model.down):
         block(f"down{i}", b)
     for i, b in enumerate(model.up):
         block(f"up{i}", b)
-    add("head", model.head, None)
+    arch = model.config.get("arch", "resunet")
+    if arch == "millnet":
+        if model.config.get("in_channels", 1) != 1:
+            raise ValueError("the browser runs single images: export the 2D MillNet (k=0)")
+        add("head_roi", model.head_roi, None)
+        add("head_pore", model.head_pore, None)
+        if model.use_stats:
+            add_raw("film.0.weight", model.film[0].weight); add_raw("film.0.bias", model.film[0].bias)
+            add_raw("film.2.weight", model.film[2].weight); add_raw("film.2.bias", model.film[2].bias)
+        if model.use_axial:
+            ax = model.axial
+            for nm, att, ln in (("row", ax.row, ax.n1), ("col", ax.col, ax.n2)):
+                add_raw(f"{nm}.in_w", att.in_proj_weight); add_raw(f"{nm}.in_b", att.in_proj_bias)
+                add_raw(f"{nm}.out_w", att.out_proj.weight); add_raw(f"{nm}.out_b", att.out_proj.bias)
+                add_raw(f"{nm}.ln_w", ln.weight); add_raw(f"{nm}.ln_b", ln.bias)
+    else:
+        add("head", model.head, None)
     flat = np.concatenate(tensors).astype(np.float16)
     (out_dir / "weights.bin").write_bytes(flat.tobytes())
-    manifest = {"config": model.config, "k": ckpt.get("k", 0), "layers": layers, "dtype": "float16",
+    extra = {}
+    if arch == "millnet":
+        extra = {"chs": model.chs, "use_stats": model.use_stats, "use_axial": model.use_axial,
+                 "n_quant": model.n_quant, "heads": model.axial.row.num_heads if model.use_axial else 0}
+    manifest = {"config": model.config, "k": ckpt.get("k", 0), "layers": layers, "dtype": "float16", **extra,
                 "classes": ["solid", "pore", "outside_roi"], "normalization": "percentile 1-99 -> [0,1]",
                 "train_pixel_nm": 6.0, "val_metrics": {k: v for k, v in ckpt.get("val", {}).items()
                                                        if isinstance(v, float)}}
@@ -63,6 +88,9 @@ def export_web_weights(ckpt_path: str | Path, out_dir: str | Path) -> dict:
     with torch.no_grad():
         y = torch.softmax(model(x), 1)
     np.save(out_dir / "_ref_input.npy", x.numpy()); np.save(out_dir / "_ref_probs.npy", y.numpy())
+    if getattr(model, "needs_stats", False) and model.use_stats:
+        from .models.zoo import frame_quantiles
+        np.save(out_dir / "_ref_stats.npy", frame_quantiles(x[:, 0], model.n_quant).numpy())
     return {"bytes": int(flat.nbytes), "n_layers": len(layers)}
 
 

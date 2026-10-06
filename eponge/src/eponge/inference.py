@@ -20,12 +20,19 @@ def _device(device: str | None) -> str:
     return "cpu"
 
 
-def _forward_padded(model, x: torch.Tensor) -> torch.Tensor:
+def _forward_padded(model, x: torch.Tensor, stats=None) -> torch.Tensor:
     m = getattr(model, "multiple", 32)
     h, w = x.shape[-2:]
     ph, pw = (-h) % m, (-w) % m
     xp = F.pad(x, (0, pw, 0, ph), mode="reflect") if (ph or pw) else x
-    return model(xp)[..., :h, :w]
+    y = model(xp, stats) if stats is not None else model(xp)
+    return y[..., :h, :w]
+
+
+def frame_stats(channels: np.ndarray, n_quant: int = 16) -> np.ndarray:
+    """Whole-frame quantiles of the centre slice, the global context MillNet is conditioned on."""
+    c = channels[len(channels) // 2]
+    return np.quantile(c[::4, ::4], np.linspace(0.02, 0.98, n_quant)).astype(np.float32)[None]
 
 
 def predict_probs(model, channels: np.ndarray, device: str | None = None, tta: bool = True,
@@ -34,6 +41,8 @@ def predict_probs(model, channels: np.ndarray, device: str | None = None, tta: b
     device = _device(device)
     model = model.to(device)
     tile = getattr(model, "infer_tile", tile)
+    st = (torch.from_numpy(frame_stats(channels, getattr(model, "n_quant", 16))).to(device)
+          if getattr(model, "needs_stats", False) else None)
     overlap = min(overlap, tile // 4)
     x = torch.from_numpy(channels.astype(np.float32))[None].to(device)
     _, _, H, W = x.shape
@@ -51,9 +60,9 @@ def predict_probs(model, channels: np.ndarray, device: str | None = None, tta: b
         for y in ys:
             for x0 in xs:
                 patch = x[..., y:y + tile, x0:x0 + tile]
-                p = F.softmax(_forward_padded(model, patch), 1)
+                p = F.softmax(_forward_padded(model, patch, st), 1)
                 if tta:
-                    p = p + F.softmax(_forward_padded(model, patch.flip(-1)), 1).flip(-1)
+                    p = p + F.softmax(_forward_padded(model, patch.flip(-1), st), 1).flip(-1)
                     p = p / 2
                 ph, pw = p.shape[-2:]
                 out[:, y:y + ph, x0:x0 + pw] += p[0]

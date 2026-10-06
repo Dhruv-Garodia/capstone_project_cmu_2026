@@ -1,7 +1,18 @@
 | model | params | mIoU | pore IoU | layer IoU | pore F1 ±1px | porosity error | z-consistency | pore IoU vs Garodia trimap | in Garodia bracket |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| ResUNet (Éponge, 2D, batch 16) · on the website | 2.4 M | 0.912 | 0.845 | 0.975 | 0.977 | 0.016 | 0.867 | 0.770 | 100 % |
+| MillNet (2.5D) without streak bank | 2.5 M | 0.936 | 0.887 | 0.978 | 0.992 | 0.004 | 0.868 | 0.778 | 100 % |
+| MillNet (2.5D, 7 slices) | 2.6 M | 0.934 | 0.885 | 0.978 | 0.991 | 0.004 | 0.868 | 0.778 | 100 % |
+| MillNet (2D) · on the website | 2.5 M | 0.934 | 0.884 | 0.977 | 0.992 | 0.011 | 0.869 | 0.781 | 100 % |
+| MillNet (2D), head + FiLM, no attention | 2.4 M | 0.931 | 0.879 | 0.977 | 0.988 | 0.011 | 0.865 | 0.777 | 100 % |
+| MillNet (2D), baseline augmentation | 2.5 M | 0.931 | 0.878 | 0.977 | 0.988 | 0.013 | 0.866 | 0.781 | 100 % |
+| MillNet (2.5D, 7 slices, seed 1) | 2.6 M | 0.931 | 0.878 | 0.976 | 0.987 | 0.007 | 0.867 | 0.770 | 100 % |
+| MillNet (2.5D) without histogram FiLM | 2.5 M | 0.930 | 0.876 | 0.976 | 0.989 | 0.005 | 0.869 | 0.778 | 100 % |
+| ResUNet (Éponge, 2D, seed 1) | 2.4 M | 0.915 | 0.848 | 0.974 | 0.980 | 0.004 | 0.866 | 0.774 | 100 % |
+| ResUNet (2D), MillNet augmentation | 2.4 M | 0.914 | 0.848 | 0.974 | 0.980 | 0.015 | 0.870 | 0.775 | 100 % |
+| Garodia U-Net (2.5D, seed 1) | 7.9 M | 0.913 | 0.846 | 0.974 | 0.981 | 0.005 | 0.867 | 0.778 | 100 % |
+| ResUNet (Éponge, 2D, batch 16) | 2.4 M | 0.912 | 0.845 | 0.975 | 0.977 | 0.016 | 0.867 | 0.770 | 100 % |
 | Garodia U-Net (2.5D, 7 slices) | 7.9 M | 0.912 | 0.844 | 0.972 | 0.980 | 0.005 | 0.872 | 0.771 | 100 % |
+| MillNet (2D), factorised head only | 2.4 M | 0.911 | 0.843 | 0.973 | 0.978 | 0.017 | 0.869 | 0.779 | 100 % |
 | ResUNet (Éponge, 2D) | 2.4 M | 0.911 | 0.842 | 0.974 | 0.978 | 0.005 | 0.864 | 0.773 | 100 % |
 | Garodia U-Net (2D) | 7.8 M | 0.904 | 0.831 | 0.972 | 0.974 | 0.011 | 0.869 | 0.774 | 100 % |
 | UNet++ ResNet-34 (2D, ImageNet) | 26.1 M | 0.903 | 0.828 | 0.973 | 0.980 | 0.010 | 0.870 | 0.776 | 100 % |

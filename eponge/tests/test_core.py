@@ -85,3 +85,34 @@ def test_analyze_runs():
     r = M.analyze(cls, pixel_nm=6.0)
     assert 0 < r["porosity"] < 1
     assert r["depth_profile"]["thickness_nm_mean"] == pytest.approx(40 * 6.0)
+
+
+def test_millnet_shift_and_probabilities():
+    import torch
+    from eponge.models.zoo import MillNet, _shift_y
+    img = torch.arange(12.0).reshape(1, 4, 3)
+    assert torch.equal(_shift_y(img, 1)[0, 1], img[0, 0]) and torch.equal(_shift_y(img, 1)[0, 0], img[0, 0])
+    assert torch.equal(_shift_y(img, -1)[0, 0], img[0, 1]) and torch.equal(_shift_y(img, -1)[0, 3], img[0, 3])
+    m = MillNet(7, base=8, depth=3, max_ch=32).eval()
+    x = torch.rand(2, 7, 64, 96)
+    q = torch.sort(torch.rand(2, 16), 1).values
+    out = m(x, q)
+    assert out.shape == (2, 3, 64, 96)
+    assert torch.allclose(out.exp().sum(1), torch.ones(2, 64, 96), atol=1e-5)  # exact log-probabilities
+    assert torch.allclose(m(x), m(x, None))  # stats computed from the frame when not given
+
+
+def test_millnet_streak_bank_aligns_sliding_material():
+    """A feature sliding 1 px/slice down is static in the s = -1 hypothesis channels (s compensates -s px/slice)."""
+    import torch
+    from eponge.models.zoo import MillNet
+    m = MillNet(7, base=8, depth=3, max_ch=32, use_stats=False, use_axial=False)
+    x = torch.zeros(1, 7, 32, 8)
+    for i, z in enumerate(range(-3, 4)):
+        x[0, i, 10 + z] = 1.0          # bright row moving down one row per slice
+    f = m.features_in(x)
+    per = 2 * m.k + 3
+    for s_idx, s in enumerate(m.streaks):
+        aligned = f[0, 1 + s_idx * per: 1 + s_idx * per + 2 * m.k]
+        static = all(torch.equal(a, x[0, 3]) for a in aligned)
+        assert static == (s == -1)

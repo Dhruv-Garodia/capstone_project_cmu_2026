@@ -14,17 +14,22 @@ Held-out test frames 100–117 of `comp_full.tif` (never used for training or mo
 
 | model | params | mIoU | pore IoU | layer IoU | porosity error |
 |---|---:|---:|---:|---:|---:|
-| **Éponge ResUNet** (website model) | 2.4 M | **0.912** | **0.845** | **0.975** | 0.016 |
-| Garodia U-Net, 2.5D (library default for stacks) | 7.9 M | **0.912** | 0.844 | 0.972 | 0.005 |
+| **MillNet 2D** (ours; website model) | 2.5 M | **0.934** | **0.884** | 0.977 | 0.011 |
+| **MillNet 2.5D** (ours; library default for stacks) | 2.5 M | **0.936** | **0.887** | **0.978** | **0.004** |
+| Éponge ResUNet | 2.4 M | 0.911 | 0.842 | 0.974 | 0.005 |
+| Garodia U-Net, 2.5D | 7.9 M | 0.912 | 0.844 | 0.972 | 0.005 |
 | UNet++ ResNet-34, ImageNet | 26.1 M | 0.903 | 0.828 | 0.973 | 0.010 |
-| TransUNet R50-ViT-B/16, ImageNet-21k | 105.3 M | 0.902 | 0.826 | 0.975 | **0.004** |
+| TransUNet R50-ViT-B/16, ImageNet-21k | 105.3 M | 0.902 | 0.826 | 0.975 | 0.004 |
 | SegFormer-B2, ImageNet | 24.7 M | 0.894 | 0.812 | 0.975 | 0.007 |
 | Same ResUNet trained on the original labels | 2.4 M | 0.706 | 0.435 | 0.951 | 0.182 |
 
+* **MillNet, our own architecture, is the best model**: +0.02 mIoU and +0.04 pore IoU over everything
+  else, robust across seeds. Its advantage is frame-level context (whole-frame histogram conditioning,
+  axial attention). Design reasoning and ablations: [docs/MILLNET.md](docs/MILLNET.md).
 * **Correcting the labels mattered most.** The original napari masks were a raw grey threshold that
   changed between annotation sessions; they gave porosity 0.18. Corrected labels give 0.354, inside an
   independent classical pipeline's bracket (0.32–0.51) on every test frame.
-* **Architectures are tied** within 0.02 mIoU; larger pretrained models (incl. TransUNet) did not help.
+* Standard architectures tie within 0.02 mIoU; larger pretrained models (incl. TransUNet) did not help.
 * comp_full catalyst layer: porosity ≈ 0.37–0.40, median pore diameter 60–72 nm, through-plane pore
   tortuosity τ ≈ 3.3 (3D), > 95 % of pore volume connected across the layer.
 
@@ -40,7 +45,7 @@ pip install -e "eponge[export,viz3d,dev]"
 #   data/manual_annotation/*.png    the napari masks
 
 eponge fix-annotations --stack data/raw/comp_full.tif --masks data/manual_annotation --out data/annotations_v2
-eponge train   --stack data/raw/comp_full.tif --labels data/annotations_v2 --out runs/resunet_k0 --arch resunet
+eponge train   --stack data/raw/comp_full.tif --labels data/annotations_v2 --out runs/millnet_k0 --arch millnet
 eponge analyze data/raw/comp_full.tif --out results/        # or any PNG / TIFF slice or stack
 ```
 
@@ -50,6 +55,7 @@ eponge analyze data/raw/comp_full.tif --out results/        # or any PNG / TIFF 
 |---|---|
 | [docs/FINDINGS.md](docs/FINDINGS.md) | the five things we learned about the data, labels and earlier pipelines |
 | [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md) | how the napari masks were audited and corrected |
+| [docs/MILLNET.md](docs/MILLNET.md) | our MillNet architecture: design reasoning, results, ablations |
 | [docs/MODELS.md](docs/MODELS.md) | architectures, training protocol, full comparison |
 | [docs/LIBRARY.md](docs/LIBRARY.md) | Python API, CLI, metrics, the three visualisations |
 | [docs/WEBSITE.md](docs/WEBSITE.md) | using, running and deploying the website |

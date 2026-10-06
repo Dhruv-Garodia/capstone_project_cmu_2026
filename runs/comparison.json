@@ -57,6 +57,267 @@
       "porosity_inside_bracket": 1.0
     }
   },
+  "garodia_unet_k3_s1": {
+    "params_M": 7.850819,
+    "arch": "unet_garodia",
+    "k": 3,
+    "best_iter": 3500,
+    "v2": {
+      "mean_iou": 0.9134709695676984,
+      "pore_iou": 0.8460211090445529,
+      "solid_iou": 0.9236866072938084,
+      "outside_roi_iou": 0.9707051923647336,
+      "roi_iou": 0.9737695077073755,
+      "pore_f1_tol1": 0.9806212461993358,
+      "porosity_mae": 0.005220132707182295,
+      "pred_porosity_mean": 0.36729149937741734,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.867492022729734
+    },
+    "v1": {
+      "mean_iou": 0.6813070814185526,
+      "pore_iou": 0.3944783497777345,
+      "roi_iou": 0.9395462948711226,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.777626954437228,
+      "accuracy_confident": 0.9087519738180735,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k0": {
+    "params_M": 2.54485,
+    "arch": "millnet",
+    "k": 0,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9335454385093457,
+      "pore_iou": 0.8835565899094756,
+      "solid_iou": 0.9423063628637816,
+      "outside_roi_iou": 0.9747733627547799,
+      "roi_iou": 0.9773897449258642,
+      "pore_f1_tol1": 0.9918345874423525,
+      "porosity_mae": 0.011386441282398376,
+      "pred_porosity_mean": 0.3770766425963384,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.86887665079467
+    },
+    "v1": {
+      "mean_iou": 0.6710497387614209,
+      "pore_iou": 0.37985754113809767,
+      "roi_iou": 0.936536243598332,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.780682827557845,
+      "accuracy_confident": 0.9097679563710979,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k0_headonly": {
+    "params_M": 2.391394,
+    "arch": "millnet",
+    "k": 0,
+    "best_iter": 3500,
+    "v2": {
+      "mean_iou": 0.9113481874371279,
+      "pore_iou": 0.8432670807948534,
+      "solid_iou": 0.9206410952710471,
+      "outside_roi_iou": 0.9701363862454834,
+      "roi_iou": 0.9732215117632066,
+      "pore_f1_tol1": 0.9782462593524381,
+      "porosity_mae": 0.01650466317972269,
+      "pred_porosity_mean": 0.38219486449366274,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8686915226733282
+    },
+    "v1": {
+      "mean_iou": 0.670207590651812,
+      "pore_iou": 0.3799693812255809,
+      "roi_iou": 0.9385317065030216,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7792629209530471,
+      "accuracy_confident": 0.9085072347059548,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k0_noaxial": {
+    "params_M": 2.412242,
+    "arch": "millnet",
+    "k": 0,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9312108889134306,
+      "pore_iou": 0.8788245797027516,
+      "solid_iou": 0.9398577037012236,
+      "outside_roi_iou": 0.9749503833363165,
+      "roi_iou": 0.9774494054891822,
+      "pore_f1_tol1": 0.9877077995779407,
+      "porosity_mae": 0.011326464251884783,
+      "pred_porosity_mean": 0.3770166655658248,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.865285833689815
+    },
+    "v1": {
+      "mean_iou": 0.6682472035215007,
+      "pore_iou": 0.37626124924784604,
+      "roi_iou": 0.9341504228205568,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7771925376180142,
+      "accuracy_confident": 0.908134337126694,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k0_wide": {
+    "params_M": 2.54485,
+    "arch": "millnet",
+    "k": 0,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9307760296449711,
+      "pore_iou": 0.8781453350690765,
+      "solid_iou": 0.9397724879310165,
+      "outside_roi_iou": 0.9744102659348199,
+      "roi_iou": 0.9770017314531312,
+      "pore_f1_tol1": 0.9883838832437503,
+      "porosity_mae": 0.01327225795075785,
+      "pred_porosity_mean": 0.3789624592646979,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8659627223955475
+    },
+    "v1": {
+      "mean_iou": 0.6694039483080774,
+      "pore_iou": 0.37874131690486496,
+      "roi_iou": 0.9358982945585397,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7806662760841439,
+      "accuracy_confident": 0.9093639935462239,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k3": {
+    "params_M": 2.55133,
+    "arch": "millnet",
+    "k": 3,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9342526162198322,
+      "pore_iou": 0.8845315602473532,
+      "solid_iou": 0.9430751540891904,
+      "outside_roi_iou": 0.975151134322953,
+      "roi_iou": 0.9776748459654832,
+      "pore_f1_tol1": 0.9906497673505699,
+      "porosity_mae": 0.004106371755287235,
+      "pred_porosity_mean": 0.3687915979075413,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8680578748012241
+    },
+    "v1": {
+      "mean_iou": 0.676059170288959,
+      "pore_iou": 0.38812413951612357,
+      "roi_iou": 0.9354985966543388,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7784077344927423,
+      "accuracy_confident": 0.9092381277171343,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k3_nobank": {
+    "params_M": 2.54701,
+    "arch": "millnet",
+    "k": 3,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9357043740880249,
+      "pore_iou": 0.8866869731457128,
+      "solid_iou": 0.9450203186617843,
+      "outside_roi_iou": 0.9754058304565774,
+      "roi_iou": 0.9779413797348582,
+      "pore_f1_tol1": 0.9919178741012595,
+      "porosity_mae": 0.0035333283430098016,
+      "pred_porosity_mean": 0.3659298829866452,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8680428013347079
+    },
+    "v1": {
+      "mean_iou": 0.6787548688565321,
+      "pore_iou": 0.3908374982373875,
+      "roi_iou": 0.9363359927784197,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7784032332214572,
+      "accuracy_confident": 0.9095487801732661,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k3_nostats": {
+    "params_M": 2.530482,
+    "arch": "millnet",
+    "k": 3,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9298789597302936,
+      "pore_iou": 0.8758773309487589,
+      "solid_iou": 0.9406420685892016,
+      "outside_roi_iou": 0.9731174796529205,
+      "roi_iou": 0.9758569269893799,
+      "pore_f1_tol1": 0.9886473300090073,
+      "porosity_mae": 0.005441497632664706,
+      "pred_porosity_mean": 0.367351436211909,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8693814611177026
+    },
+    "v1": {
+      "mean_iou": 0.6768044338002892,
+      "pore_iou": 0.3886200459132943,
+      "roi_iou": 0.9353591624332193,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7777042127855084,
+      "accuracy_confident": 0.9092072917353264,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "millnet_k3_s1": {
+    "params_M": 2.55133,
+    "arch": "millnet",
+    "k": 3,
+    "best_iter": 4000,
+    "v2": {
+      "mean_iou": 0.9306259720120845,
+      "pore_iou": 0.8779961434010222,
+      "solid_iou": 0.9409123986253001,
+      "outside_roi_iou": 0.9729693740099314,
+      "roi_iou": 0.9756620032596294,
+      "pore_f1_tol1": 0.986777008085915,
+      "porosity_mae": 0.007245924169719207,
+      "pred_porosity_mean": 0.3729361254836593,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8668021507636319
+    },
+    "v1": {
+      "mean_iou": 0.6692664402708818,
+      "pore_iou": 0.37708139773064053,
+      "roi_iou": 0.9325952942148605,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7695984572977553,
+      "accuracy_confident": 0.905304763242134,
+      "porosity_inside_bracket": 1.0
+    }
+  },
   "resunet_k0": {
     "params_M": 2.391419,
     "arch": "resunet",
@@ -83,6 +344,64 @@
     "garodia": {
       "pore_iou_confident": 0.7725479018494367,
       "accuracy_confident": 0.9068773983143379,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "resunet_k0_narrowscale": {
+    "params_M": 2.391419,
+    "arch": "resunet",
+    "k": 0,
+    "best_iter": 3500,
+    "v2": {
+      "mean_iou": 0.9141387166016842,
+      "pore_iou": 0.8483532061780162,
+      "solid_iou": 0.9231370860689556,
+      "outside_roi_iou": 0.9709258575580807,
+      "roi_iou": 0.9738738829113253,
+      "pore_f1_tol1": 0.979524529802741,
+      "porosity_mae": 0.014883448611980654,
+      "pred_porosity_mean": 0.3805736499259207,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8695541962285463
+    },
+    "v1": {
+      "mean_iou": 0.6697330751337884,
+      "pore_iou": 0.3793725457182594,
+      "roi_iou": 0.936871887167145,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7747664040874678,
+      "accuracy_confident": 0.9068274188047905,
+      "porosity_inside_bracket": 1.0
+    }
+  },
+  "resunet_k0_s1": {
+    "params_M": 2.391419,
+    "arch": "resunet",
+    "k": 0,
+    "best_iter": 3500,
+    "v2": {
+      "mean_iou": 0.9146404557452814,
+      "pore_iou": 0.8476705418583002,
+      "solid_iou": 0.9253809946961409,
+      "outside_roi_iou": 0.9708698306814031,
+      "roi_iou": 0.973803591273115,
+      "pore_f1_tol1": 0.9797759354237903,
+      "porosity_mae": 0.00420388550491016,
+      "pred_porosity_mean": 0.3653957718432784,
+      "gt_porosity_mean": 0.36569020131394003,
+      "z_consistency_pore_dice": 0.8655393358959494
+    },
+    "v1": {
+      "mean_iou": 0.6794572780647502,
+      "pore_iou": 0.39279376752859824,
+      "roi_iou": 0.9362285575643632,
+      "gt_porosity_mean": 0.17441990841294122
+    },
+    "garodia": {
+      "pore_iou_confident": 0.7742832770730037,
+      "accuracy_confident": 0.9077892950997728,
       "porosity_inside_bracket": 1.0
     }
   },

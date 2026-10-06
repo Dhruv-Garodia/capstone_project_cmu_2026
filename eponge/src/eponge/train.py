@@ -28,7 +28,7 @@ from .inference import _device, segment_stack
 from .io import export_to_classes, load_masks, load_stack, save_mask
 from .models import ARCHS, build_model, count_parameters
 
-DEFAULT_LR = {"resunet": 2e-3, "unet_garodia": 1e-3, "unetpp_r34": 5e-4, "segformer": 2e-4, "transunet": 1e-4}
+DEFAULT_LR = {"millnet": 2e-3, "resunet": 2e-3, "unet_garodia": 1e-3, "unetpp_r34": 5e-4, "segformer": 2e-4, "transunet": 1e-4}
 
 
 def parse_frames(s: str) -> list[int]:
@@ -56,6 +56,11 @@ def main(argv=None):
     ap.add_argument("--out", required=True)
     ap.add_argument("--arch", default="resunet", choices=ARCHS)
     ap.add_argument("--k", type=int, default=0, help="adjacent slices each side (0 = 2D)")
+    ap.add_argument("--no-bank", action="store_true", help="MillNet ablation: plain neighbour channels, no streak bank")
+    ap.add_argument("--no-stats", action="store_true", help="MillNet ablation: no global histogram conditioning")
+    ap.add_argument("--no-axial", action="store_true", help="MillNet ablation: no axial attention")
+    ap.add_argument("--scale-range", type=float, nargs=2, default=None,
+                    help="random rescale range for crops (default 0.6 1.6; 0.8 1.25 for millnet)")
     ap.add_argument("--train", default="0-74")
     ap.add_argument("--val", default="79-90")
     ap.add_argument("--test", default="100-117")
@@ -83,11 +88,18 @@ def main(argv=None):
     lr = args.lr or DEFAULT_LR[args.arch]
     tr, va, te = parse_frames(args.train), parse_frames(args.val), parse_frames(args.test)
 
-    ds = CropDataset(stack, masks, tr, k=args.k, crop=args.crop, n_samples=args.iters * args.bs, seed=args.seed)
+    use_stats = args.arch == "millnet" and not args.no_stats
+    # MillNet's streak bank assumes ~1 px/slice; keep scale augmentation narrow so the slide rate stays near it
+    scale_range = tuple(args.scale_range) if args.scale_range else ((0.8, 1.25) if args.arch == "millnet" else (0.6, 1.6))
+    ds = CropDataset(stack, masks, tr, k=args.k, crop=args.crop, n_samples=args.iters * args.bs, seed=args.seed,
+                     stats=use_stats, scale_range=scale_range)
     dl = DataLoader(ds, batch_size=args.bs, num_workers=0)
     cfg = {"arch": args.arch, "in_channels": 2 * args.k + 1, "num_classes": 3}
     if args.arch == "resunet":
         cfg.update(base=args.base, depth=args.depth, dropout=0.1, max_ch=args.max_ch)
+    if args.arch == "millnet":
+        cfg.update(base=args.base, depth=args.depth, max_ch=args.max_ch, use_bank=not args.no_bank,
+                   use_stats=use_stats, use_axial=not args.no_axial)
     model = build_model(cfg).to(dev)
     counts = np.sum([np.bincount(masks[z].ravel(), minlength=3) for z in tr if z in masks], 0)
     w = 1 / np.sqrt(counts / counts.sum()); w = torch.tensor(w / w.mean(), dtype=torch.float32, device=dev)
@@ -98,9 +110,10 @@ def main(argv=None):
 
     history, best, best_it = [], -1, 0
     model.train()
-    for it, (x, y) in enumerate(dl, 1):
-        x, y = x.to(dev), y.to(dev)
-        loss = dice_ce_loss(model(x), y, w)
+    for it, batch in enumerate(dl, 1):
+        x, y = batch[0].to(dev), batch[1].to(dev)
+        logits = model(x, batch[2].to(dev)) if use_stats else model(x)
+        loss = dice_ce_loss(logits, y, w)
         opt.zero_grad(set_to_none=True); loss.backward(); opt.step(); sched.step()
         if it % 50 == 0:
             print(f"it {it} loss {loss.item():.4f} ({time.time()-t0:.0f}s)", flush=True)

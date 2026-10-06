@@ -37,13 +37,24 @@ ROOT = Path(__file__).resolve().parents[2]
 TEST = list(range(100, 118))
 NAMES = {
     "resunet_k0": "ResUNet (Éponge, 2D)",
-    "unet2d_v2": "ResUNet (Éponge, 2D, batch 16) · on the website",
+    "unet2d_v2": "ResUNet (Éponge, 2D, batch 16)",
     "garodia_unet_k0": "Garodia U-Net (2D)",
     "garodia_unet_k3": "Garodia U-Net (2.5D, 7 slices)",
     "segformer_k0": "SegFormer-B2 (2D, ImageNet)",
     "unetpp_r34_k0": "UNet++ ResNet-34 (2D, ImageNet)",
     "transunet_k0": "TransUNet R50-ViT-B/16 (2D, ImageNet-21k)",
     "resunet_v1labels_k0": "ResUNet trained on v1 labels",
+    "millnet_k0": "MillNet (2D) · on the website",
+    "millnet_k3": "MillNet (2.5D, 7 slices)",
+    "millnet_k3_s1": "MillNet (2.5D, 7 slices, seed 1)",
+    "millnet_k3_nobank": "MillNet (2.5D) without streak bank",
+    "millnet_k3_nostats": "MillNet (2.5D) without histogram FiLM",
+    "millnet_k0_wide": "MillNet (2D), baseline augmentation",
+    "millnet_k0_headonly": "MillNet (2D), factorised head only",
+    "millnet_k0_noaxial": "MillNet (2D), head + FiLM, no attention",
+    "resunet_k0_s1": "ResUNet (Éponge, 2D, seed 1)",
+    "resunet_k0_narrowscale": "ResUNet (2D), MillNet augmentation",
+    "garodia_unet_k3_s1": "Garodia U-Net (2.5D, seed 1)",
     "previous_2d_unet": "Previous 2D U-Net (v1 labels, earlier experiment)",
     "baseline_threshold_140": "Threshold I < 140*",
     "baseline_otsu_raw": "Otsu on raw image*",
@@ -157,9 +168,12 @@ def write_reports(table):
     print(md)
 
     best = nets[0]
-    rows = [{"name": NAMES[n_] + (" *" if n_.startswith("baseline") else ""), "miou": table[n_]["v2"]["mean_iou"], "pore_iou": table[n_]["v2"]["pore_iou"],
+    web = ["millnet_k0", "millnet_k3", "resunet_k0", "garodia_unet_k3", "unetpp_r34_k0", "transunet_k0", "segformer_k0",
+           "resunet_v1labels_k0", "previous_2d_unet", "baseline_otsu_raw", "baseline_threshold_140"]
+    order = [n_ for n_ in order if n_ in web]   # the website shows the key models; docs keep every run
+    rows = [{"name": NAMES[n_], "miou": table[n_]["v2"]["mean_iou"], "pore_iou": table[n_]["v2"]["pore_iou"],
              "roi_iou": table[n_]["v2"]["roi_iou"], "por_mae": table[n_]["v2"]["porosity_mae"],
-             "best": n_ == "unet2d_v2"} for n_ in order if n_ in nets or n_ in ("baseline_otsu_raw", "baseline_threshold_140")]
+             "best": n_ == "millnet_k0"} for n_ in order]
     (ROOT / "webapp/model/results.json").write_text(json.dumps({
         "rows": rows, "best_overall": NAMES[best],
         "note": "* Threshold baselines are handed the true catalyst-layer outline; the networks find it themselves. "

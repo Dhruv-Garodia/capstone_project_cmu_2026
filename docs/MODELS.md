@@ -2,11 +2,13 @@
 
 ## Short answer
 
-* **Single images and the website:** Éponge **ResUNet** (2.4 M parameters). It ties for the best
-  accuracy, is the smallest model, and is the only one small enough to run in a browser.
-* **Stacks in the Python library:** **Garodia U-Net, 2.5D** (7 adjacent slices as input). It ties
-  for best accuracy with 3× lower porosity error and the best z-consistency among the top models.
-* Larger pretrained models (UNet++, SegFormer, TransUNet) did **not** improve accuracy here.
+* **Use MillNet**, this project's own architecture ([MILLNET.md](MILLNET.md)): the 2D version for single
+  images and the website, the 7-slice version for stacks. It beats every other architecture by
+  +0.02 mIoU and +0.04 pore IoU at the same size (2.5 M parameters).
+* Among standard architectures, the small ResUNet and D. Garodia's 2.5D U-Net tie; larger pretrained
+  models (UNet++, SegFormer, TransUNet) did not improve accuracy.
+* The biggest single factor of all was the label correction: the same network trained on the original
+  napari masks loses 0.2 mIoU and gets porosity wrong by a factor of two.
 
 ## Setup (identical for every model)
 
@@ -25,6 +27,7 @@
 
 | name | what it is | params | pretrained |
 |---|---|---:|---|
+| **MillNet** | ResUNet backbone + whole-frame histogram FiLM + axial attention + factorised head (+ optional slice context) | 2.5 M | no |
 | ResUNet | Éponge residual U-Net, 5 levels, channels capped at 128, dropout for MC uncertainty | 2.4 M | no |
 | Garodia U-Net | D. Garodia's U-Net from `pore_pipeline/unet/model.py` (3-class head) | 7.8 M | no |
 | UNet++ | nested U-Net (Zhou et al. 2018) with a ResNet-34 encoder | 26.1 M | ImageNet |
@@ -36,10 +39,23 @@ All live in `eponge/src/eponge/models/zoo.py`; train any of them with
 
 ## Results on the held-out test frames
 
+Every run, including MillNet ablations and second seeds:
+
 | model | params | mIoU | pore IoU | layer IoU | pore F1 ±1px | porosity error | z-consistency | pore IoU vs Garodia trimap | in Garodia bracket |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| ResUNet (Éponge, 2D, batch 16) · on the website | 2.4 M | 0.912 | 0.845 | 0.975 | 0.977 | 0.016 | 0.867 | 0.770 | 100 % |
+| MillNet (2.5D) without streak bank | 2.5 M | 0.936 | 0.887 | 0.978 | 0.992 | 0.004 | 0.868 | 0.778 | 100 % |
+| MillNet (2.5D, 7 slices) | 2.6 M | 0.934 | 0.885 | 0.978 | 0.991 | 0.004 | 0.868 | 0.778 | 100 % |
+| MillNet (2D) · on the website | 2.5 M | 0.934 | 0.884 | 0.977 | 0.992 | 0.011 | 0.869 | 0.781 | 100 % |
+| MillNet (2D), head + FiLM, no attention | 2.4 M | 0.931 | 0.879 | 0.977 | 0.988 | 0.011 | 0.865 | 0.777 | 100 % |
+| MillNet (2D), baseline augmentation | 2.5 M | 0.931 | 0.878 | 0.977 | 0.988 | 0.013 | 0.866 | 0.781 | 100 % |
+| MillNet (2.5D, 7 slices, seed 1) | 2.6 M | 0.931 | 0.878 | 0.976 | 0.987 | 0.007 | 0.867 | 0.770 | 100 % |
+| MillNet (2.5D) without histogram FiLM | 2.5 M | 0.930 | 0.876 | 0.976 | 0.989 | 0.005 | 0.869 | 0.778 | 100 % |
+| ResUNet (Éponge, 2D, seed 1) | 2.4 M | 0.915 | 0.848 | 0.974 | 0.980 | 0.004 | 0.866 | 0.774 | 100 % |
+| ResUNet (2D), MillNet augmentation | 2.4 M | 0.914 | 0.848 | 0.974 | 0.980 | 0.015 | 0.870 | 0.775 | 100 % |
+| Garodia U-Net (2.5D, seed 1) | 7.9 M | 0.913 | 0.846 | 0.974 | 0.981 | 0.005 | 0.867 | 0.778 | 100 % |
+| ResUNet (Éponge, 2D, batch 16) | 2.4 M | 0.912 | 0.845 | 0.975 | 0.977 | 0.016 | 0.867 | 0.770 | 100 % |
 | Garodia U-Net (2.5D, 7 slices) | 7.9 M | 0.912 | 0.844 | 0.972 | 0.980 | 0.005 | 0.872 | 0.771 | 100 % |
+| MillNet (2D), factorised head only | 2.4 M | 0.911 | 0.843 | 0.973 | 0.978 | 0.017 | 0.869 | 0.779 | 100 % |
 | ResUNet (Éponge, 2D) | 2.4 M | 0.911 | 0.842 | 0.974 | 0.978 | 0.005 | 0.864 | 0.773 | 100 % |
 | Garodia U-Net (2D) | 7.8 M | 0.904 | 0.831 | 0.972 | 0.974 | 0.011 | 0.869 | 0.774 | 100 % |
 | UNet++ ResNet-34 (2D, ImageNet) | 26.1 M | 0.903 | 0.828 | 0.973 | 0.980 | 0.010 | 0.870 | 0.776 | 100 % |
@@ -66,25 +82,24 @@ How to read the columns:
 
 ## What the comparison shows
 
-1. **Labels matter far more than architecture.** The same ResUNet trained on the original v1 masks
-   drops from 0.911 to 0.706 mIoU and predicts porosity 0.18. That lies outside the independent
-   Garodia bracket on 0 % of frames, while every model trained on v2 lies inside it on 100 %.
-2. **The architectures are statistically tied.** On v2, all five lie within 0.018 mIoU; against
-   the independent trimap their ranking reshuffles (0.758–0.776). Nearly all remaining
-   disagreement is one-pixel boundary placement (pore F1 0.974–0.980 with ±1 px tolerance).
-3. **Bigger and pretrained did not help.** The target is a local grey-level/texture decision on 75
-   frames of one stack, which a 2.4 M-parameter convolutional network captures fully. ImageNet
-   features and global self-attention (TransUNet, SegFormer) add parameters, not accuracy.
-   TransUNet does give the lowest porosity error (0.004).
-4. **Slice context helps a little.** Garodia's U-Net with ±3 neighbouring slices gains +0.008 mIoU
-   and has the best z-consistency of the top models. No registration is applied (see FINDINGS.md).
-5. **Previous model.** The earlier 2D U-Net from the real-data experiment scores 0.678 mIoU against
-   v2. It learned the v1 threshold rule faithfully, so its low score reflects the labels it was given.
+1. **MillNet is the best model.** +0.02 mIoU, +0.04 pore IoU, best pore F1 (0.992) and best agreement
+   with the independent trimap, at 2.5 M parameters. Its gain comes from frame-level context
+   (histogram FiLM or axial attention); see the ablation in [MILLNET.md](MILLNET.md).
+2. **Labels matter more than any architecture.** The same ResUNet trained on the original v1 masks
+   drops from 0.911 to 0.706 mIoU and predicts porosity 0.18, outside the independent Garodia bracket
+   on 0 % of frames; every model trained on v2 lies inside it on 100 %.
+3. **Standard architectures are tied.** ResUNet, Garodia U-Net, UNet++, SegFormer and TransUNet span
+   0.894–0.915, about the seed spread (±0.003) plus small differences; bigger and pretrained did not help.
+4. **Slice context helps little on these labels.** The labels are made slice by slice, so z-cues cannot
+   raise agreement with them; MillNet 2D and 2.5D tie.
+5. **Previous model.** The earlier 2D U-Net scores 0.678 mIoU against v2: it learned the v1 threshold
+   rule faithfully, so its low score reflects the labels it was given.
 
 ## Reproduce
 
 ```bash
-bash runs/run_zoo.sh                                   # all architecture runs (~4 h on an M4)
+bash runs/run_zoo.sh                                   # standard architectures (~4 h on an M4)
+bash runs/run_millnet.sh && bash runs/run_millnet_confounds.sh   # MillNet, ablations, seeds (~4 h)
 python eponge/scripts/compare_models.py                # table above + webapp/model/results.json
 python eponge/scripts/compare_models.py --from-json    # rebuild the table only
 ```
