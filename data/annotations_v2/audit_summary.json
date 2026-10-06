@@ -1,0 +1,17 @@
+{
+  "v1_mean_porosity": 0.18057741098184596,
+  "v2_mean_porosity": 0.3544233068983542,
+  "v1_threshold_agreement_min": 0.94728,
+  "v1_thresholds_used": [
+    140,
+    142,
+    147,
+    150
+  ],
+  "roi_dice_with_previous_min": 0.959909477319467,
+  "roi_dice_with_previous_frames_below_0.975": [
+    5,
+    31,
+    90
+  ]
+}

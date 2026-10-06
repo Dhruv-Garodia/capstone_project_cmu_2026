@@ -1,179 +1,77 @@
-# PFIB-SEM 3D Segmentation & Synthetic Microstructure Pipeline
+# Éponge: pFIB-SEM catalyst-layer segmentation and porosity
 
-This repository contains a full pipeline for **synthetic microstructure generation**, **2D/3D PFIB-SEM image preprocessing**, **UNet-based segmentation**, and **evaluation/visualization utilities**. 
----
+Capstone 2026 (CMU). We segment Xe-pFIB-SEM images of IrO₂ PEM-water-electrolysis catalyst
+layers into **pore**, **solid** and **outside the layer**, then measure porosity, pore sizes,
+connectivity and tortuosity with uncertainty, as a Python library and as a website that runs in
+the browser.
 
-## 🌳 Project Structure
-```
-.
-├── checkpoints/             # Stores trained model weights & checkpoints
-│
-├── data/                    # All datasets used in the project
-│   ├── model-recon-output/  # Model-based reconstructed volume outputs
-│   ├── model-seg-output/    # Model-predicted segmentation masks
-│   ├── paper-seg-output/    # Reproduced segmentation from original paper
-│   ├── pFIB-real-data/      # Real experimental PFIB-SEM images
-│   └── synthetic-train-test/# Synthetic training/testing dataset
-│
-├── model/                   # Core UNet model + training pipeline
-│   ├── dataset.py
-│   ├── transforms.py
-│   └── unet.py
-│
-├── scripts/                 # High-level bash scripts
-│   ├── crop.sh              # Crop real stacks before preprocessing
-│   ├── start_training.sh    # Launch model training end-to-end
-│   └── validate_model.sh    # Run inference + evaluation on validation data
-│
-├── puma-synthetic-gen/      # Synthetic dataset generator (has its own README)
-│
-├── requirements.txt         # Python dependency list (pip)
-│
-└── utils/                   # Core utilities for preprocessing & evaluation
-    ├── convert_mesh.py
-    ├── crop_real_stack.py
-    ├── cropping.py
-    ├── eval_porosity.py
-    ├── eval_obj_porosity.py
-    ├── eval_pore_distribution.py
-    ├── process_filename.py
-    ├── reproduce.py
-    ├── resize_pngs.py
-    ├── test_model.py
-    ├── tif_to_png.py
-    └── visualize.py
-```
----
+**Website:** upload a slice or a TIFF stack and get the segmentation, the numbers and a 3D view.
+See [docs/WEBSITE.md](docs/WEBSITE.md) to run or deploy it (Vercel).
 
-## 🔧 Utilities (utils/ folder)
+## Results at a glance
 
-The `utils/` directory contains helper scripts used throughout the workflow:
+Held-out test frames 100–117 of `comp_full.tif` (never used for training or model selection):
 
-| Script | Description |
-|--------|-------------|
-| `train.py` | Main training script for UNet / other models |
-| `test_model.py` | Run inference on a folder of images |
-| `eval_porosity.py` | Compute porosity statistics per-slice & volume |
-| `eval_pore_distribution.py` | Analyze pore-size distribution |
-| `visualize.py` | Interactive viewer for 3D stacks with a slice slider |
-| `convert_mesh.py` | Convert mesh → voxel → PNG pipeline for synthetic generation |
-| `reproduce.py` | Reproduce paper segmentation results for quality evaluation |
-| `process_filename.py` | Normalizes naming patterns for image stacks |
-| `crop_real_stack.py` | Crop real PFIB stacks into smaller training tiles |
-| `cropping.py` | Shared helper functions for cropping tasks |
-| `resize_pngs.py` | Resize image folders while maintaining structure |
-| `tif_to_png.py` | Convert .tif stacks into numbered .png slices |
+| model | params | mIoU | pore IoU | layer IoU | porosity error |
+|---|---:|---:|---:|---:|---:|
+| **Éponge ResUNet** (website model) | 2.4 M | **0.912** | **0.845** | **0.975** | 0.016 |
+| Garodia U-Net, 2.5D (library default for stacks) | 7.9 M | **0.912** | 0.844 | 0.972 | 0.005 |
+| UNet++ ResNet-34, ImageNet | 26.1 M | 0.903 | 0.828 | 0.973 | 0.010 |
+| TransUNet R50-ViT-B/16, ImageNet-21k | 105.3 M | 0.902 | 0.826 | 0.975 | **0.004** |
+| SegFormer-B2, ImageNet | 24.7 M | 0.894 | 0.812 | 0.975 | 0.007 |
+| Same ResUNet trained on the original labels | 2.4 M | 0.706 | 0.435 | 0.951 | 0.182 |
 
----
+* **Correcting the labels mattered most.** The original napari masks were a raw grey threshold that
+  changed between annotation sessions; they gave porosity 0.18. Corrected labels give 0.354, inside an
+  independent classical pipeline's bracket (0.32–0.51) on every test frame.
+* **Architectures are tied** within 0.02 mIoU; larger pretrained models (incl. TransUNet) did not help.
+* comp_full catalyst layer: porosity ≈ 0.37–0.40, median pore diameter 60–72 nm, through-plane pore
+  tortuosity τ ≈ 3.3 (3D), > 95 % of pore volume connected across the layer.
 
-## ▶️ Quick Start
+Full table and discussion: [docs/MODELS.md](docs/MODELS.md). What we learned: [docs/FINDINGS.md](docs/FINDINGS.md).
 
-### 1. Install dependencies (recommended: fresh conda env)
-
-```
-conda create -n pfib_sem python=3.10
-conda activate pfib_sem
-pip install -r requirements.txt
-
-```
-
-If `scikit-umfpack` fails to build on macOS, install it with a native file:
-```
-cat > nativefile.ini <<'EOF'
-[properties]
-umfpack-libdir = '/opt/anaconda3/envs/pfib_sem/lib'
-umfpack-includedir = '/opt/anaconda3/envs/pfib_sem/include/suitesparse'
-EOF
-
-export CPPFLAGS="-I/opt/anaconda3/envs/pfib_sem/include/suitesparse"
-export CFLAGS="-Wno-error=int-conversion"
-export LDFLAGS="-L/opt/anaconda3/envs/pfib_sem/lib"
-
-python -m pip install --no-build-isolation \
-  -Csetup-args=--native-file=$(pwd)/nativefile.ini \
-  "scikit-umfpack==0.4.2"
-```
----
-
-## 📊 Data Preparation
-
-### 1. Cropping real PFIB stacks
-
-Use the helper script:
-```
-bash scripts/crop.sh
-```
-
-### 2. Synthetic data  
-Located in `puma-synthetic-gen/` → includes mesh conversion, lightening, PNG export, and mask generation.  
-*(Has its own README; not documented here.)*
-
----
-
-## ⚙️ Model Training
-```
-bash scripts/start_training.sh
-```
-
-or directly:
+## Quick start
 
 ```bash
-python utils/train.py \
-  --img_dir <path_to_lightened_png_slices> \
-  --mask_dir <path_to_binary_mask_png_slices> \
-  --out checkpoints/
-```
-You may provide custom parameters if needed
+pip install -e "eponge[export,viz3d,dev]"
 
----
+# put the data in place (not in git):
+#   data/raw/comp_full.tif          the pFIB-SEM stack
+#   data/manual_annotation/*.png    the napari masks
 
-## 📈 Validation
-
-```
-bash scripts/validate_model.sh
+eponge fix-annotations --stack data/raw/comp_full.tif --masks data/manual_annotation --out data/annotations_v2
+eponge train   --stack data/raw/comp_full.tif --labels data/annotations_v2 --out runs/resunet_k0 --arch resunet
+eponge analyze data/raw/comp_full.tif --out results/        # or any PNG / TIFF slice or stack
 ```
 
-Or manually:
-```bash
-python utils/test_model.py \
-  --ckpt checkpoints/unet_best.pt \
-  --img_dir <path_to_input_images> \
-  --out_dir <path_to_save_predictions>
-```
+## Documentation
 
----
+| doc | read it for |
+|---|---|
+| [docs/FINDINGS.md](docs/FINDINGS.md) | the five things we learned about the data, labels and earlier pipelines |
+| [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md) | how the napari masks were audited and corrected |
+| [docs/MODELS.md](docs/MODELS.md) | architectures, training protocol, full comparison |
+| [docs/LIBRARY.md](docs/LIBRARY.md) | Python API, CLI, metrics, the three visualisations |
+| [docs/WEBSITE.md](docs/WEBSITE.md) | using, running and deploying the website |
+| [docs/literature_review_and_proposal.md](docs/literature_review_and_proposal.md) | literature review and proposed method |
+| [pore_pipeline/README.md](pore_pipeline/README.md) | D. Garodia's classical pipeline, trimap labels, label-free checks |
 
-## 📊 Evaluation
+## Repository layout
 
-### Porosity
-```bash
-python utils/eval_porosity.py data/model_segmented/
-```
+| path | contents |
+|---|---|
+| `eponge/` | the library: preprocessing, annotation audit, model zoo, training, inference with uncertainty, metrics, 3D meshes, visualisations, CLI, tests |
+| `webapp/` | the website (static; TensorFlow.js + three.js) |
+| `pore_pipeline/` | classical segmentation, trimap labels and label-free evaluation (D. Garodia) |
+| `runs/` | training summaries and logs for every model (`run_zoo.sh` reproduces them) |
+| `data/annotations_v2/` | correction log for the corrected labels (masks are rebuilt by one command) |
+| `results/` | `pore_pipeline` results on the comp, uncomp and pristine stacks |
+| `docs/` | documentation; `LEGACY_README.md` describes the earlier synthetic-data code |
+| `model/`, `utils/`, `scripts/`, `puma-synthetic-gen/` | earlier synthetic-data pipeline (see `docs/LEGACY_README.md`) |
 
-### Pore size distribution
-```bash
-python utils/eval_pore_distribution.py --mesh <path_to_mesh.obj> --axis z --n_slices 150
-```
+Raw TIFFs, masks and model checkpoints are git-ignored. The website's 4.8 MB model and its demo
+mesh are committed so the site works from a fresh clone.
 
----
+## Team
 
-## 🧩 Model Checkpoints
-
-All trained models are saved inside:
-
-```
-
-checkpoints/
-best_model.pth
-last_epoch.pth
-...
-
-```
-
-## pore_pipeline (Oct 2026)
-
-Knob-free classical segmentation of the real pFIB-SEM stacks, label-free evaluation, and a
-2.5D U-Net trained on the resulting labels. See `pore_pipeline/README.md`; literature review and
-proposal in `docs/`; text-only results in `results/`; Colab-over-SSH setup and the experiment grid
-in `pore_pipeline/colab/`. Raw TIFFs, masks, caches and model weights are git-ignored and live in
-`MyDrive/Eponge/`.
+Aaditya Vikram, Dhruv Garodia, Hou Kin, Yunzhi.

@@ -9,3 +9,13 @@ __pycache__/
 report/
 *png
 *.pt
+# Éponge v2
+outputs/
+webapp/dist/
+.venv/
+*.egg-info/
+.pytest_cache/
+runs/demo_segmentation_*.npy
+# figures and web samples are small and needed by the docs / site
+!docs/figures/*.png
+!webapp/samples/*.png

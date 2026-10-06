@@ -1,0 +1,44 @@
+{
+ "n_vertices": 198571,
+ "n_faces": 400000,
+ "bbox_min_nm": [
+  -3.1556055528922395,
+  -3.0631359796468374,
+  -3.08607596930483
+ ],
+ "bbox_max_nm": [
+  765.106004686081,
+  783.1301189523044,
+  2877.0927718046523
+ ],
+ "axes": [
+  "z_milling",
+  "y_through_plane",
+  "x_in_plane"
+ ],
+ "diameter_max_nm": 96.0,
+ "layout": [
+  "pos_u16x3",
+  "index_u32x3",
+  "diameter_u8",
+  "percolating_u8"
+ ],
+ "volume_shape": [
+  128,
+  131,
+  480
+ ],
+ "spacing_nm": [
+  6.0,
+  6.0,
+  6.0
+ ],
+ "porosity": 0.4041180870308524,
+ "percolating_fraction": 0.993406200145668,
+ "n_clusters": 1044,
+ "source": "comp_full.tif frames 100-227, rows 179-310, columns 84-564",
+ "layer_porosity": 0.39992416348137333,
+ "tau_through_plane": 3.325237891193333,
+ "d50_nm": 60.0,
+ "note": "128 consecutive slices of comp_full (frames 100\u2013227, 0.77 \u00b5m of milling) segmented by the 2D model and stacked as acquired. Window 480\u00d7131 px inside the layer, chosen to match the whole layer's porosity. Porosity 0.404, median pore diameter 60 nm, through-plane tortuosity \u03c4 = 3.33, 99 % of pore volume connects top and bottom."
+}

@@ -1,0 +1,95 @@
+{
+ "rows": [
+  {
+   "name": "ResUNet (\u00c9ponge, 2D, batch 16) \u00b7 on the website",
+   "miou": 0.9124856339748035,
+   "pore_iou": 0.8454823094324304,
+   "roi_iou": 0.974611795399131,
+   "por_mae": 0.016445867577603305,
+   "best": true
+  },
+  {
+   "name": "Garodia U-Net (2.5D, 7 slices)",
+   "miou": 0.9122650389997574,
+   "pore_iou": 0.8442931935044886,
+   "roi_iou": 0.9719046716838374,
+   "por_mae": 0.005413252563225612,
+   "best": false
+  },
+  {
+   "name": "ResUNet (\u00c9ponge, 2D)",
+   "miou": 0.9112372008036415,
+   "pore_iou": 0.8418159597603888,
+   "roi_iou": 0.9742890036335684,
+   "por_mae": 0.004601769818478315,
+   "best": false
+  },
+  {
+   "name": "Garodia U-Net (2D)",
+   "miou": 0.9044771585817989,
+   "pore_iou": 0.830520146760313,
+   "roi_iou": 0.9723595762336403,
+   "por_mae": 0.011197307634907712,
+   "best": false
+  },
+  {
+   "name": "UNet++ ResNet-34 (2D, ImageNet)",
+   "miou": 0.9030318174974679,
+   "pore_iou": 0.8277318770992738,
+   "roi_iou": 0.9733851983383979,
+   "por_mae": 0.009793091796603901,
+   "best": false
+  },
+  {
+   "name": "TransUNet R50-ViT-B/16 (2D, ImageNet-21k)",
+   "miou": 0.90209338045186,
+   "pore_iou": 0.8255557461498464,
+   "roi_iou": 0.9745841403736918,
+   "por_mae": 0.004276595270714439,
+   "best": false
+  },
+  {
+   "name": "SegFormer-B2 (2D, ImageNet)",
+   "miou": 0.8941198164693521,
+   "pore_iou": 0.8119044552826199,
+   "roi_iou": 0.9748466615647564,
+   "por_mae": 0.006571475103972673,
+   "best": false
+  },
+  {
+   "name": "ResUNet trained on v1 labels",
+   "miou": 0.7064293787545676,
+   "pore_iou": 0.4354390438454188,
+   "roi_iou": 0.9507353629863681,
+   "por_mae": 0.18182457636609026,
+   "best": false
+  },
+  {
+   "name": "Previous 2D U-Net (v1 labels, earlier experiment)",
+   "miou": 0.6779322503224553,
+   "pore_iou": 0.39337298965348005,
+   "roi_iou": 0.9383796672051283,
+   "por_mae": 0.20073033106043994,
+   "best": false
+  },
+  {
+   "name": "Otsu on raw image* *",
+   "miou": 0.9221272083883812,
+   "pore_iou": 0.8553014462713237,
+   "roi_iou": 1.0,
+   "por_mae": 0.01585740739621016,
+   "best": false
+  },
+  {
+   "name": "Threshold I < 140* *",
+   "miou": 0.7241886174198298,
+   "pore_iou": 0.422417296173447,
+   "roi_iou": 1.0,
+   "por_mae": 0.21120557888223834,
+   "best": false
+  }
+ ],
+ "best_overall": "ResUNet (\u00c9ponge, 2D, batch 16) \u00b7 on the website",
+ "note": "* Threshold baselines are handed the true catalyst-layer outline; the networks find it themselves. |\u0394\u03b5| is the mean absolute error of per-frame porosity. Frames 100\u2013117 were never used for training or checkpoint selection.",
+ "footer": "Test-set reference porosity 0.366 (corrected labels)"
+}

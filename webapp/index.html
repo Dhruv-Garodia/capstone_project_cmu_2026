@@ -1,0 +1,1421 @@
+<meta charset="utf-8">
+<title>Éponge Porosity Lab</title>
+<meta name="description" content="Segment pFIB-SEM images of porous catalyst layers and measure porosity, pore size, connectivity and tortuosity in the browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: instrument console. A sticky acquisition panel on the left, results stream on the right
+   (summary readouts -> three visualisations -> method & model card). Collapses to one column on phones. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --surface-2: #f6f8fa;
+  --ink: #14202b;
+  --muted: #576573;
+  --line: #d6dde4;
+  --accent: #2b55c8;          /* iridium-oxide blue */
+  --accent-ink: #ffffff;
+  --pore: #1f6feb;
+  --cl: #c98a00;              /* catalyst-layer boundary, amber */
+  --perc: #e0531c;            /* percolating clusters */
+  --good: #1a7f4b;
+  --warn: #a15c00;
+  --shadow: 0 1px 2px rgba(20, 32, 43, .06), 0 4px 18px rgba(20, 32, 43, .06);
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0;
+    --line: #283541; --accent: #7aa2ff; --accent-ink: #0b1220; --pore: #58a6ff; --cl: #e8b13a;
+    --perc: #ff7a45; --good: #4cc38a; --warn: #e3a34a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0;
+  --line: #283541; --accent: #7aa2ff; --accent-ink: #0b1220; --pore: #58a6ff; --cl: #e8b13a;
+  --perc: #ff7a45; --good: #4cc38a; --warn: #e3a34a;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; letter-spacing: .005em; }
+h2 { font-size: 1.45rem; font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.eyebrow { font: 500 .72rem/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+a { color: var(--accent); }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.brand h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -.01em; }
+.brand .tag { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.engine { display: flex; align-items: center; gap: 8px; font: .78rem/1.2 var(--font-mono); color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); flex: none; }
+.dot.ok { background: var(--good); }
+
+.lede { max-width: 72ch; color: var(--muted); margin-bottom: 20px; }
+.lede strong { color: var(--ink); font-weight: 600; }
+
+/* grid */
+.grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 960px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+.side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 960px) { .side { position: static; } }
+
+.drop { border: 1.5px dashed var(--line); border-radius: var(--r); padding: 18px 14px; text-align: center; cursor: pointer;
+  background: var(--surface-2); transition: border-color .15s, background .15s; display: flex; flex-direction: column; gap: 6px; }
+.drop:hover, .drop.over { border-color: var(--accent); }
+.drop strong { font-family: var(--font-display); font-size: 1.05rem; }
+.drop input { display: none; }
+.samples { display: flex; flex-direction: column; gap: 6px; }
+.chip { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: .88rem; }
+.chip:hover { border-color: var(--accent); }
+.chip small { color: var(--muted); font-family: var(--font-mono); font-size: .72rem; }
+.field { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; font-size: .9rem; }
+.field input[type=number] { width: 92px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-2);
+  font-family: var(--font-mono); text-align: right; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: .88rem; }
+.check input { margin-top: 4px; accent-color: var(--accent); }
+.check span small { display: block; color: var(--muted); font-size: .78rem; }
+.run { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 11px 14px; font-weight: 600; cursor: pointer;
+  font-family: var(--font-display); font-size: 1.02rem; letter-spacing: .02em; }
+.run:disabled { opacity: .55; cursor: progress; }
+.progress { height: 4px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.progress > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.status { font: .8rem/1.4 var(--font-mono); color: var(--muted); min-height: 2.8em; }
+.status.err { color: var(--perc); }
+.fileinfo { font: .78rem/1.5 var(--font-mono); color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.privacy { font-size: .78rem; color: var(--muted); }
+
+/* results */
+.main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.readouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--line); box-shadow: var(--shadow); }
+@media (max-width: 640px) { .readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ro { background: var(--surface); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ro .v { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.ro .v small { font: 500 .85rem var(--font-mono); color: var(--muted); margin-left: 3px; }
+.ro .s { font: .76rem/1.35 var(--font-mono); color: var(--muted); }
+.ro.hero .v { color: var(--accent); font-size: 2.2rem; }
+
+.card { padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.card-head > .ttl { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.modes { display: flex; flex-wrap: wrap; gap: 6px; }
+.mode { border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 5px 12px; font-size: .82rem; cursor: pointer; }
+.mode[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.slicebar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.slicebar .btns { display: flex; gap: 6px; }
+.slicebar button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; min-width: 34px; height: 32px; cursor: pointer; font: 600 .9rem var(--font-mono); }
+.slicebar button:hover { border-color: var(--accent); }
+.slicebar .track { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.slicebar input[type=range] { width: 100%; accent-color: var(--accent); }
+.slicebar .spark { height: 34px; width: 100%; display: block; }
+.slicebar .readout { font: .8rem/1.35 var(--font-mono); color: var(--muted); text-align: right; white-space: nowrap; }
+.slicebar .readout b { display: block; color: var(--ink); font: 600 1.05rem var(--font-display); }
+@media (max-width: 640px) { .slicebar { grid-template-columns: minmax(0, 1fr); } .slicebar .readout { text-align: left; } }
+.viewer { position: relative; background: #000; border-radius: 8px; overflow: auto; max-height: 70vh; }
+.viewer canvas { display: block; width: 100%; height: auto; image-rendering: auto; }
+.viewer.zoom canvas { width: 200%; }
+.vtools { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: .84rem; color: var(--muted); }
+.vtools input[type=range] { accent-color: var(--accent); width: 140px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .8rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.cbar { width: 160px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, #440154, #3b528b, #21918c, #5ec962, #fde725); }
+.charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1100px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+.chart { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 10px 10px 4px; background: var(--surface-2); }
+.chart h3 { font-size: .95rem; padding: 2px 4px 0; }
+.chart .plot { height: 260px; }
+.note { font-size: .82rem; color: var(--muted); }
+.stage3d { position: relative; height: min(70vh, 560px); min-height: 360px; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--line); background: radial-gradient(120% 90% at 50% 20%, var(--surface-2), var(--bg)); touch-action: none; }
+.stage3d canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
+.stage3d canvas:active { cursor: grabbing; }
+.hud { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; justify-content: space-between; gap: 10px;
+  pointer-events: none; flex-wrap: wrap; }
+.hud > * { pointer-events: auto; }
+.hud .chipset { display: flex; gap: 6px; flex-wrap: wrap; }
+.hud .tag3d { font: .74rem/1.3 var(--font-mono); color: var(--muted); background: color-mix(in srgb, var(--surface) 85%, transparent);
+  border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; backdrop-filter: blur(6px); max-width: 360px; }
+.load3d { position: absolute; inset: 0; display: grid; place-items: center; font: .85rem var(--font-mono); color: var(--muted); }
+.ctl3d { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; font-size: .84rem; color: var(--muted); }
+.ctl3d input[type=range] { accent-color: var(--accent); width: 180px; }
+.stats3d { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line);
+  border-radius: 8px; overflow: hidden; }
+@media (max-width: 640px) { .stats3d { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stats3d div { background: var(--surface); padding: 9px 12px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stats3d b { font: 600 1.15rem/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.stats3d span { font: .7rem var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: .85rem; }
+.ghost:hover { border-color: var(--accent); }
+
+/* method & model card */
+.method { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 900px) { .method { grid-template-columns: minmax(0, 1fr); } }
+.steps { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 10px; font-size: .9rem; }
+.steps li::before { counter-increment: s; content: counter(s); font: 600 .8rem/26px var(--font-mono); text-align: center; width: 26px; height: 26px;
+  border-radius: 50%; border: 1px solid var(--line); color: var(--muted); }
+.steps b { font-weight: 600; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .84rem; }
+th, td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { font: 500 .72rem var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+td { font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+tr.best td { color: var(--accent); font-weight: 500; }
+.callout { border-left: 3px solid var(--cl); background: var(--surface-2); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: .88rem; }
+footer { margin-top: 28px; font-size: .8rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Éponge</h1>
+      <span class="tag">pFIB-SEM porosity lab · IrO₂ catalyst layers</span>
+    </div>
+    <div class="engine" id="engine"><span class="dot" id="engineDot"></span><span id="engineText">Loading model…</span></div>
+  </header>
+  <p class="lede">Drop in a pFIB-SEM slice or a multi-page TIFF stack. A U-Net trained on corrected annotations of <strong>comp_full.tif</strong> finds the catalyst layer, separates <strong>pore</strong> from <strong>solid</strong>, and the page measures porosity, pore-size distribution, connectivity and tortuosity. Everything runs on your GPU in this tab. Your image is never uploaded.</p>
+
+  <div class="grid">
+    <aside class="panel side" aria-label="Input">
+      <div class="eyebrow">Input</div>
+      <label class="drop" id="drop" for="file">
+        <strong>Drop an image or TIFF stack</strong>
+        <span class="muted" style="font-size:.85rem">PNG, JPG, TIF (8/16-bit, multi-page)</span>
+        <input type="file" id="file" accept=".png,.jpg,.jpeg,.tif,.tiff,image/*">
+      </label>
+      <div class="samples">
+        <span class="eyebrow">Or try a sample</span>
+        <button class="chip" id="s110" type="button">comp_full · frame 110 <small>held-out test</small></button>
+        <button class="chip" id="s300" type="button">comp_full · frame 300 <small>never labelled</small></button>
+      </div>
+      <div class="field"><label for="px">Pixel size (nm/px)</label><input type="number" id="px" value="6" min="0.5" max="100" step="0.1"></div>
+      <label class="check"><input type="checkbox" id="rescale" checked><span>Match model scale<small>Resample to 6 nm/px, the scale the model was trained at.</small></span></label>
+      <label class="check"><input type="checkbox" id="tta"><span>Flip test-time augmentation<small>Averages two passes. Slower, more stable.</small></span></label>
+      <label class="check"><input type="checkbox" id="tort" checked><span>Tortuosity factor<small>Solves a diffusion problem in the pore phase (a few seconds).</small></span></label>
+      <div class="field" id="stackField" hidden><label for="nframes">Slices to segment<small class="muted" style="display:block;font-size:.76rem">More slices give a deeper 3D block (~5 s each)</small></label><input type="number" id="nframes" value="48" min="2" max="400" step="1"></div>
+      <button class="run" id="run" type="button" disabled>Segment &amp; analyse</button>
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <div class="status" id="status" role="status">Loading TensorFlow.js and model weights…</div>
+      <div class="fileinfo" id="fileinfo">No image loaded.</div>
+      <p class="privacy">Results are model estimates. Porosity depends on how "pore" is defined at the grey-level boundary; the range shown under porosity reports that sensitivity.</p>
+    </aside>
+
+    <main class="main">
+      <section class="readouts" aria-label="Summary">
+        <div class="ro hero"><span class="eyebrow">Porosity</span><span class="v mono" id="r-por">–</span><span class="s" id="r-por-s">pore fraction of the catalyst layer</span></div>
+        <div class="ro"><span class="eyebrow">CL thickness</span><span class="v" id="r-th">–</span><span class="s" id="r-th-s">mean column height of the layer</span></div>
+        <div class="ro"><span class="eyebrow">Median pore diameter</span><span class="v" id="r-d50">–</span><span class="s" id="r-d50-s">d₅₀, local thickness</span></div>
+        <div class="ro"><span class="eyebrow">Specific surface</span><span class="v" id="r-sv">–</span><span class="s">pore–solid interface per area</span></div>
+        <div class="ro"><span class="eyebrow" id="r-tau-h">Tortuosity factor τ</span><span class="v" id="r-tau">–</span><span class="s" id="r-tau-s">through-plane diffusion</span></div>
+        <div class="ro"><span class="eyebrow" id="r-perc-h">Pore connectivity</span><span class="v" id="r-perc">–</span><span class="s" id="r-perc-s">largest connected pore cluster</span></div>
+      </section>
+
+      <section class="panel card" aria-labelledby="v1h">
+        <div class="card-head">
+          <div class="ttl"><span class="eyebrow">Visualisation 1</span><h2 id="v1h">Segmentation map</h2></div>
+          <div class="modes" role="group" aria-label="Display mode">
+            <button class="mode" data-mode="overlay" aria-pressed="true" type="button">Overlay</button>
+            <button class="mode" data-mode="mask" aria-pressed="false" type="button">Mask</button>
+            <button class="mode" data-mode="lt" aria-pressed="false" type="button">Pore diameter</button>
+            <button class="mode" data-mode="conn" aria-pressed="false" type="button">Connectivity</button>
+            <button class="mode" data-mode="conf" aria-pressed="false" type="button">Confidence</button>
+            <button class="mode" data-mode="raw" aria-pressed="false" type="button">Raw</button>
+          </div>
+        </div>
+        <div class="slicebar" id="slicebar" hidden>
+          <div class="btns">
+            <button type="button" id="sPrev" aria-label="Previous slice">‹</button>
+            <button type="button" id="sPlay" aria-label="Play through slices">▶</button>
+            <button type="button" id="sNext" aria-label="Next slice">›</button>
+          </div>
+          <div class="track">
+            <input type="range" id="slice" min="0" max="0" value="0" aria-label="Slice">
+            <canvas class="spark" id="spark" height="34" aria-label="Porosity per slice"></canvas>
+          </div>
+          <div class="readout"><b id="sliceLbl">slice 1 / 1</b><span id="slicePor">porosity –</span></div>
+        </div>
+        <div class="viewer" id="viewer"><canvas id="cv" width="10" height="10" aria-label="Segmentation result"></canvas></div>
+        <div class="vtools">
+          <label>Overlay opacity <input type="range" id="alpha" min="0" max="100" value="55"></label>
+          <label class="check" style="align-items:center"><input type="checkbox" id="zoom" style="margin:0"> 2× zoom</label>
+          <span class="muted" id="sliceHint" hidden>← → keys step through slices</span>
+        </div>
+        <div class="legend" id="legend"></div>
+      </section>
+
+      <section class="panel card" aria-labelledby="v2h">
+        <div class="card-head"><div class="ttl"><span class="eyebrow">Visualisation 2</span><h2 id="v2h">Pore statistics</h2></div></div>
+        <div class="charts">
+          <div class="chart"><h3>Pore size distribution</h3><div class="plot" id="psd"></div></div>
+          <div class="chart"><h3>Porosity through the layer</h3><div class="plot" id="depth"></div></div>
+          <div class="chart"><h3>Pore chord lengths</h3><div class="plot" id="chord"></div></div>
+        </div>
+        <p class="note" id="statsNote">Pore diameter is the local thickness: the diameter of the largest disc that fits in the pore and covers each pixel. Depth runs from the top face of the catalyst layer (0) to the bottom face (1); the band shows porosity when the pore decision threshold moves from 0.35 to 0.65. Chord-length ratios between the through-plane and in-plane directions indicate anisotropy.</p>
+      </section>
+
+      <section class="panel card" aria-labelledby="v3h">
+        <div class="card-head">
+          <div class="ttl"><span class="eyebrow">Visualisation 3</span><h2 id="v3h">3D pore network</h2></div>
+          <div class="row"><button class="ghost" id="show3dDemo" type="button">Show comp_full reconstruction</button></div>
+        </div>
+        <div class="stage3d" id="stage3d">
+          <div class="load3d" id="load3d">Loading 3D viewer…</div>
+          <div class="hud">
+            <div class="chipset" role="group" aria-label="3D colouring">
+              <button class="mode" data-c3="diameter" aria-pressed="true" type="button">Pore diameter</button>
+              <button class="mode" data-c3="conn" aria-pressed="false" type="button">Connectivity</button>
+              <button class="mode" data-c3="plain" aria-pressed="false" type="button">Plain</button>
+            </div>
+            <div class="tag3d" id="tag3d">–</div>
+          </div>
+        </div>
+        <div class="ctl3d">
+          <label>Cut along milling direction <input type="range" id="cut3d" min="0" max="100" value="100"></label>
+          <label class="check" style="align-items:center"><input type="checkbox" id="spin3d" checked style="margin:0"> Auto-rotate</label>
+          <button class="ghost" id="reset3d" type="button">Reset view</button>
+          <span class="legend" id="legend3d"></span>
+        </div>
+        <div class="stats3d" id="stats3d">
+          <div><span>Porosity</span><b id="s3-por">–</b></div>
+          <div><span>Median pore Ø</span><b id="s3-d50">–</b></div>
+          <div><span>Tortuosity τ (y)</span><b id="s3-tau">–</b></div>
+          <div><span>Percolating</span><b id="s3-perc">–</b></div>
+        </div>
+        <p class="note" id="note3d">The pore network of 128 consecutive comp_full slices, meshed at full 6 nm resolution. Drag to rotate, scroll to zoom, slide the cut to look inside.</p>
+      </section>
+
+      <section class="panel card" aria-labelledby="mh">
+        <div class="card-head"><div class="ttl"><span class="eyebrow">Method &amp; model card</span><h2 id="mh">How the numbers are made</h2></div>
+          <button class="ghost" id="copy" type="button">Copy results as JSON</button></div>
+        <div class="method">
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+            <ol class="steps">
+              <li><span><b>Normalise.</b> Grey values are stretched between their 1st and 99th percentile, so detector gain and offset do not matter. The image is optionally resampled to 6 nm/px.</span></li>
+              <li><span><b>Segment.</b> A residual U-Net (2.4 M parameters) predicts solid, pore and outside-the-layer for every pixel. It runs in overlapping 512 px tiles with a horizontal-flip average.</span></li>
+              <li><span><b>Measure.</b> Porosity inside the layer, local-thickness pore sizes, chord lengths, interface density, cluster connectivity, and a finite-volume diffusion solve for the tortuosity factor τ = ε / (D<sub>eff</sub>/D).</span></li>
+              <li><span><b>Report uncertainty.</b> The porosity range comes from moving the pore probability threshold between 0.35 and 0.65. The Python library adds Monte-Carlo dropout bands.</span></li>
+            </ol>
+            <div class="callout" id="annotNote"><b>Annotation correction.</b> The original napari masks turned out to be a raw grey-level threshold inside a hand-drawn layer outline (I&nbsp;&lt;&nbsp;140–150, changing between annotation sessions). They reported 18 % porosity. The training labels keep the hand-drawn outline, trim the Pt-cap and membrane rim from it, and define pore with one denoised Otsu rule on every frame: 35 % porosity, continuous across frames.</div>
+          </div>
+          <div style="min-width:0;display:flex;flex-direction:column;gap:10px">
+            <span class="eyebrow">Held-out test frames 100–117 (corrected labels)</span>
+            <div class="tbl-wrap"><table id="card"><thead><tr><th>Method</th><th>mIoU</th><th>Pore IoU</th><th>Layer IoU</th><th>|Δε|</th></tr></thead><tbody></tbody></table></div>
+            <p class="note" id="cardNote">Threshold baselines are given the true layer outline, which the network has to find on its own.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer><span>Éponge · CMU capstone 2026 · Python library: <span class="mono">eponge analyze image.tif</span></span><span id="foot"></span></footer>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/" } }
+</script>
+<script type="module">
+/* ============================================================== 3D viewer (three.js) */
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const stage = document.getElementById("stage3d");
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.localClippingEnabled = true;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.08; controls.autoRotate = true; controls.autoRotateSpeed = 0.6;
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(2, 3, 2); scene.add(key);
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x20242a, 0.6));
+const clip = new THREE.Plane(new THREE.Vector3(0, 0, -1), 10);
+const group = new THREE.Group(); scene.add(group);
+let current = null, home = null;
+
+const VIR = [[68,1,84],[59,82,139],[33,145,140],[94,201,98],[253,231,37]].map((c) => c.map((v) => v / 255));
+function viridis(t) { t = Math.min(1, Math.max(0, t)) * 4; const i = Math.min(3, Math.floor(t)), f = t - i, a = VIR[i], b = VIR[i + 1];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]; }
+function cssColor(name, fallback) { const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return new THREE.Color(v || fallback); }
+
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+
+function buildColors(diam, perc, mode) {
+  const n = diam.length, c = new Float32Array(n * 3);
+  const P = cssColor("--perc", "#e0531c"), Q = new THREE.Color("#7f9cc9"), plain = cssColor("--pore", "#1f6feb");
+  P.convertSRGBToLinear(); Q.convertSRGBToLinear(); plain.convertSRGBToLinear();
+  for (let i = 0; i < n; i++) {
+    let r, g, b;
+    if (mode === "diameter") { const v = viridis(diam[i]); const col = new THREE.Color(v[0], v[1], v[2]).convertSRGBToLinear(); r = col.r; g = col.g; b = col.b; }
+    else if (mode === "conn") { const col = perc[i] ? P : Q; r = col.r; g = col.g; b = col.b; }
+    else { r = plain.r; g = plain.g; b = plain.b; }
+    c[3 * i] = r; c[3 * i + 1] = g; c[3 * i + 2] = b;
+  }
+  return c;
+}
+
+/* positions: Float32 xyz in nm, three.js frame: x in-plane, y up (= -through-plane), z milling */
+function show({ positions, indices, diam, perc, meta }) {
+  group.clear(); slicePlane = null;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geo.setIndex(new THREE.BufferAttribute(indices, 1));
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox, ctr = bb.getCenter(new THREE.Vector3()), size = bb.getSize(new THREE.Vector3());
+  const s = 2 / Math.max(size.x, size.y, size.z);
+  geo.translate(-ctr.x, -ctr.y, -ctr.z); geo.scale(s, s, s); geo.computeVertexNormals(); geo.computeBoundingBox();
+  const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.42, metalness: 0.08, side: THREE.DoubleSide,
+    clippingPlanes: [clip], clipShadows: true });
+  current = { geo, mat, diam, perc, meta, half: geo.boundingBox.max.clone() };
+  setColor(state3d.mode);
+  group.add(new THREE.Mesh(geo, mat));
+  const box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(size.x * s, size.y * s, size.z * s)),
+    new THREE.LineBasicMaterial({ color: cssColor("--muted", "#888"), transparent: true, opacity: 0.55 }));
+  group.add(box);
+  // fit to view: distance from the bounding sphere and the narrower field of view
+  geo.computeBoundingSphere();
+  const r = geo.boundingSphere.radius, vfov = THREE.MathUtils.degToRad(camera.fov);
+  const hfov = 2 * Math.atan(Math.tan(vfov / 2) * camera.aspect), d = 1.08 * r / Math.sin(Math.min(vfov, hfov) / 2);
+  camera.position.copy(new THREE.Vector3(0.62, 0.36, 0.7).normalize().multiplyScalar(d)); camera.near = d / 50; camera.far = d * 10;
+  camera.updateProjectionMatrix(); controls.target.set(0, 0, 0); controls.update();
+  home = camera.position.clone();
+  setCut(Number(document.getElementById("cut3d").value));
+  document.getElementById("load3d").hidden = true;
+}
+function setColor(mode) {
+  state3d.mode = mode; if (!current) return;
+  current.geo.setAttribute("color", new THREE.BufferAttribute(buildColors(current.diam, current.perc, mode), 3));
+  const L = document.getElementById("legend3d"), m = current.meta;
+  L.innerHTML = mode === "diameter" ? `<span>pore Ø</span><span class="mono">0</span><i class="cbar"></i><span class="mono">${Math.round(m.diameter_max_nm || 0)} nm</span>`
+    : mode === "conn" ? `<span><i class="sw" style="background:var(--perc)"></i>connects top and bottom of the layer</span><span><i class="sw" style="background:#7f9cc9"></i>other pores</span>` : "";
+}
+let slicePlane = null;
+function setSlicePlane(frac) {
+  if (!current) return;
+  if (slicePlane) { group.remove(slicePlane); slicePlane.geometry.dispose(); slicePlane = null; }
+  if (frac == null) return;
+  const bb = current.geo.boundingBox, w = bb.max.x - bb.min.x, h = bb.max.y - bb.min.y;
+  slicePlane = new THREE.Mesh(new THREE.PlaneGeometry(w * 1.04, h * 1.04),
+    new THREE.MeshBasicMaterial({ color: cssColor("--cl", "#c98a00"), transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false }));
+  const edge = new THREE.LineSegments(new THREE.EdgesGeometry(slicePlane.geometry), new THREE.LineBasicMaterial({ color: cssColor("--cl", "#c98a00") }));
+  slicePlane.add(edge);
+  slicePlane.position.set((bb.max.x + bb.min.x) / 2, (bb.max.y + bb.min.y) / 2, bb.min.z + frac * (bb.max.z - bb.min.z));
+  group.add(slicePlane);
+}
+function setCut(pct) { if (!current) return; const h = current.half.z; clip.constant = -h + (2 * h + 0.002) * pct / 100; }
+const state3d = { mode: "diameter" };
+
+function decodeWeb(buf, meta) {
+  const nv = meta.n_vertices, nf = meta.n_faces; let off = 0;
+  const q = new Uint16Array(buf, off, nv * 3); off += nv * 6;
+  const idxBytes = buf.slice(off, off + nf * 12); off += nf * 12;
+  const d8 = new Uint8Array(buf, off, nv); off += nv;
+  const p8 = new Uint8Array(buf, off, nv);
+  const lo = meta.bbox_min_nm, hi = meta.bbox_max_nm, pos = new Float32Array(nv * 3), diam = new Float32Array(nv);
+  for (let i = 0; i < nv; i++) { // file axes (z, y, x) -> three (x, -y, z)
+    const z = lo[0] + q[3 * i] / 65535 * (hi[0] - lo[0]), y = lo[1] + q[3 * i + 1] / 65535 * (hi[1] - lo[1]), x = lo[2] + q[3 * i + 2] / 65535 * (hi[2] - lo[2]);
+    pos[3 * i] = x; pos[3 * i + 1] = -y; pos[3 * i + 2] = z; diam[i] = d8[i] / 255;
+  }
+  return { positions: pos, indices: new Uint32Array(idxBytes), diam, perc: p8, meta };
+}
+
+window.Viewer3D = {
+  async loadDemo(base) {
+    document.getElementById("load3d").hidden = false; document.getElementById("load3d").textContent = "Loading the comp_full pore network…";
+    const [mr, br] = await Promise.all([fetch(base + ".json"), fetch(base + ".bin")]);
+    if (!mr.ok || !br.ok) throw new Error("the mesh files are not on this server");
+    const meta = await mr.json(); show(decodeWeb(await br.arrayBuffer(), meta)); return meta;
+  },
+  show, setColor, setCut, setSlicePlane,
+  reset() { if (home) { camera.position.copy(home); controls.target.set(0, 0, 0); controls.update(); } },
+  spin(on) { controls.autoRotate = on; },
+  ready: true,
+};
+document.getElementById("load3d").textContent = "";
+window.dispatchEvent(new Event("viewer3d-ready"));
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.22.0/tf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script>
+"use strict";
+/* ============================================================== utilities */
+const $ = (id) => document.getElementById(id);
+const tick = () => new Promise((r) => setTimeout(r, 0));
+const state = { model: null, input: null, result: null, stack: null, mode: "overlay", slice: 0, cardData: null };
+function setStatus(msg, frac, err) {
+  const s = $("status"); s.textContent = msg; s.classList.toggle("err", !!err);
+  if (frac != null) $("bar").style.width = Math.round(frac * 100) + "%";
+}
+function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function fmt(v, d = 2) { return Number.isFinite(v) ? v.toFixed(d) : "–"; }
+
+/* half -> float */
+function halfToFloat(u16) {
+  const out = new Float32Array(u16.length);
+  for (let i = 0; i < u16.length; i++) {
+    const h = u16[i], s = (h & 0x8000) ? -1 : 1, e = (h >> 10) & 0x1f, f = h & 0x3ff;
+    out[i] = e === 0 ? s * Math.pow(2, -14) * (f / 1024) : e === 31 ? (f ? NaN : s * Infinity) : s * Math.pow(2, e - 15) * (1 + f / 1024);
+  }
+  return out;
+}
+
+/* ============================================================== model */
+async function loadModel() {
+  try {
+    try { await tf.setBackend("webgl"); await tf.ready(); } catch (e) { await tf.setBackend("cpu"); }
+    if (tf.getBackend() !== "webgl") { await tf.setBackend("cpu"); }
+    const man = await (await fetch("model/manifest.json")).json();
+    const buf = await (await fetch("model/weights.bin")).arrayBuffer();
+    const flat = halfToFloat(new Uint16Array(buf));
+    const layers = {}; let off = 0;
+    for (const L of man.layers) {
+      const wn = L.wshape.reduce((a, b) => a * b, 1), bn = L.bshape[0];
+      layers[L.name] = { w: tf.tensor4d(flat.subarray(off, off + wn), L.wshape), b: tf.tensor1d(flat.subarray(off + wn, off + wn + bn)) };
+      off += wn + bn;
+    }
+    state.model = { man, layers, depth: man.config.depth };
+    const be = tf.getBackend();
+    $("engineDot").classList.add("ok");
+    $("engineText").textContent = `U-Net ${(flat.length / 1e6).toFixed(1)} M params · ${be === "webgl" ? "WebGL GPU" : "CPU (slow)"}`;
+    return true;
+  } catch (e) {
+    console.error(e);
+    $("engineText").textContent = "Model failed to load";
+    setStatus("The model could not be loaded: " + e.message + ". Reload the page to retry.", 0, true);
+    return false;
+  }
+}
+
+function forward(x) { // x: [1,H,W,1] normalised; returns softmax [1,H,W,3]
+  const L = state.model.layers;
+  const conv = (t, name) => tf.add(tf.conv2d(t, L[name].w, 1, "same"), L[name].b);
+  const block = (t, p) => {
+    let y = tf.relu(conv(t, p + ".conv1"));
+    y = conv(y, p + ".conv2");
+    const s = L[p + ".skip"] ? conv(t, p + ".skip") : t;
+    return tf.relu(tf.add(y, s));
+  };
+  return tf.tidy(() => {
+    const skips = [block(x, "stem")];
+    for (let i = 0; i < state.model.depth; i++) skips.push(block(tf.maxPool(skips[skips.length - 1], 2, 2, "valid"), "down" + i));
+    let y = skips.pop();
+    for (let i = 0; i < state.model.depth; i++) {
+      const s = skips.pop();
+      y = tf.image.resizeBilinear(y, [s.shape[1], s.shape[2]], false, true);
+      y = block(tf.concat([y, s], 3), "up" + i);
+    }
+    return tf.softmax(conv(y, "head"));
+  });
+}
+
+/* ============================================================== images */
+function percentileNorm(u8) { // -> Float32 [0,1] using 1-99 percentiles
+  const h = new Uint32Array(256); for (let i = 0; i < u8.length; i++) h[u8[i]]++;
+  const n = u8.length; let c = 0, lo = 0, hi = 255;
+  for (let v = 0; v < 256; v++) { c += h[v]; if (c >= 0.01 * n) { lo = v; break; } }
+  c = 0; for (let v = 0; v < 256; v++) { c += h[v]; if (c >= 0.99 * n) { hi = v; break; } }
+  if (hi <= lo) hi = lo + 1;
+  const out = new Float32Array(n), s = 1 / (hi - lo);
+  for (let i = 0; i < n; i++) { const t = (u8[i] - lo) * s; out[i] = t < 0 ? 0 : t > 1 ? 1 : t; }
+  return out;
+}
+function stretch16(arr) { // 16/32-bit -> Uint8 via 0.1-99.9 percentiles (NaN-safe)
+  const step = arr.length > 2e6 ? 7 : 1, sub = [];
+  for (let i = 0; i < arr.length; i += step) if (Number.isFinite(arr[i])) sub.push(arr[i]);
+  const sorted = Float32Array.from(sub).sort();
+  const lo = sorted[Math.floor(sorted.length * 0.001)], hi = sorted[Math.floor(sorted.length * 0.999)] || lo + 1;
+  const out = new Uint8Array(arr.length), s = 255 / Math.max(hi - lo, 1e-6);
+  for (let i = 0; i < arr.length; i++) out[i] = Math.max(0, Math.min(255, (arr[i] - lo) * s));
+  return out;
+}
+function imageDataToGray(id) {
+  const g = new Uint8Array(id.width * id.height), d = id.data;
+  for (let i = 0, j = 0; j < g.length; i += 4, j++) g[j] = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+  return g;
+}
+/* ============================================================== TIFF reader
+   Minimal, dependency-free: classic TIFF + BigTIFF, II/MM byte order, strips or tiles,
+   compression none / LZW (+ horizontal predictor) / PackBits / Deflate, 8-16-32 bit int or float,
+   1 or 3+ samples per pixel (chunky). Pages are parsed up front; pixels are decoded per slice on demand. */
+const TIFF = (() => {
+  function lzw(src, expected) {
+    const out = new Uint8Array(expected); let op = 0;
+    const dict = new Array(4096); let next = 258, width = 9, bitPos = 0, prev = null;
+    for (let i = 0; i < 256; i++) dict[i] = Uint8Array.of(i);
+    const nbits = src.length * 8;
+    const read = () => { let v = 0; for (let k = 0; k < width; k++) { const bp = bitPos + k; v = (v << 1) | ((src[bp >> 3] >> (7 - (bp & 7))) & 1); } bitPos += width; return v; };
+    while (bitPos + width <= nbits && op < expected) {
+      const code = read();
+      if (code === 257) break;
+      if (code === 256) { next = 258; width = 9; prev = null; continue; }
+      let entry;
+      if (code < next && dict[code]) entry = dict[code];
+      else if (code === next && prev) { entry = new Uint8Array(prev.length + 1); entry.set(prev); entry[prev.length] = prev[0]; }
+      else break;
+      const n = Math.min(entry.length, expected - op); out.set(n === entry.length ? entry : entry.subarray(0, n), op); op += n;
+      if (prev && next < 4096) { const e = new Uint8Array(prev.length + 1); e.set(prev); e[prev.length] = entry[0]; dict[next++] = e; }
+      prev = entry;
+      if (next + 1 >= (1 << width) && width < 12) width++;   // TIFF "early change"
+    }
+    return out;
+  }
+  function packbits(src, expected) {
+    const out = new Uint8Array(expected); let i = 0, o = 0;
+    while (i < src.length && o < expected) {
+      const n = (src[i++] << 24) >> 24;
+      if (n >= 0) { for (let k = 0; k <= n && o < expected; k++) out[o++] = src[i++]; }
+      else if (n !== -128) { const v = src[i++]; for (let k = 0; k < 1 - n && o < expected; k++) out[o++] = v; }
+    }
+    return out;
+  }
+  function inflate(src) {
+    if (typeof pako !== "undefined") return pako.inflate(src);
+    throw new Error("Deflate-compressed TIFF needs the pako library");
+  }
+  const TYPE_SIZE = { 1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 6: 1, 7: 1, 8: 2, 9: 4, 10: 8, 11: 4, 12: 8, 16: 8, 17: 8, 18: 8 };
+  function parse(buf) {
+    const dv = new DataView(buf), b0 = dv.getUint16(0);
+    if (b0 !== 0x4949 && b0 !== 0x4d4d) throw new Error("not a TIFF file");
+    const le = b0 === 0x4949, magic = dv.getUint16(2, le), big = magic === 43;
+    if (magic !== 42 && !big) throw new Error("unsupported TIFF variant");
+    const u16 = (o) => dv.getUint16(o, le), u32 = (o) => dv.getUint32(o, le);
+    const u64 = (o) => Number(dv.getBigUint64(o, le));
+    const readVal = (type, o) => type === 3 ? u16(o) : type === 4 || type === 13 ? u32(o) : type === 16 ? u64(o) : type === 1 || type === 7 ? dv.getUint8(o) : u32(o);
+    let off = big ? u64(8) : u32(4);
+    const pages = [], seen = new Set();
+    while (off && !seen.has(off) && off < buf.byteLength) {
+      seen.add(off);
+      const n = big ? u64(off) : u16(off), es = big ? 20 : 12, base = off + (big ? 8 : 2), tags = {};
+      for (let i = 0; i < n; i++) {
+        const e = base + i * es, tag = u16(e), type = u16(e + 2), count = big ? u64(e + 4) : u32(e + 4);
+        const size = (TYPE_SIZE[type] || 1) * count, inline = size <= (big ? 8 : 4);
+        const vo = inline ? e + (big ? 12 : 8) : (big ? u64(e + 12) : u32(e + 8));
+        if (tag === 273 || tag === 279 || tag === 324 || tag === 325 || tag === 258 || tag === 339) {
+          const arr = new Array(count); for (let k = 0; k < count; k++) arr[k] = readVal(type, vo + k * (TYPE_SIZE[type] || 1)); tags[tag] = arr;
+        } else if (count >= 1 && type !== 2) tags[tag] = readVal(type, vo);
+      }
+      pages.push(tags);
+      off = big ? u64(base + n * es) : u32(base + n * es);
+    }
+    return { le, pages };
+  }
+  function decodePage(buf, le, t) {
+    const W = t[256], H = t[257], spp = t[277] || 1, bps = (t[258] || [8])[0], fmt = (t[339] || [1])[0];
+    const comp = t[259] || 1, pred = t[317] || 1, planar = t[284] || 1, bpp = bps / 8;
+    if (![8, 16, 32].includes(bps)) throw new Error(`${bps}-bit TIFF samples are not supported`);
+    if (![1, 5, 8, 32946, 32773].includes(comp)) throw new Error(`TIFF compression ${comp} is not supported (use uncompressed, LZW, Deflate or PackBits)`);
+    if (planar === 2 && spp > 1) throw new Error("planar (non-interleaved) multi-channel TIFF is not supported");
+    const raw = new Uint8Array(W * H * spp * bpp);
+    const tiled = !!t[324];
+    const offs = tiled ? t[324] : t[273], cnts = tiled ? t[325] : t[279];
+    const tw = tiled ? t[322] : W, th = tiled ? t[323] : (t[278] || H);
+    const tilesX = Math.ceil(W / tw), rowBytes = tw * spp * bpp;
+    for (let s = 0; s < offs.length; s++) {
+      const src = new Uint8Array(buf, offs[s], cnts[s]);
+      const rows = tiled ? th : Math.min(th, H - s * th), expected = rowBytes * rows;
+      let d = comp === 1 ? src : comp === 5 ? lzw(src, expected) : comp === 32773 ? packbits(src, expected) : inflate(src);
+      if (pred === 2) { // horizontal differencing, per row, in sample units
+        const ds = new DataView(d.buffer, d.byteOffset, d.byteLength);
+        for (let r = 0; r < rows; r++) for (let x = spp; x < tw * spp; x++) {
+          const i = (r * tw * spp + x) * bpp, j = i - spp * bpp;
+          if (bpp === 1) d[i] = (d[i] + d[j]) & 255;
+          else if (bpp === 2) ds.setUint16(i, (ds.getUint16(i, le) + ds.getUint16(j, le)) & 0xffff, le);
+          else ds.setUint32(i, (ds.getUint32(i, le) + ds.getUint32(j, le)) >>> 0, le);
+        }
+      }
+      const tx = tiled ? (s % tilesX) * tw : 0, ty = tiled ? Math.floor(s / tilesX) * th : s * th;
+      const pix = spp * bpp, cw = Math.min(tw, W - tx);
+      for (let r = 0; r < rows && ty + r < H; r++) raw.set(d.subarray(r * rowBytes, r * rowBytes + cw * pix), ((ty + r) * W + tx) * pix);
+    }
+    const dv = new DataView(raw.buffer), N = W * H, plane = new Float32Array(N);
+    const sample = (i, c) => { const o = (i * spp + c) * bpp;
+      if (bpp === 1) return raw[o];
+      if (bpp === 2) return fmt === 2 ? dv.getInt16(o, le) : dv.getUint16(o, le);
+      return fmt === 3 ? dv.getFloat32(o, le) : fmt === 2 ? dv.getInt32(o, le) : dv.getUint32(o, le); };
+    if (spp >= 3) for (let i = 0; i < N; i++) plane[i] = 0.299 * sample(i, 0) + 0.587 * sample(i, 1) + 0.114 * sample(i, 2);
+    else for (let i = 0; i < N; i++) plane[i] = sample(i, 0);
+    if (bps === 8 && fmt !== 3) { const g = new Uint8Array(N); for (let i = 0; i < N; i++) g[i] = Math.round(plane[i]); if (t[262] === 0) for (let i = 0; i < N; i++) g[i] = 255 - g[i]; return g; }
+    return stretch16(plane);
+  }
+  return {
+    open(buf) {
+      const { le, pages } = parse(buf);
+      const imgs = pages.filter((t) => t[256] && t[257] && !(t[254] & 1));   // skip reduced-resolution thumbnails
+      if (!imgs.length) throw new Error("no image found in TIFF");
+      const W = imgs[0][256], H = imgs[0][257], same = imgs.filter((t) => t[256] === W && t[257] === H);
+      return { W, H, n: same.length, get: async (k) => decodePage(buf, le, same[k]) };
+    },
+    _lzw: lzw, _packbits: packbits,
+  };
+})();
+
+async function decodeFile(file) {
+  const buf = await file.arrayBuffer();
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".tif") || name.endsWith(".tiff")) return TIFF.open(buf);
+  const bmp = await createImageBitmap(new Blob([buf]));
+  const c = new OffscreenCanvas(bmp.width, bmp.height), ctx = c.getContext("2d");
+  ctx.drawImage(bmp, 0, 0);
+  const g = imageDataToGray(ctx.getImageData(0, 0, bmp.width, bmp.height));
+  return { W: bmp.width, H: bmp.height, n: 1, get: async () => g };
+}
+function resample(gray, W, H, f) {
+  if (Math.abs(f - 1) < 1e-3) return { gray, W, H };
+  const nW = Math.max(32, Math.round(W * f)), nH = Math.max(32, Math.round(H * f));
+  const src = new OffscreenCanvas(W, H), sctx = src.getContext("2d"), id = sctx.createImageData(W, H);
+  for (let i = 0; i < gray.length; i++) { id.data[4 * i] = id.data[4 * i + 1] = id.data[4 * i + 2] = gray[i]; id.data[4 * i + 3] = 255; }
+  sctx.putImageData(id, 0, 0);
+  const dst = new OffscreenCanvas(nW, nH), dctx = dst.getContext("2d");
+  dctx.imageSmoothingQuality = "high"; dctx.drawImage(src, 0, 0, nW, nH);
+  return { gray: imageDataToGray(dctx.getImageData(0, 0, nW, nH)), W: nW, H: nH };
+}
+
+/* ============================================================== inference */
+async function segment(gray, W, H, tta, onProg) {
+  const norm = percentileNorm(gray);
+  const T = 512, ov = 64, M = 32;
+  const tileH = Math.min(T, Math.ceil(H / M) * M), tileW = Math.min(T, Math.ceil(W / M) * M);
+  const ys = [], xs = [];
+  for (let y = 0; ; y += tileH - ov) { if (y + tileH >= H) { ys.push(Math.max(0, H - tileH)); break; } ys.push(y); }
+  for (let x = 0; ; x += tileW - ov) { if (x + tileW >= W) { xs.push(Math.max(0, W - tileW)); break; } xs.push(x); }
+  const acc = new Float32Array(3 * W * H), wsum = new Float32Array(W * H);
+  const ramp = (i, n) => Math.max(0.05, Math.min(1, (i + 1) / (ov / 2), (n - i) / (ov / 2)));
+  let done = 0; const total = ys.length * xs.length;
+  for (const y0 of ys) for (const x0 of xs) {
+    const th = Math.min(tileH, H), tw = Math.min(tileW, W);
+    const tile = new Float32Array(tileH * tileW);
+    for (let y = 0; y < tileH; y++) { // reflect padding when the image is smaller than the tile
+      let sy = y0 + y; if (sy >= H) sy = 2 * H - 2 - sy; sy = Math.max(0, sy);
+      for (let x = 0; x < tileW; x++) { let sx = x0 + x; if (sx >= W) sx = 2 * W - 2 - sx; sx = Math.max(0, sx); tile[y * tileW + x] = norm[sy * W + sx]; }
+    }
+    const probs = tf.tidy(() => {
+      const t = tf.tensor4d(tile, [1, tileH, tileW, 1]);
+      let p = forward(t);
+      if (tta) p = tf.div(tf.add(p, tf.reverse(forward(tf.reverse(t, 2)), 2)), 2);
+      return p;
+    });
+    const pd = await probs.data(); probs.dispose();
+    for (let y = 0; y < th; y++) {
+      const wy = ramp(y, th);
+      for (let x = 0; x < tw; x++) {
+        const w = Math.min(wy, ramp(x, tw)), gi = (y0 + y) * W + x0 + x, li = (y * tileW + x) * 3;
+        acc[3 * gi] += w * pd[li]; acc[3 * gi + 1] += w * pd[li + 1]; acc[3 * gi + 2] += w * pd[li + 2]; wsum[gi] += w;
+      }
+    }
+    done++; onProg && onProg(done / total); await tick();
+  }
+  const cls = new Uint8Array(W * H), pp = new Float32Array(W * H), conf = new Float32Array(W * H);
+  for (let i = 0; i < W * H; i++) {
+    const s = wsum[i] || 1, a = acc[3 * i] / s, b = acc[3 * i + 1] / s, c = acc[3 * i + 2] / s;
+    cls[i] = a >= b && a >= c ? 0 : b >= c ? 1 : 2;
+    pp[i] = b / Math.max(a + b, 1e-6); conf[i] = Math.max(a, b, c);
+  }
+  return { cls, pp, conf };
+}
+
+/* ============================================================== metrics */
+function edt1d(f, n, d, v, z) { // Felzenszwalb squared distance transform
+  let k = 0; v[0] = 0; z[0] = -1e20; z[1] = 1e20;
+  for (let q = 1; q < n; q++) {
+    let s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
+    while (s <= z[k]) { k--; s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); }
+    k++; v[k] = q; z[k] = s; z[k + 1] = 1e20;
+  }
+  k = 0; for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; d[q] = (q - v[k]) * (q - v[k]) + f[v[k]]; }
+}
+function edt(fg, W, H) { // Euclidean distance of each fg pixel to nearest background pixel
+  const INF = 1e12, g = new Float64Array(W * H);
+  for (let i = 0; i < W * H; i++) g[i] = fg[i] ? INF : 0;
+  const n = Math.max(W, H), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+  for (let x = 0; x < W; x++) { for (let y = 0; y < H; y++) f[y] = g[y * W + x]; edt1d(f, H, d, v, z); for (let y = 0; y < H; y++) g[y * W + x] = d[y]; }
+  for (let y = 0; y < H; y++) { for (let x = 0; x < W; x++) f[x] = g[y * W + x]; edt1d(f, W, d, v, z); for (let x = 0; x < W; x++) g[y * W + x] = d[x]; }
+  const out = new Float32Array(W * H); for (let i = 0; i < W * H; i++) out[i] = Math.sqrt(g[i]); return out;
+}
+function localThickness(pore, W, H) {
+  const dt = edt(pore, W, H); let rmax = 0; for (let i = 0; i < dt.length; i++) if (dt[i] > rmax) rmax = dt[i];
+  const lt = new Float32Array(W * H); if (rmax < 1) return lt;
+  const nr = Math.min(Math.ceil(rmax), 32), radii = [];
+  for (let i = 0; i < nr; i++) radii.push(Math.max(1, Math.round(Math.exp(Math.log(rmax) * i / Math.max(nr - 1, 1)))));
+  const uniq = [...new Set(radii)];
+  const notSeed = new Uint8Array(W * H);
+  for (const r of uniq) {
+    let any = false; for (let i = 0; i < W * H; i++) { const s = dt[i] >= r; notSeed[i] = s ? 0 : 1; any = any || s; }
+    if (!any) break;
+    const d = edt(notSeed, W, H);
+    for (let i = 0; i < W * H; i++) if (pore[i] && d[i] < r) lt[i] = 2 * r;
+  }
+  for (let i = 0; i < W * H; i++) if (pore[i] && lt[i] === 0) lt[i] = 2 * dt[i];
+  return lt;
+}
+function labelComponents(fg, W, H) { // 4-connectivity, union-find
+  const lab = new Int32Array(W * H), parent = [0];
+  const find = (a) => { while (parent[a] !== a) { parent[a] = parent[parent[a]]; a = parent[a]; } return a; };
+  let next = 1;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x; if (!fg[i]) continue;
+    const up = y > 0 ? lab[i - W] : 0, left = x > 0 ? lab[i - 1] : 0;
+    if (!up && !left) { lab[i] = next; parent.push(next); next++; }
+    else if (up && left) { const a = find(up), b = find(left); lab[i] = Math.min(a, b); if (a !== b) parent[Math.max(a, b)] = Math.min(a, b); }
+    else lab[i] = up || left;
+  }
+  const remap = new Int32Array(next); let n = 0;
+  for (let l = 1; l < next; l++) { const r = find(l); if (!remap[r]) remap[r] = ++n; remap[l] = remap[r]; }
+  for (let i = 0; i < W * H; i++) if (lab[i]) lab[i] = remap[lab[i]];
+  return { lab, n };
+}
+function chords(mask, valid, W, H, axis) {
+  const out = []; const N = axis === 0 ? W : H, L = axis === 0 ? H : W;
+  for (let a = 0; a < N; a++) {
+    let run = 0, startOk = false;
+    for (let b = 0; b <= L; b++) {
+      const i = axis === 0 ? b * W + a : a * W + b;
+      const inside = b < L && mask[i];
+      if (inside) { if (run === 0) { const pi = axis === 0 ? (b - 1) * W + a : a * W + b - 1; startOk = b > 0 && valid[pi]; } run++; }
+      else if (run) { if (startOk && b < L && valid[i]) out.push(run); run = 0; }
+    }
+  }
+  return out;
+}
+function innerBox(roi, W, H) {
+  const rowFrac = new Float32Array(H);
+  for (let y = 0; y < H; y++) { let c = 0; for (let x = 0; x < W; x++) c += roi[y * W + x]; rowFrac[y] = c / W; }
+  let thr = 0.98, best = [0, -1];
+  for (const t of [0.98, 0.9, 0.8]) {
+    let s = -1; best = [0, -1];
+    for (let y = 0; y <= H; y++) {
+      if (y < H && rowFrac[y] >= t) { if (s < 0) s = y; }
+      else if (s >= 0) { if (y - s > best[1] - best[0] + 1) best = [s, y - 1]; s = -1; }
+    }
+    if (best[1] - best[0] + 1 >= 16) { thr = t; break; }
+  }
+  const [y0, y1] = best; if (y1 < y0) return null;
+  let cs = -1, bc = [0, -1];
+  for (let x = 0; x <= W; x++) {
+    let ok = x < W; if (ok) for (let y = y0; y <= y1; y++) if (!roi[y * W + x]) { ok = false; break; }
+    if (ok) { if (cs < 0) cs = x; } else if (cs >= 0) { if (x - cs > bc[1] - bc[0] + 1) bc = [cs, x - 1]; cs = -1; }
+  }
+  if (bc[1] - bc[0] + 1 < 16) return null;
+  return { y0, y1: y1 + 1, x0: bc[0], x1: bc[1] + 1 };
+}
+async function tortuosity(P, dims, axis, spacing = [1, 1, 1]) {
+  // Diffusive tortuosity factor (TauFactor definition) of phase P (Uint8, dims [D0,D1,D2], D0 = 1 for 2D)
+  // along `axis`: c = 1 on the first face, c = 0 on the last, no flux elsewhere; tau = eps / (Deff/D).
+  // Anisotropic voxels: face conductance per axis scales as 1/h^2 (finite volume, divided by cell volume).
+  const [D0, D1, D2] = dims, N = D0 * D1 * D2, st = [D1 * D2, D2, 1], L = dims[axis];
+  const hmin = Math.min(...spacing), g = spacing.map((h) => (hmin / h) ** 2);
+  let eps = 0; for (let i = 0; i < N; i++) eps += P[i]; eps /= N;
+  const coord = (i, ax) => ax === 0 ? Math.floor(i / st[0]) : ax === 1 ? Math.floor(i / D2) % D1 : i % D2;
+  const flood = (face) => { // pore cells connected to a face along `axis`
+    const seen = new Uint8Array(N), q = new Int32Array(N); let h = 0, t = 0;
+    for (let i = 0; i < N; i++) if (P[i] && coord(i, axis) === face) { seen[i] = 1; q[t++] = i; }
+    while (h < t) { const i = q[h++];
+      for (let ax = 0; ax < 3; ax++) { if (dims[ax] < 2) continue; const c = coord(i, ax);
+        if (c > 0 && P[i - st[ax]] && !seen[i - st[ax]]) { seen[i - st[ax]] = 1; q[t++] = i - st[ax]; }
+        if (c < dims[ax] - 1 && P[i + st[ax]] && !seen[i + st[ax]]) { seen[i + st[ax]] = 1; q[t++] = i + st[ax]; } } }
+    return seen;
+  };
+  const A = flood(0), B = flood(L - 1), act = new Uint8Array(N); let na = 0;
+  for (let i = 0; i < N; i++) if (A[i] && B[i]) { act[i] = 1; na++; }
+  if (!na) return { tau: Infinity, eps, percolates: false, spanning: 0 };
+  const diag = new Float64Array(N), b = new Float64Array(N), cA = new Int32Array(N);
+  for (let i = 0; i < N; i++) { if (!act[i]) continue; let d = 0; cA[i] = coord(i, axis);
+    for (let ax = 0; ax < 3; ax++) { if (dims[ax] < 2) continue; const c = coord(i, ax);
+      if (c > 0 && act[i - st[ax]]) d += g[ax]; if (c < dims[ax] - 1 && act[i + st[ax]]) d += g[ax]; }
+    if (cA[i] === 0) { d += 2 * g[axis]; b[i] = 2 * g[axis]; } if (cA[i] === L - 1) d += 2 * g[axis]; diag[i] = d; }
+  const nb = []; // neighbour lists for speed
+  for (let ax = 0; ax < 3; ax++) if (dims[ax] > 1) nb.push(ax);
+  const Ax = (x, y) => { for (let i = 0; i < N; i++) { if (!act[i]) { y[i] = 0; continue; } let s = diag[i] * x[i];
+      for (const ax of nb) { const c = coord(i, ax), o = st[ax], ga = g[ax];
+        if (c > 0 && act[i - o]) s -= ga * x[i - o]; if (c < dims[ax] - 1 && act[i + o]) s -= ga * x[i + o]; }
+      y[i] = s; } };
+  const x = new Float64Array(N), r = new Float64Array(N), z = new Float64Array(N), p = new Float64Array(N), q = new Float64Array(N);
+  for (let i = 0; i < N; i++) if (act[i]) x[i] = 1 - (cA[i] + 0.5) / L;
+  Ax(x, q); let bn = 0; for (let i = 0; i < N; i++) { r[i] = act[i] ? b[i] - q[i] : 0; bn += b[i] * b[i]; } bn = Math.sqrt(bn);
+  let rz = 0; for (let i = 0; i < N; i++) { z[i] = act[i] ? r[i] / diag[i] : 0; p[i] = z[i]; rz += r[i] * z[i]; }
+  for (let it = 0; it < 8000; it++) {
+    Ax(p, q); let pq = 0; for (let i = 0; i < N; i++) pq += p[i] * q[i];
+    const al = rz / pq; let rn = 0;
+    for (let i = 0; i < N; i++) { x[i] += al * p[i]; r[i] -= al * q[i]; rn += r[i] * r[i]; }
+    if (Math.sqrt(rn) < 1e-7 * bn) break;
+    let rz2 = 0; for (let i = 0; i < N; i++) { z[i] = act[i] ? r[i] / diag[i] : 0; rz2 += r[i] * z[i]; }
+    const be = rz2 / rz; rz = rz2; for (let i = 0; i < N; i++) p[i] = z[i] + be * p[i];
+    if (it % 150 === 149) await tick();
+  }
+  let inflow = 0; for (let i = 0; i < N; i++) if (act[i] && cA[i] === 0) inflow += 2 * (1 - x[i]);
+  const deff = inflow * L / (N / L);
+  return { tau: deff > 0 ? eps / deff : Infinity, eps, deff, percolates: true, spanning: na / Math.max(eps * N, 1) };
+}
+function depthProfile(roi, pore, pp, W, H, bins = 20) {
+  const top = new Int32Array(W).fill(-1), bot = new Int32Array(W).fill(-1);
+  for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (roi[y * W + x]) { if (top[x] < 0) top[x] = y; bot[x] = y; }
+  const num = new Float64Array(bins), den = new Float64Array(bins), lo = new Float64Array(bins), hi = new Float64Array(bins);
+  let th = 0, tc = 0; const thick = [];
+  for (let x = 0; x < W; x++) {
+    if (top[x] < 0) continue; const t = bot[x] - top[x] + 1; th += t; tc++; thick.push(t);
+    for (let y = top[x]; y <= bot[x]; y++) {
+      const i = y * W + x; if (!roi[i]) continue;
+      const b = Math.min(bins - 1, Math.floor((y - top[x]) / t * bins));
+      den[b]++; num[b] += pore[i]; lo[b] += pp[i] > 0.65 ? 1 : 0; hi[b] += pp[i] > 0.35 ? 1 : 0;
+    }
+  }
+  const mean = th / Math.max(tc, 1), sd = Math.sqrt(thick.reduce((a, t) => a + (t - mean) ** 2, 0) / Math.max(tc, 1));
+  return { depth: [...Array(bins)].map((_, i) => (i + 0.5) / bins), por: [...num].map((v, i) => v / (den[i] || 1)),
+    lo: [...lo].map((v, i) => v / (den[i] || 1)), hi: [...hi].map((v, i) => v / (den[i] || 1)), thick: mean, thickSd: sd, cols: tc };
+}
+function pct(arr, q) { if (!arr.length) return NaN; const s = Float32Array.from(arr).sort(); return s[Math.min(s.length - 1, Math.floor(q * s.length))]; }
+
+async function analyse(seg, W, H, pxnm, doTau, onProg) {
+  const { cls, pp } = seg, N = W * H;
+  const roi = new Uint8Array(N), pore = new Uint8Array(N), solid = new Uint8Array(N);
+  let nr = 0, np = 0, lo = 0, hi = 0;
+  for (let i = 0; i < N; i++) { roi[i] = cls[i] !== 2; pore[i] = cls[i] === 1; solid[i] = cls[i] === 0;
+    if (roi[i]) { nr++; np += pore[i]; lo += pp[i] > 0.65; hi += pp[i] > 0.35; } }
+  const R = { W, H, pxnm, roiFrac: nr / N };
+  if (nr < 200) { R.empty = true; return R; }
+  R.porosity = np / nr; R.porLo = lo / nr; R.porHi = hi / nr;
+  onProg("Pore sizes (local thickness)…", 0.1); await tick();
+  const lt = localThickness(pore, W, H);
+  const ltv = []; for (let i = 0; i < N; i++) if (pore[i]) ltv.push(lt[i] * pxnm);
+  R.lt = lt; R.d10 = pct(ltv, 0.1); R.d50 = pct(ltv, 0.5); R.d90 = pct(ltv, 0.9);
+  const maxd = pct(ltv, 0.995) || 1, nb = 28, edges = [...Array(nb + 1)].map((_, i) => i * maxd / nb), hist = new Array(nb).fill(0);
+  for (const v of ltv) hist[Math.min(nb - 1, Math.floor(v / maxd * nb))]++;
+  R.psd = { centers: edges.slice(0, -1).map((e, i) => (e + edges[i + 1]) / 2), frac: hist.map((h) => 100 * h / Math.max(ltv.length, 1)), width: maxd / nb };
+  onProg("Chords, interface and connectivity…", 0.35); await tick();
+  const cx = chords(pore, roi, W, H, 1), cy = chords(pore, roi, W, H, 0);
+  const sx = chords(solid, roi, W, H, 1), sy = chords(solid, roi, W, H, 0);
+  const mean = (a) => a.length ? a.reduce((s, v) => s + v, 0) / a.length * pxnm : NaN;
+  R.chord = { poreX: mean(cx), poreY: mean(cy), solidX: mean(sx), solidY: mean(sy), cx, cy };
+  let faces = 0;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const i = y * W + x; if (!roi[i]) continue;
+    if (x + 1 < W && roi[i + 1] && pore[i] !== pore[i + 1]) faces++; if (y + 1 < H && roi[i + W] && pore[i] !== pore[i + W]) faces++; }
+  R.sv = faces * Math.PI / 4 / nr / pxnm * 1000; // per micrometre
+  const prof = depthProfile(roi, pore, pp, W, H); R.profile = prof; R.thicknessNm = prof.thick * pxnm; R.thicknessSdNm = prof.thickSd * pxnm;
+  const { lab, n } = labelComponents(pore, W, H); R.lab = lab; R.nClusters = n;
+  const top = new Int32Array(W).fill(-1), bot = new Int32Array(W).fill(-1);
+  for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (roi[y * W + x]) { if (top[x] < 0) top[x] = y; bot[x] = y; }
+  const tA = new Uint8Array(n + 1), bA = new Uint8Array(n + 1);
+  for (let x = 0; x < W; x++) { if (top[x] < 0) continue;
+    for (let y = top[x]; y <= Math.min(H - 1, top[x] + 2); y++) tA[lab[y * W + x]] = 1;
+    for (let y = Math.max(0, bot[x] - 2); y <= bot[x]; y++) bA[lab[y * W + x]] = 1; }
+  const sizes = new Float64Array(n + 1); for (let i = 0; i < N; i++) if (lab[i]) sizes[lab[i]]++;
+  let percA = 0; R.percolating = new Uint8Array(n + 1);
+  for (let l = 1; l <= n; l++) if (tA[l] && bA[l]) { R.percolating[l] = 1; percA += sizes[l]; }
+  R.percFrac = percA / Math.max(np, 1);
+  let big = 0; for (let l = 1; l <= n; l++) if (sizes[l] > big) big = sizes[l];
+  R.largestFrac = big / Math.max(np, 1);
+  if (doTau) {
+    const box = innerBox(roi, W, H);
+    if (box) {
+      let x1 = Math.min(box.x1, box.x0 + 640); // cap solve size for speed
+      const bw = x1 - box.x0, bh = box.y1 - box.y0, sub = new Uint8Array(bw * bh);
+      for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) sub[y * bw + x] = pore[(box.y0 + y) * W + box.x0 + x];
+      onProg("Tortuosity: pore diffusion through the layer…", 0.55); await tick();
+      R.tauY = await tortuosity(sub, [1, bh, bw], 1);
+      onProg("Tortuosity: solid phase (electron path)…", 0.75); await tick();
+      const solidSub = new Uint8Array(sub.length); for (let i = 0; i < sub.length; i++) solidSub[i] = 1 - sub[i];
+      R.tauSolidY = await tortuosity(solidSub, [1, bh, bw], 1);
+      onProg("Tortuosity: diffusion along the layer…", 0.88); await tick();
+      R.tauX = await tortuosity(sub, [1, bh, bw], 2);
+      R.tauBox = { ...box, x1, w: bw, h: bh };
+    }
+  }
+  return R;
+}
+
+/* ============================================================== rendering: visualisation 1 */
+const VIRIDIS = [[68,1,84],[59,82,139],[33,145,140],[94,201,98],[253,231,37]];
+function viridis(t) { t = Math.max(0, Math.min(1, t)) * 4; const i = Math.min(3, Math.floor(t)), f = t - i, a = VIRIDIS[i], b = VIRIDIS[i + 1];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]; }
+function hexRGB(h) { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map((c) => c + c).join(""); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+function drawViewer() {
+  const cur = currentView(); const cv = $("cv"); if (!cur) return;
+  const { gray, W, H, seg, R } = cur;
+  if (state.stack && seg && !R && (state.mode === "lt" || state.mode === "conn")) ensureSliceAnalysis(state.slice);
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d"), id = ctx.createImageData(W, H), d = id.data;
+  const a = $("alpha").value / 100, mode = state.mode;
+  const pore = hexRGB(css("--pore") || "#1f6feb"), clc = hexRGB(css("--cl") || "#c98a00"), perc = hexRGB(css("--perc") || "#e0531c");
+  const ltMax = R && R.d90 ? R.d90 / R.pxnm * 1.4 : 20;
+  for (let i = 0; i < W * H; i++) {
+    const g = gray[i]; let r = g, gg = g, b = g;
+    if (seg && mode !== "raw") {
+      const c = seg.cls[i];
+      if (mode === "mask") { const v = c === 1 ? pore : c === 0 ? [236, 232, 222] : [40, 44, 50]; r = v[0]; gg = v[1]; b = v[2]; }
+      else if (mode === "overlay") { if (c === 1) { r = g * (1 - a) + pore[0] * a; gg = g * (1 - a) + pore[1] * a; b = g * (1 - a) + pore[2] * a; } else if (c === 2) { r *= 0.42; gg *= 0.42; b *= 0.42; } }
+      else if (mode === "lt") { if (c === 1 && R && R.lt) { const v = viridis(R.lt[i] / ltMax); r = g * (1 - a) + v[0] * a; gg = g * (1 - a) + v[1] * a; b = g * (1 - a) + v[2] * a; } else if (c === 2) { r *= 0.35; gg *= 0.35; b *= 0.35; } else { r *= 0.8; gg *= 0.8; b *= 0.8; } }
+      else if (mode === "conn") { if (c === 1 && R && R.lab) { const l = R.lab[i]; const v = R.percolating[l] ? perc : [((l * 97) % 140) + 60, ((l * 57) % 120) + 90, 200]; r = v[0]; gg = v[1]; b = v[2]; } else if (c === 0) { r = gg = b = 230; } else { r *= 0.3; gg *= 0.3; b *= 0.3; } }
+      else if (mode === "conf") { const t = (seg.conf[i] - 0.34) / 0.66; const v = viridis(t); r = v[0]; gg = v[1]; b = v[2]; }
+    }
+    d[4 * i] = r; d[4 * i + 1] = gg; d[4 * i + 2] = b; d[4 * i + 3] = 255;
+  }
+  if (seg && (mode === "overlay" || mode === "lt")) { // catalyst-layer boundary
+    for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+      const i = y * W + x, inR = seg.cls[i] !== 2;
+      if (inR && (seg.cls[i - 1] === 2 || seg.cls[i + 1] === 2 || seg.cls[i - W] === 2 || seg.cls[i + W] === 2)) { d[4 * i] = clc[0]; d[4 * i + 1] = clc[1]; d[4 * i + 2] = clc[2]; }
+    }
+  }
+  ctx.putImageData(id, 0, 0);
+  if (R && R.tauBox && mode === "conn") { ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.setLineDash([6, 4]); ctx.lineWidth = Math.max(1.5, W / 900);
+    ctx.strokeRect(R.tauBox.x0, R.tauBox.y0, R.tauBox.w, R.tauBox.h); }
+  drawLegend(R);
+}
+function drawLegend(R) {
+  const m = state.mode, L = $("legend");
+  const items = {
+    overlay: `<span><i class="sw" style="background:var(--pore)"></i>pore</span><span><i class="sw" style="background:#bdb8ad"></i>solid (image)</span><span><i class="sw" style="background:#2a2e33"></i>outside catalyst layer</span><span><i class="sw" style="background:var(--cl)"></i>layer boundary</span>`,
+    mask: `<span><i class="sw" style="background:var(--pore)"></i>pore</span><span><i class="sw" style="background:#ece8de;border:1px solid var(--line)"></i>solid</span><span><i class="sw" style="background:#282c32"></i>outside</span>`,
+    lt: `<span>pore diameter</span><span class="mono">0</span><i class="cbar"></i><span class="mono">${R && R.d90 ? Math.round(R.d90 * 1.4) : "–"} nm</span>`,
+    conn: `<span><i class="sw" style="background:var(--perc)"></i>clusters spanning the layer</span><span><i class="sw" style="background:#7a9ad0"></i>other pore clusters</span><span>dashed box: tortuosity solve region</span>`,
+    conf: `<span>model confidence (max class probability)</span><span class="mono">0.34</span><i class="cbar"></i><span class="mono">1.0</span>`,
+    raw: `<span>input after grey-scale conversion</span>`,
+  };
+  L.innerHTML = items[m];
+}
+
+/* ============================================================== rendering: visualisation 2 */
+function plotBase(title, xt, yt) {
+  const ink = css("--ink"), muted = css("--muted"), line = css("--line");
+  return { margin: { l: 52, r: 12, t: 8, b: 44 }, paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
+    font: { family: "IBM Plex Sans, system-ui, sans-serif", size: 12, color: ink },
+    xaxis: { title: { text: xt, font: { color: muted, size: 11.5 } }, gridcolor: line, zerolinecolor: line, linecolor: line, tickfont: { color: muted } },
+    yaxis: { title: { text: yt, font: { color: muted, size: 11.5 } }, gridcolor: line, zerolinecolor: line, linecolor: line, tickfont: { color: muted } },
+    showlegend: false, hoverlabel: { font: { family: "IBM Plex Mono, monospace" } } };
+}
+const PCFG = { displayModeBar: false, responsive: true };
+function drawCharts(R) {
+  if (!R || R.empty) return;
+  const pore = css("--pore"), ink = css("--ink"), muted = css("--muted"), accent = css("--accent");
+  const L1 = plotBase("", "pore diameter (nm)", "pore area (%)");
+  L1.shapes = [{ type: "line", x0: R.d50, x1: R.d50, yref: "paper", y0: 0, y1: 1, line: { color: ink, dash: "dash", width: 1 } }];
+  L1.annotations = [{ x: R.d50, yref: "paper", y: 1, text: `d₅₀ ${R.d50.toFixed(0)} nm`, showarrow: false, xanchor: "left", xshift: 4, yanchor: "top", font: { size: 11, color: ink } }];
+  Plotly.react("psd", [{ type: "bar", x: R.psd.centers, y: R.psd.frac, width: R.psd.width * 0.92, marker: { color: pore },
+    hovertemplate: "%{x:.0f} nm: %{y:.1f}%<extra></extra>" }], L1, PCFG);
+  const p = R.profile, L2 = plotBase("", "porosity", "depth (0 = top of layer)");
+  L2.yaxis.autorange = "reversed"; L2.xaxis.rangemode = "tozero";
+  L2.shapes = [{ type: "line", x0: R.porosity, x1: R.porosity, y0: 0, y1: 1, line: { color: muted, dash: "dot", width: 1 } }];
+  Plotly.react("depth", [
+    { x: p.lo, y: p.depth, mode: "lines", line: { width: 0 }, hoverinfo: "skip" },
+    { x: p.hi, y: p.depth, mode: "lines", line: { width: 0 }, fill: "tonextx", fillcolor: hexA(pore, 0.18), hoverinfo: "skip" },
+    { x: p.por, y: p.depth, mode: "lines+markers", line: { color: pore, width: 2 }, marker: { size: 4 }, hovertemplate: "depth %{y:.2f}: ε = %{x:.3f}<extra></extra>" },
+  ], L2, PCFG);
+  const L3 = plotBase("", "chord length (nm)", "share of chords (%)");
+  L3.showlegend = true; L3.legend = { x: 1, xanchor: "right", y: 1, font: { size: 11, color: muted }, bgcolor: "rgba(0,0,0,0)" };
+  const hist = (a) => { const mx = Math.max(10, pct(a, 0.98)), nb = 24, h = new Array(nb).fill(0); for (const v of a) if (v <= mx) h[Math.min(nb - 1, Math.floor(v / mx * nb))]++;
+    return { x: h.map((_, i) => (i + 0.5) * mx / nb * R.pxnm), y: h.map((v) => 100 * v / Math.max(a.length, 1)) }; };
+  const hx = hist(R.chord.cx), hy = hist(R.chord.cy);
+  Plotly.react("chord", [
+    { ...hx, mode: "lines", name: `in-plane · mean ${R.chord.poreX.toFixed(0)} nm`, line: { color: pore, width: 2, shape: "spline" } },
+    { ...hy, mode: "lines", name: `through-plane · mean ${R.chord.poreY.toFixed(0)} nm`, line: { color: accent === pore ? ink : css("--cl"), width: 2, dash: "dash", shape: "spline" } },
+  ], L3, PCFG);
+}
+function hexA(hex, a) { const [r, g, b] = hexRGB(hex); return `rgba(${r},${g},${b},${a})`; }
+
+/* ============================================================== rendering: visualisation 3 */
+function edt3(fg, Z, Y, X) { // Euclidean distance of fg voxels to the nearest background voxel
+  const N = Z * Y * X, g = new Float64Array(N); for (let i = 0; i < N; i++) g[i] = fg[i] ? 1e12 : 0;
+  const n = Math.max(Z, Y, X), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), zz = new Float64Array(n + 1);
+  const pass = (len, idx) => { for (let t = 0; t < len; t++) f[t] = g[idx(t)]; edt1d(f, len, d, v, zz); for (let t = 0; t < len; t++) g[idx(t)] = d[t]; };
+  for (let z = 0; z < Z; z++) for (let y = 0; y < Y; y++) pass(X, (t) => (z * Y + y) * X + t);
+  for (let z = 0; z < Z; z++) for (let x = 0; x < X; x++) pass(Y, (t) => (z * Y + t) * X + x);
+  for (let y = 0; y < Y; y++) for (let x = 0; x < X; x++) pass(Z, (t) => (t * Y + y) * X + x);
+  const out = new Float32Array(N); for (let i = 0; i < N; i++) out[i] = Math.sqrt(g[i]); return out;
+}
+function maxFilter3(a, Z, Y, X, r) { // separable box max filter
+  let src = a;
+  const st = [Y * X, X, 1], dims = [Z, Y, X];
+  for (let ax = 0; ax < 3; ax++) {
+    const out = new Float32Array(src.length);
+    for (let i = 0; i < src.length; i++) {
+      const c = Math.floor(i / st[ax]) % dims[ax]; let m = src[i];
+      for (let k = 1; k <= r; k++) { if (c - k >= 0) m = Math.max(m, src[i - k * st[ax]]); if (c + k < dims[ax]) m = Math.max(m, src[i + k * st[ax]]); }
+      out[i] = m;
+    }
+    src = out;
+  }
+  return src;
+}
+function surfaceNets(field, Z, Y, X, iso = 0.5) {
+  // field is padded by the caller with background so the surface is closed. Returns cell-vertex mesh in voxel coords (z, y, x).
+  const cellIdx = new Int32Array(Z * Y * X).fill(-1), pos = [], tri = [];
+  const at = (z, y, x) => field[(z * Y + y) * X + x];
+  const corners = [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]];
+  const edges = [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]];
+  const val = new Float32Array(8);
+  for (let z = 0; z < Z - 1; z++) for (let y = 0; y < Y - 1; y++) for (let x = 0; x < X - 1; x++) {
+    let mask = 0;
+    for (let c = 0; c < 8; c++) { val[c] = at(z + corners[c][0], y + corners[c][1], x + corners[c][2]); if (val[c] > iso) mask |= 1 << c; }
+    if (mask === 0 || mask === 255) continue;
+    let sz = 0, sy = 0, sx = 0, n = 0;
+    for (const [a, b] of edges) {
+      const ia = (mask >> a) & 1, ib = (mask >> b) & 1; if (ia === ib) continue;
+      const t = (iso - val[a]) / (val[b] - val[a]);
+      sz += corners[a][0] + t * (corners[b][0] - corners[a][0]); sy += corners[a][1] + t * (corners[b][1] - corners[a][1]); sx += corners[a][2] + t * (corners[b][2] - corners[a][2]); n++;
+    }
+    cellIdx[(z * Y + y) * X + x] = pos.length / 3; pos.push(z + sz / n, y + sy / n, x + sx / n);
+  }
+  const cid = (z, y, x) => cellIdx[(z * Y + y) * X + x];
+  for (let z = 1; z < Z - 1; z++) for (let y = 1; y < Y - 1; y++) for (let x = 1; x < X - 1; x++) {
+    const v0 = at(z, y, x) > iso;
+    // edge along x: cells (z-1..z, y-1..y, x)
+    if (x < X - 1 && v0 !== (at(z, y, x + 1) > iso)) { const q = [cid(z - 1, y - 1, x), cid(z - 1, y, x), cid(z, y, x), cid(z, y - 1, x)]; quad(q, v0); }
+    if (y < Y - 1 && v0 !== (at(z, y + 1, x) > iso)) { const q = [cid(z - 1, y, x - 1), cid(z, y, x - 1), cid(z, y, x), cid(z - 1, y, x)]; quad(q, v0); }
+    if (z < Z - 1 && v0 !== (at(z + 1, y, x) > iso)) { const q = [cid(z, y - 1, x - 1), cid(z, y, x - 1), cid(z, y, x), cid(z, y - 1, x)]; quad(q, v0); }
+  }
+  function quad(q, flip) { if (q.some((v) => v < 0)) return; if (flip) tri.push(q[0], q[1], q[2], q[0], q[2], q[3]); else tri.push(q[0], q[2], q[1], q[0], q[3], q[2]); }
+  return { pos: Float32Array.from(pos), idx: Uint32Array.from(tri) };
+}
+function meshStackForViewer(pore, Z, Y, X, dzNm, dxyNm) {
+  // pore: Uint8 (Z, Y, X). Pad with solid, blur lightly, mesh, then attach diameter + connectivity per vertex.
+  const Zp = Z + 2, Yp = Y + 2, Xp = X + 2, F = new Float32Array(Zp * Yp * Xp);
+  for (let z = 0; z < Z; z++) for (let y = 0; y < Y; y++) for (let x = 0; x < X; x++) F[((z + 1) * Yp + y + 1) * Xp + x + 1] = pore[(z * Y + y) * X + x];
+  const B = new Float32Array(F.length); // 3x3x3 box blur
+  for (let z = 1; z < Zp - 1; z++) for (let y = 1; y < Yp - 1; y++) for (let x = 1; x < Xp - 1; x++) {
+    let s = 0; for (let dz = -1; dz <= 1; dz++) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) s += F[((z + dz) * Yp + y + dy) * Xp + x + dx];
+    B[(z * Yp + y) * Xp + x] = s / 27;
+  }
+  const { pos, idx } = surfaceNets(B, Zp, Yp, Xp, 0.5);
+  const dt = maxFilter3(edt3(pore, Z, Y, X), Z, Y, X, 3);
+  // through-plane percolation: pore voxels reachable from both y = 0 and y = Y - 1
+  const flood = (face) => { const seen = new Uint8Array(Z * Y * X), q = []; for (let z = 0; z < Z; z++) for (let x = 0; x < X; x++) { const i = (z * Y + face) * X + x; if (pore[i]) { seen[i] = 1; q.push(i); } }
+    for (let h = 0; h < q.length; h++) { const i = q[h], z = Math.floor(i / (Y * X)), y = Math.floor(i / X) % Y, x = i % X;
+      for (const [c, d, lim] of [[z, Y * X, Z], [y, X, Y], [x, 1, X]]) { if (c > 0 && pore[i - d] && !seen[i - d]) { seen[i - d] = 1; q.push(i - d); } if (c < lim - 1 && pore[i + d] && !seen[i + d]) { seen[i + d] = 1; q.push(i + d); } } }
+    return seen; };
+  const A = flood(0), Bf = flood(Y - 1);
+  const nv = pos.length / 3, out = new Float32Array(nv * 3), diam = new Float32Array(nv), perc = new Uint8Array(nv);
+  let dmax = 1; const dvals = [];
+  for (let i = 0; i < nv; i++) {
+    const z = Math.min(Z - 1, Math.max(0, Math.round(pos[3 * i] - 1))), y = Math.min(Y - 1, Math.max(0, Math.round(pos[3 * i + 1] - 1))), x = Math.min(X - 1, Math.max(0, Math.round(pos[3 * i + 2] - 1)));
+    const j = (z * Y + y) * X + x; diam[i] = 2 * dt[j] * dxyNm; perc[i] = A[j] && Bf[j] ? 1 : 0;
+    out[3 * i] = (pos[3 * i + 2] - 1) * dxyNm; out[3 * i + 1] = -(pos[3 * i + 1] - 1) * dxyNm; out[3 * i + 2] = (pos[3 * i] - 1) * dzNm;
+    dvals.push(diam[i]);
+  }
+  dmax = pct(dvals, 0.98) || 1; for (let i = 0; i < nv; i++) diam[i] = Math.min(1, diam[i] / dmax);
+  let np = 0, npp = 0; for (let i = 0; i < pore.length; i++) if (pore[i]) { np++; if (A[i] && Bf[i]) npp++; }
+  return { positions: out, indices: idx, diam, perc, meta: { diameter_max_nm: dmax, percolating_fraction: npp / Math.max(np, 1), porosity: np / pore.length } };
+}
+function whenViewer() { return window.Viewer3D ? Promise.resolve(window.Viewer3D) : new Promise((r) => window.addEventListener("viewer3d-ready", () => r(window.Viewer3D), { once: true })); }
+function setStats3d(m) {
+  $("s3-por").textContent = Number.isFinite(m.porosity) ? m.porosity.toFixed(3) : "–";
+  $("s3-d50").textContent = Number.isFinite(m.d50_nm) ? `${m.d50_nm.toFixed(0)} nm` : "–";
+  $("s3-tau").textContent = Number.isFinite(m.tau_through_plane) ? m.tau_through_plane.toFixed(2) : (m.tau_through_plane === Infinity ? "∞" : "–");
+  $("s3-perc").textContent = Number.isFinite(m.percolating_fraction) ? `${(100 * m.percolating_fraction).toFixed(0)} %` : "–";
+}
+async function showDemo3D() {
+  try {
+    const V = await whenViewer();
+    const meta = await V.loadDemo("samples/pore_mesh");
+    if (state.stack) state.stack.meshShown = false;
+    const [z, y, x] = meta.volume_shape;
+    $("tag3d").textContent = `comp_full · ${z} slices · ${(x * 6 / 1000).toFixed(2)} × ${(y * 6 / 1000).toFixed(2)} × ${(z * 6 / 1000).toFixed(2)} µm · ${meta.n_faces.toLocaleString()} triangles`;
+    setStats3d(meta); $("note3d").textContent = meta.note + " Drag to rotate, scroll to zoom, slide the cut to look inside.";
+  } catch (e) { $("load3d").textContent = "The 3D reconstruction could not be loaded: " + e.message; $("load3d").hidden = false; }
+}
+
+/* ============================================================== readouts */
+function showReadouts(R, stackInfo) {
+  if (!R || R.empty) {
+    for (const id of ["r-por", "r-th", "r-d50", "r-sv", "r-tau", "r-perc"]) $(id).textContent = "–";
+    $("r-por-s").textContent = "No catalyst layer found in this image."; return;
+  }
+  $("r-por").innerHTML = `${R.porosity.toFixed(3)}`;
+  $("r-por-s").textContent = stackInfo ? `stack mean · slices ${stackInfo.p10.toFixed(3)}–${stackInfo.p90.toFixed(3)} (10–90 %)`
+    : `range ${R.porLo.toFixed(3)}–${R.porHi.toFixed(3)} (threshold 0.65–0.35)`;
+  $("r-th").innerHTML = `${(R.thicknessNm / 1000).toFixed(2)}<small>µm</small>`;
+  $("r-th-s").textContent = `± ${(R.thicknessSdNm / 1000).toFixed(2)} µm across ${R.profile.cols} columns`;
+  $("r-d50").innerHTML = `${R.d50.toFixed(0)}<small>nm</small>`;
+  $("r-d50-s").textContent = `d₁₀ ${R.d10.toFixed(0)} · d₉₀ ${R.d90.toFixed(0)} nm (local thickness)`;
+  $("r-sv").innerHTML = `${R.sv.toFixed(1)}<small>µm⁻¹</small>`;
+  const T3 = R.tau3d;
+  if (T3) {
+    $("r-tau-h").textContent = "Tortuosity factor τ · 3D";
+    $("r-tau").innerHTML = Number.isFinite(T3.tau) ? T3.tau.toFixed(2) : "∞";
+    $("r-tau-s").textContent = Number.isFinite(T3.tau) ? `pore phase, through-plane, ${T3.dims.join("×")} voxels` : "pore phase does not span the layer in this volume";
+  } else if (R.tauY && Number.isFinite(R.tauY.tau)) {
+    $("r-tau-h").textContent = "Tortuosity factor τ";
+    $("r-tau").textContent = R.tauY.tau.toFixed(2);
+    $("r-tau-s").textContent = `pore phase, through-plane · in-plane ${R.tauX && Number.isFinite(R.tauX.tau) ? R.tauX.tau.toFixed(2) : "∞"}`;
+  } else if (R.tauSolidY) {
+    $("r-tau-h").textContent = "Solid tortuosity τ";
+    $("r-tau").textContent = Number.isFinite(R.tauSolidY.tau) ? R.tauSolidY.tau.toFixed(2) : "∞";
+    $("r-tau-s").textContent = "electron path through the layer. Pores do not span a 2D section; upload a stack for pore τ in 3D.";
+  } else { $("r-tau").textContent = "–"; $("r-tau-s").textContent = "off, or no interior region large enough"; }
+  if (R.perc3d != null) {
+    $("r-perc-h").textContent = "Percolating pores · 3D";
+    $("r-perc").innerHTML = `${(100 * R.perc3d).toFixed(0)}<small>%</small>`;
+    $("r-perc-s").textContent = "of pore volume connected from the top to the bottom of the layer";
+  } else {
+    $("r-perc-h").textContent = "Pore connectivity";
+    $("r-perc").innerHTML = `${(100 * R.largestFrac).toFixed(0)}<small>%</small>`;
+    $("r-perc-s").textContent = `of pore area in the largest cluster · ${R.nClusters.toLocaleString()} clusters`;
+  }
+}
+
+/* ============================================================== orchestration */
+function currentView() {
+  if (state.stack) { const s = state.stack.slices[state.slice]; return s || null; }
+  return state.input;
+}
+async function loadInput(src, name) {
+  try {
+    setStatus("Reading " + name + "…", 0);
+    const dec = await decodeFile(src);
+    state.decoded = dec; state.fileName = name; state.stack = null; state.result = null;
+    $("stackField").hidden = dec.n < 2; $("nframes").max = dec.n; $("nframes").value = Math.min(dec.n, 48);   // reset per file (never inherit a single image's 1)
+    togglePlay(false); $("slicebar").hidden = true; $("sliceHint").hidden = true;
+    const g = await dec.get(0);
+    state.input = { gray: g, W: dec.W, H: dec.H, seg: null, R: null };
+    $("fileinfo").innerHTML = `${escapeHtml(name)}<br>${dec.W} × ${dec.H} px${dec.n > 1 ? ` · ${dec.n} slices` : ""}`;
+    state.mode = "raw"; syncModes(); drawViewer();
+    setStatus(state.model ? "Ready. Set the pixel size and run." : "Image loaded; waiting for the model…", 0);
+    $("run").disabled = !state.model;
+  } catch (e) { console.error(e); setStatus("Could not read this file: " + e.message + ". Use PNG, JPG or an uncompressed/LZW/Deflate TIFF.", 0, true); }
+}
+function escapeHtml(s) { return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+async function run() {
+  if (!state.model || !state.decoded) return;
+  $("run").disabled = true;
+  const t0 = performance.now();
+  try {
+    const px = Math.max(0.1, Number($("px").value) || 6), resc = $("rescale").checked, tta = $("tta").checked, doTau = $("tort").checked;
+    const f = resc ? px / 6 : 1, pxnm = resc ? 6 : px;
+    const dec = state.decoded;
+    if (dec.n > 1) return await runStack(dec, f, pxnm, tta, doTau, t0);
+    const rs = resample(await dec.get(0), dec.W, dec.H, f);
+    state.input = { gray: rs.gray, W: rs.W, H: rs.H, seg: null, R: null };
+    const seg = await segment(rs.gray, rs.W, rs.H, tta, (p) => setStatus(`Segmenting… ${Math.round(p * 100)} %`, p * 0.5));
+    state.input.seg = seg; state.mode = "overlay"; syncModes(); drawViewer();
+    const R = await analyse(seg, rs.W, rs.H, pxnm, doTau, (m, p) => setStatus(m, 0.5 + p * 0.5));
+    state.input.R = R; state.result = R;
+    showReadouts(R); drawViewer(); drawCharts(R);
+    setStatus(R.empty ? "No catalyst layer detected. Check that this is a cross-section image at a similar scale." :
+      `Done in ${((performance.now() - t0) / 1000).toFixed(1)} s · ${rs.W}×${rs.H} px at ${pxnm} nm/px`, 1);
+  } catch (e) { console.error(e); setStatus("Analysis failed: " + e.message, 0, true); }
+  finally { $("run").disabled = false; }
+}
+
+async function runStack(dec, f, pxnm, tta, doTau, t0) {
+  const n = Math.min(dec.n, Math.max(2, Number($("nframes").value) || 48));
+  const slices = []; const shifts = [[0, 0]];
+  for (let k = 0; k < n; k++) {
+    const rs = resample(await dec.get(k), dec.W, dec.H, f);
+    const seg = await segment(rs.gray, rs.W, rs.H, tta, (p) => setStatus(`Segmenting slice ${k + 1}/${n}… ${Math.round(p * 100)} %`, (k + p) / n * 0.7));
+    if (k > 0) shifts.push([0, 0]); // no registration: in pFIB-SEM the cut face is stationary; slice-to-slice
+                                     // correlation tracks sub-surface material sliding, not drift
+    slices.push({ gray: rs.gray, W: rs.W, H: rs.H, seg, R: null });
+    if (k === 0) { state.stack = { slices }; state.slice = 0; state.mode = "overlay"; syncModes(); drawViewer(); }
+  }
+  state.stack = { slices, shifts, per: null, pxnm };
+  const perAll = slices.map((s) => { let r = 0, p = 0; for (let i = 0; i < s.seg.cls.length; i++) if (s.seg.cls[i] !== 2) { r++; p += s.seg.cls[i] === 1; } return r ? p / r : NaN; });
+  const per = perAll.filter(Number.isFinite);
+  state.stack.per = perAll; state.stack.pxnm = pxnm;
+  const mid = Math.floor(n / 2);
+  const R = await analyse(slices[mid].seg, slices[mid].W, slices[mid].H, pxnm, doTau, (m, p) => setStatus(m + " (middle slice)", 0.7 + p * 0.25));
+  slices[mid].R = R; state.result = R; state.slice = mid;
+  const stackInfo = { mean: per.reduce((a, v) => a + v, 0) / per.length, p10: pct(per, 0.1), p90: pct(per, 0.9) };
+  R.stack = { n, perSlice: per, ...stackInfo };
+  showReadouts({ ...R, porosity: stackInfo.mean }, stackInfo); drawCharts(R);
+  $("slicebar").hidden = false; $("sliceHint").hidden = false; $("slice").max = n - 1; setSlice(mid);
+  // 3D: interior box common to all slices, downsampled to <= 120 px in-plane
+  setStatus("Building 3D reconstruction…", 0.97); await tick();
+  const W = slices[0].W, H = slices[0].H; const roiAll = new Uint8Array(W * H).fill(1);
+  const reg = (k, y, x) => { const yy = y - shifts[k][0], xx = x - shifts[k][1]; return yy >= 0 && yy < H && xx >= 0 && xx < W ? slices[k].seg.cls[yy * W + xx] : 2; };
+  for (let k = 0; k < n; k++) for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (reg(k, y, x) === 2) roiAll[y * W + x] = 0;
+  const dispW = Math.max(64, Math.min(320, Math.round(2 * n)));   // block roughly as deep as it is wide
+  const box = bestWindow(roiAll, W, H, dispW), mbox = bestWindow(roiAll, W, H, 480) || box;
+  if (box) {
+    const bh = box.y1 - box.y0, bw = box.x1 - box.x0;
+    const st = n * bw * bh > 4e6 ? 2 : 1;   // full resolution unless the volume is very large
+    const Y = Math.floor(bh / st), X = Math.floor(bw / st), bx0 = box.x0;
+    const P = new Uint8Array(n * Y * X);
+    for (let k = 0; k < n; k++) for (let y = 0; y < Y; y++) for (let x = 0; x < X; x++) { // block majority in-plane
+      let c = 0; for (let dy = 0; dy < st; dy++) for (let dx = 0; dx < st; dx++) c += reg(k, box.y0 + y * st + dy, bx0 + x * st + dx) === 1;
+      P[(k * Y + y) * X + x] = c * 2 > st * st ? 1 : 0; }
+    setStatus("Meshing the 3D pore network…", 0.97); await tick();
+    const V = await whenViewer(), M3 = meshStackForViewer(P, n, Y, X, pxnm, pxnm * st);
+    V.show(M3);
+    $("tag3d").textContent = `${escapeHtml(state.fileName)} · ${n} slices · ${(X * st * pxnm / 1000).toFixed(2)} × ${(Y * st * pxnm / 1000).toFixed(2)} µm window`;
+    state.stack.meshShown = true; V.setSlicePlane(n > 1 ? state.slice / (n - 1) : 0.5);
+    // 3D metrics on a wider volume than the display window: a thin column cannot carry a percolating path
+    const mw = mbox.x1 - mbox.x0, mh = mbox.y1 - mbox.y0, ms = Math.max(1, Math.ceil(Math.sqrt(n * mw * mh / 2.5e6)));
+    const MY = Math.floor(mh / ms), MX = Math.floor(mw / ms), mx0 = mbox.x0;
+    const PM = new Uint8Array(n * MY * MX);
+    for (let k = 0; k < n; k++) for (let y = 0; y < MY; y++) for (let x = 0; x < MX; x++) {
+      let c = 0; for (let dy = 0; dy < ms; dy++) for (let dx = 0; dx < ms; dx++) c += reg(k, mbox.y0 + y * ms + dy, mx0 + x * ms + dx) === 1;
+      PM[(k * MY + y) * MX + x] = c * 2 > ms * ms ? 1 : 0; }
+    let pm = 0; for (const v of PM) pm += v;
+    let t3 = null;
+    if (doTau) {
+      setStatus("3D tortuosity: diffusion solve in the pore network…", 0.98); await tick();
+      t3 = await tortuosity(PM, [n, MY, MX], 1, [pxnm, pxnm * ms, pxnm * ms]);
+      R.tau3d = { ...t3, dims: [n, MY, MX] }; R.perc3d = t3.spanning;
+      showReadouts({ ...R, porosity: stackInfo.mean }, stackInfo);
+    }
+    M3.meta.porosity = pm / PM.length;
+    if (t3) M3.meta.percolating_fraction = t3.spanning;
+    setStats3d({ porosity: M3.meta.porosity, d50_nm: NaN, tau_through_plane: t3 ? t3.tau : NaN, percolating_fraction: M3.meta.percolating_fraction });
+    $("note3d").textContent = `Your stack: ${n} slices stacked as acquired. Metrics use a ${mw} × ${mh} px region; shown: a ${bw} × ${bh} px window inside the layer (common to all slices), ${st > 1 ? st + "× downsampled, " : "full resolution, "}meshed in your browser; its width follows the stack depth so the block is not a thin sheet. Slice spacing is assumed equal to the pixel size. Segment more slices for a deeper block.`;
+  } else $("note3d").textContent = "No interior region is shared by all slices, so no 3D view could be built.";
+  setStatus(`Done in ${((performance.now() - t0) / 1000).toFixed(1)} s · ${n} slices`, 1);
+}
+
+function bestWindow(roiAll, W, H, width) {
+  // x0 and row range maximising the height of a width-px window lying inside the layer in every slice
+  width = Math.min(width, W); const pre = new Int32Array((W + 1) * H);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) pre[y * (W + 1) + x + 1] = pre[y * (W + 1) + x] + roiAll[y * W + x];
+  let best = null; const step = Math.max(4, Math.floor(width / 8));
+  for (let x0 = 0; x0 + width <= W; x0 += step) {
+    let run = 0, start = 0;
+    for (let y = 0; y <= H; y++) {
+      const full = y < H && pre[y * (W + 1) + x0 + width] - pre[y * (W + 1) + x0] === width;
+      if (full) { if (!run) start = y; run++; }
+      else if (run) { if (!best || run > best.y1 - best.y0) best = { x0, x1: x0 + width, y0: start, y1: start + run }; run = 0; }
+    }
+  }
+  return best && best.y1 - best.y0 >= 16 ? best : null;
+}
+
+/* ---------------------------------------------------------- slice explorer */
+async function ensureSliceAnalysis(k) {
+  const sl = state.stack && state.stack.slices[k]; if (!sl || sl.R || sl.pending) return;
+  sl.pending = true; sl.R = await analyse(sl.seg, sl.W, sl.H, state.stack.pxnm, false, () => {}); sl.pending = false;
+  if (state.slice === k) drawViewer();
+}
+function drawSpark() {
+  const c = $("spark"), st = state.stack; if (!st || !st.per) return;
+  const w = c.clientWidth || 300, h = 34, dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = w * dpr; c.height = h * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+  const v = st.per, n = v.length, ok = v.filter(Number.isFinite); if (!ok.length) return;
+  let lo = Math.min(...ok), hi = Math.max(...ok); if (hi - lo < 0.02) { const m = (hi + lo) / 2; lo = m - 0.01; hi = m + 0.01; }
+  const X = (i) => 4 + (w - 8) * (n > 1 ? i / (n - 1) : 0.5), Y = (p) => h - 4 - (h - 8) * (p - lo) / (hi - lo);
+  g.strokeStyle = css("--line"); g.lineWidth = 1; g.beginPath(); g.moveTo(4, h - 4); g.lineTo(w - 4, h - 4); g.stroke();
+  g.strokeStyle = css("--pore"); g.lineWidth = 1.6; g.beginPath(); let started = false;
+  v.forEach((p, i) => { if (!Number.isFinite(p)) return; started ? g.lineTo(X(i), Y(p)) : g.moveTo(X(i), Y(p)); started = true; }); g.stroke();
+  const k = state.slice; if (Number.isFinite(v[k])) { g.fillStyle = css("--ink"); g.beginPath(); g.arc(X(k), Y(v[k]), 3.2, 0, 7); g.fill(); }
+  g.fillStyle = css("--muted"); g.font = "10px IBM Plex Mono, monospace"; g.fillText(hi.toFixed(3), w - 40, 10);
+}
+function setSlice(k) {
+  const st = state.stack; if (!st) return;
+  k = Math.max(0, Math.min(st.slices.length - 1, k)); state.slice = k;
+  $("slice").value = k; $("sliceLbl").textContent = `slice ${k + 1} / ${st.slices.length}`;
+  const p = st.per && st.per[k]; $("slicePor").textContent = Number.isFinite(p) ? `porosity ${p.toFixed(3)}` : "porosity –";
+  drawSpark(); drawViewer();
+  if (st.meshShown && window.Viewer3D) window.Viewer3D.setSlicePlane(st.slices.length > 1 ? k / (st.slices.length - 1) : 0.5);
+}
+let playTimer = null;
+function togglePlay(force) {
+  const on = force !== undefined ? force : !playTimer;
+  if (playTimer) { clearInterval(playTimer); playTimer = null; }
+  if (on && state.stack) playTimer = setInterval(() => setSlice((state.slice + 1) % state.stack.slices.length), 180);
+  $("sPlay").textContent = playTimer ? "❚❚" : "▶"; $("sPlay").setAttribute("aria-label", playTimer ? "Pause" : "Play through slices");
+}
+
+function syncModes() { document.querySelectorAll(".mode[data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === state.mode))); }
+
+/* ============================================================== model card */
+async function loadCard() {
+  try {
+    const d = await (await fetch("model/results.json")).json(); state.cardData = d;
+    const tb = $("card").querySelector("tbody"); tb.innerHTML = "";
+    for (const r of d.rows) {
+      const tr = document.createElement("tr"); if (r.best) tr.className = "best";
+      tr.innerHTML = `<td>${escapeHtml(r.name)}</td><td>${fmt(r.miou, 3)}</td><td>${fmt(r.pore_iou, 3)}</td><td>${fmt(r.roi_iou, 3)}</td><td>${fmt(r.por_mae, 3)}</td>`;
+      tb.appendChild(tr);
+    }
+    if (d.note) $("cardNote").textContent = d.note;
+    if (d.annot) $("annotNote").innerHTML = d.annot;
+    $("foot").textContent = d.footer || "";
+  } catch (e) { $("cardNote").textContent = "Model card unavailable."; }
+}
+
+/* ============================================================== events */
+$("file").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) loadInput(f, f.name); });
+const drop = $("drop");
+["dragenter", "dragover"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) loadInput(f, f.name); });
+async function loadSample(name, label) {
+  const blob = await (await fetch("samples/" + name)).blob();
+  $("px").value = 6; await loadInput(new File([blob], name), label);
+  if (state.model) await run();
+}
+$("s110").addEventListener("click", () => loadSample("comp_full_frame110.png", "comp_full frame 110"));
+$("s300").addEventListener("click", () => loadSample("comp_full_frame300.png", "comp_full frame 300"));
+$("run").addEventListener("click", run);
+document.querySelectorAll(".mode[data-mode]").forEach((b) => b.addEventListener("click", () => { state.mode = b.dataset.mode; syncModes(); drawViewer(); }));
+$("alpha").addEventListener("input", drawViewer);
+$("zoom").addEventListener("change", (e) => $("viewer").classList.toggle("zoom", e.target.checked));
+$("slice").addEventListener("input", (e) => { togglePlay(false); setSlice(Number(e.target.value)); });
+$("sPrev").addEventListener("click", () => { togglePlay(false); setSlice(state.slice - 1); });
+$("sNext").addEventListener("click", () => { togglePlay(false); setSlice(state.slice + 1); });
+$("sPlay").addEventListener("click", () => togglePlay());
+document.addEventListener("keydown", (e) => {
+  if (!state.stack || $("slicebar").hidden || e.target.matches("input[type=number], input[type=text], textarea")) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); togglePlay(false); setSlice(state.slice + 1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); togglePlay(false); setSlice(state.slice - 1); }
+});
+new ResizeObserver(() => drawSpark()).observe($("slicebar"));
+$("show3dDemo").addEventListener("click", showDemo3D);
+document.querySelectorAll("[data-c3]").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-c3]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+  whenViewer().then((V) => V.setColor(b.dataset.c3)); }));
+$("cut3d").addEventListener("input", (e) => whenViewer().then((V) => V.setCut(Number(e.target.value))));
+$("spin3d").addEventListener("change", (e) => whenViewer().then((V) => V.spin(e.target.checked)));
+$("reset3d").addEventListener("click", () => whenViewer().then((V) => V.reset()));
+$("copy").addEventListener("click", async () => {
+  const R = state.result; if (!R) return;
+  const out = { file: state.fileName, pixel_nm: R.pxnm, porosity: R.porosity, porosity_range_threshold: [R.porLo, R.porHi],
+    stack: R.stack ? { slices: R.stack.n, mean: R.stack.mean, p10: R.stack.p10, p90: R.stack.p90 } : undefined,
+    cl_thickness_nm: R.thicknessNm, pore_diameter_nm: { d10: R.d10, d50: R.d50, d90: R.d90 }, specific_surface_per_um: R.sv,
+    mean_chord_nm: R.chord && { pore_in_plane: R.chord.poreX, pore_through_plane: R.chord.poreY, solid_in_plane: R.chord.solidX, solid_through_plane: R.chord.solidY },
+    tortuosity_2d: { through_plane: R.tauY && R.tauY.tau, in_plane: R.tauX && R.tauX.tau }, percolating_pore_fraction: R.percFrac, pore_clusters: R.nClusters,
+    depth_profile: R.profile && { depth: R.profile.depth, porosity: R.profile.por } };
+  const txt = JSON.stringify(out, (k, v) => (typeof v === "number" ? (Number.isFinite(v) ? +v.toPrecision(5) : null) : v), 2);
+  try { await navigator.clipboard.writeText(txt); $("copy").textContent = "Copied"; setTimeout(() => ($("copy").textContent = "Copy results as JSON"), 1600); }
+  catch (e) { setStatus("Clipboard unavailable here. Results are printed to the browser console.", null); console.log(txt); }
+});
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { drawViewer(); drawCharts(state.result); });
+new MutationObserver(() => { drawViewer(); drawCharts(state.result); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+(async function boot() {
+  loadCard(); showDemo3D();
+  const sample = fetch("samples/comp_full_frame110.png").then((r) => r.blob());
+  const ok = await loadModel();
+  const blob = await sample;
+  await loadInput(new File([blob], "comp_full_frame110.png"), "comp_full frame 110");
+  if (ok) { setStatus("Model ready. Running the sample…", 0); await run(); }
+})();
+</script>
