@@ -152,8 +152,13 @@ def make_dataset(n_volumes: int, shape=(96, 256, 256), seed: int = 0, p: Imaging
     return out
 
 
-def calibrate(real_roi_values: np.ndarray, grid=None, seed: int = 0, solid: np.ndarray | None = None) -> tuple[Imaging, dict]:
-    """Fit cut / back / floor / depth_decay so the simulated grey-level percentiles match the real layer's."""
+def calibrate(real_roi_values: np.ndarray, grid=None, seed: int = 0, solid: np.ndarray | None = None,
+              min_contrast: float = 0.0) -> tuple[Imaging, dict]:
+    """Fit cut / back / floor / depth_decay so the simulated grey-level percentiles match the real layer's.
+
+    Percentiles alone cannot tell a bright cut face from bright material seen through a pore, so only
+    physical settings are searched: material behind the plane is at least `min_contrast` darker than the
+    cut face (back <= cut - min_contrast)."""
     pct = [1, 5, 25, 50, 75, 95]
     target = np.percentile(real_roi_values, pct)
     rng = np.random.default_rng(seed)
@@ -165,6 +170,8 @@ def calibrate(real_roi_values: np.ndarray, grid=None, seed: int = 0, solid: np.n
     keys = list(grid)
     for vals in product(*grid.values()):
         p = Imaging(**dict(zip(keys, vals)))
+        if p.back > p.cut - min_contrast:
+            continue
         imgs, _ = render_stack(solid, p, rng, range(0, 24, 3))
         err = float(np.abs(np.percentile(imgs, pct) - target).mean())
         if err < best_err:

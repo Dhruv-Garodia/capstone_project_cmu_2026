@@ -1,0 +1,36 @@
+{
+ "target_percentiles": [
+  57.0,
+  86.0,
+  147.0,
+  186.0,
+  222.0,
+  255.0
+ ],
+ "sim_percentiles": [
+  72.0,
+  88.0,
+  146.0,
+  197.0,
+  218.0,
+  243.0
+ ],
+ "mean_abs_error": 7.0,
+ "params": {
+  "streak": 1.149999976158142,
+  "t_max": 24,
+  "cut": 212,
+  "edge": 30.0,
+  "back": 185,
+  "floor": 90,
+  "depth_decay": 10,
+  "texture": 12.0,
+  "psf": 0.8,
+  "noise": 9.0,
+  "shot": 0.35,
+  "curtain": 6.0,
+  "grain": 10.0,
+  "streaks": 8.0
+ },
+ "measured_slide_px_per_slice": 1.149999976158142
+}

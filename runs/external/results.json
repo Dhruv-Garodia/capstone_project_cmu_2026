@@ -1,0 +1,64 @@
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": {
+  "test_mIoU": 0.7616
+ },
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": {
+  "test_mIoU": 0.7979562687840297
+ },
+ "resunet_2d": {
+  "test_mIoU": 0.7924297379109676,
+  "val_mIoU": 0.7838038755577931,
+  "params_M": 2.391419,
+  "porosity_test_manual": 0.3062856038411458,
+  "porosity_test_pred": 0.3026316324869792,
+  "train_squares": 180,
+  "k": 0,
+  "per_sample": {
+   "HPC22": 0.7643896830386427,
+   "HPC30": 0.8301443565161153,
+   "HPC45": 0.7652801776082089
+  }
+ },
+ "resunet_7slice": {
+  "test_mIoU": 0.8030855449460277,
+  "val_mIoU": 0.7994994316735877,
+  "params_M": 2.392859,
+  "porosity_test_manual": 0.3062856038411458,
+  "porosity_test_pred": 0.32599232991536453,
+  "train_squares": 180,
+  "k": 3,
+  "per_sample": {
+   "HPC22": 0.7760717434638724,
+   "HPC30": 0.8197972230501474,
+   "HPC45": 0.7903139704464157
+  }
+ },
+ "millnet_2d": {
+  "test_mIoU": 0.7863378680907711,
+  "val_mIoU": 0.7892019646982769,
+  "params_M": 2.54485,
+  "porosity_test_manual": 0.3062856038411458,
+  "porosity_test_pred": 0.2901021321614583,
+  "train_squares": 180,
+  "k": 0,
+  "per_sample": {
+   "HPC22": 0.7674624011316173,
+   "HPC30": 0.8198008536867201,
+   "HPC45": 0.7562959096898287
+  }
+ },
+ "millnet_7slice": {
+  "test_mIoU": 0.8034733274626176,
+  "val_mIoU": 0.7983178733862732,
+  "params_M": 2.54701,
+  "porosity_test_manual": 0.3062856038411458,
+  "porosity_test_pred": 0.28898061116536455,
+  "train_squares": 180,
+  "k": 3,
+  "per_sample": {
+   "HPC22": 0.7752731194728497,
+   "HPC30": 0.8290544590929051,
+   "HPC45": 0.7856967064641868
+  }
+ }
+}

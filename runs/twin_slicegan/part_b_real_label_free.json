@@ -1,0 +1,74 @@
+{
+ "Otsu (denoised)": {
+  "porosity": 0.3564603527729223,
+  "xz_anisotropy": 0.13677795730159653,
+  "corr_len_x": 7.553713833445859,
+  "corr_len_z": 7.100947785003625,
+  "porosity_sd_over_z": 0.033859917414936304
+ },
+ "Ferner-style z-gradient (pore_pipeline)": {
+  "porosity": 0.5344463424969543,
+  "xz_anisotropy": 0.17900540280194932,
+  "corr_len_x": 9.49852663148089,
+  "corr_len_z": 7.7196086084512485,
+  "porosity_sd_over_z": 0.026942488453703974
+ },
+ "MillNet 2D (real v2 labels)": {
+  "porosity": 0.3898669156205308,
+  "xz_anisotropy": 0.13906863997135221,
+  "corr_len_x": 7.469930199856622,
+  "corr_len_z": 7.085924867253015,
+  "porosity_sd_over_z": 0.03077599778999565
+ },
+ "MillNet 7-slice (real v2 labels)": {
+  "porosity": 0.3808414110916892,
+  "xz_anisotropy": 0.13783331032780277,
+  "corr_len_x": 7.453162049180156,
+  "corr_len_z": 7.06987546874019,
+  "porosity_sd_over_z": 0.03031888798778101
+ },
+ "ResUNet 2D (real v2 labels)": {
+  "porosity": 0.4006823719476667,
+  "xz_anisotropy": 0.13517729920034346,
+  "corr_len_x": 7.453248014117579,
+  "corr_len_z": 6.879623443274157,
+  "porosity_sd_over_z": 0.029146165036364937
+ },
+ "ResUNet 2D (twin truth)": {
+  "porosity": 0.49579916838815613,
+  "xz_anisotropy": 0.19157883805069975,
+  "corr_len_x": 6.059161925866335,
+  "corr_len_z": 5.304793597934163,
+  "porosity_sd_over_z": 0.02837426014561739
+ },
+ "MillNet 2D (twin truth)": {
+  "porosity": 0.4818966841464061,
+  "xz_anisotropy": 0.1788310307783694,
+  "corr_len_x": 6.48470094494559,
+  "corr_len_z": 5.811440351847835,
+  "porosity_sd_over_z": 0.02271183752855072
+ },
+ "MillNet 7-slice, no streak bank (twin truth)": {
+  "porosity": 0.5226202394194608,
+  "xz_anisotropy": 0.11936140637751151,
+  "corr_len_x": 5.98204745944763,
+  "corr_len_z": 5.75536182022525,
+  "porosity_sd_over_z": 0.029283032132938428
+ },
+ "MillNet 7-slice (twin truth)": {
+  "porosity": 0.5199335240213995,
+  "xz_anisotropy": 0.1218545462748968,
+  "corr_len_x": 6.064555884864061,
+  "corr_len_z": 5.907047749067082,
+  "porosity_sd_over_z": 0.033677205725956755
+ },
+ "_reference": {
+  "ferner_2024_published_porosity": 0.417,
+  "box": [
+   178,
+   323,
+   483,
+   903
+  ]
+ }
+}

@@ -1,0 +1,5 @@
+uncomp: slide +1.15 px/slice; twin percentiles [71.0, 85.0, 143.0, 198.0, 219.0, 243.0] vs real [57.0, 86.0, 147.0, 186.0, 222.0, 255.0] (error 7.2)
+  millnet_k3_ft it 500 loss 0.177 val pore IoU 0.9130 (80s)
+  millnet_k3_ft it 1000 loss 0.170 val pore IoU 0.9165 (120s)
+  millnet_k3_ft it 1500 loss 0.154 val pore IoU 0.9169 (192s)
+fine-tuned in 195s -> /Users/aadityavikram/Desktop/Capstone_Project_Final/repo/runs/twin_uncomp/millnet_k3_ft/best.pt

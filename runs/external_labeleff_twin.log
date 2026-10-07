@@ -1,0 +1,30 @@
+loaded regions (31s)
+reference {'Röding 2021 random forest (published, Table 3)': {'test_mIoU': 0.7616}, 'Skärberg 2021 CNN (released segmentation)': {'test_mIoU': 0.7979562687840297}}
+  millnet_7slice_frac0.1_twininit it 250 loss 0.109 val mIoU 0.7554 (181s)
+  millnet_7slice_frac0.1_twininit it 500 loss 0.071 val mIoU 0.7540 (349s)
+  millnet_7slice_frac0.1_twininit it 750 loss 0.032 val mIoU 0.7547 (515s)
+  millnet_7slice_frac0.1_twininit it 1000 loss 0.025 val mIoU 0.7542 (681s)
+  millnet_7slice_frac0.1_twininit it 1250 loss 0.017 val mIoU 0.7534 (850s)
+  millnet_7slice_frac0.1_twininit it 1500 loss 0.013 val mIoU 0.7546 (1016s)
+  millnet_7slice_frac0.1_twininit it 1750 loss 0.009 val mIoU 0.7531 (1184s)
+  millnet_7slice_frac0.1_twininit it 2000 loss 0.008 val mIoU 0.7531 (1351s)
+  millnet_7slice_frac0.1_twininit it 2250 loss 0.007 val mIoU 0.7513 (1517s)
+  millnet_7slice_frac0.1_twininit it 2500 loss 0.006 val mIoU 0.7515 (1684s)
+TEST millnet_7slice_frac0.1_twininit: mIoU 0.7596 per sample {'HPC22': 0.7407092074089396, 'HPC30': 0.7991214655138381, 'HPC45': 0.7294378889040878}
+  millnet_7slice_twininit it 250 loss 0.370 val mIoU 0.7981 (175s)
+  millnet_7slice_twininit it 500 loss 0.357 val mIoU 0.7824 (345s)
+  millnet_7slice_twininit it 750 loss 0.249 val mIoU 0.7914 (511s)
+  millnet_7slice_twininit it 1000 loss 0.275 val mIoU 0.7941 (678s)
+  millnet_7slice_twininit it 1250 loss 0.172 val mIoU 0.8032 (847s)
+  millnet_7slice_twininit it 1500 loss 0.152 val mIoU 0.7922 (1018s)
+  millnet_7slice_twininit it 1750 loss 0.130 val mIoU 0.7934 (1186s)
+  millnet_7slice_twininit it 2000 loss 0.092 val mIoU 0.7911 (1354s)
+  millnet_7slice_twininit it 2250 loss 0.096 val mIoU 0.7897 (1523s)
+  millnet_7slice_twininit it 2500 loss 0.118 val mIoU 0.7899 (1692s)
+TEST millnet_7slice_twininit: mIoU 0.7946 per sample {'HPC22': 0.7629473599545304, 'HPC30': 0.8153958711822182, 'HPC45': 0.7840761824985688}
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": 0.7616,
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": 0.7979562687840297,
+ "millnet_7slice_frac0.1_twininit": 0.7595841549589822,
+ "millnet_7slice_twininit": 0.7945948367675837
+}

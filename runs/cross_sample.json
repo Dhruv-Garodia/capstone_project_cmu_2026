@@ -1,0 +1,110 @@
+{
+ "comp": {
+  "published_ferner_2024": 0.417,
+  "windows": [
+   [
+    1472,
+    176,
+    414
+   ],
+   [
+    576,
+    94,
+    328
+   ],
+   [
+    320,
+    138,
+    344
+   ],
+   [
+    64,
+    143,
+    344
+   ]
+  ],
+  "Otsu (denoised)": 0.34585229684613883,
+  "Ferner, best-case parameters": 0.3905615275433334,
+  "MillNet 7-slice twin (real geom, seed 0)": 0.5405728129277912,
+  "MillNet 7-slice twin (real geom, seed 1)": 0.543228979407122,
+  "MillNet 7-slice twin (real geom, seed 2)": 0.5143011037368019,
+  "MillNet 7-slice twin (SliceGAN geom)": 0.5503641705018469,
+  "ResUNet 2D twin (real geom, seed 0)": 0.5153604402268961,
+  "ResUNet 2D twin (real geom, seed 1)": 0.5477576573823004,
+  "ResUNet 2D twin (real geom, seed 2)": 0.5173761960534745,
+  "ResUNet 2D twin (SliceGAN geom)": 0.46004846885696515,
+  "MillNet 7-slice twin, calibrated to this acquisition": 0.5892013977789878
+ },
+ "uncomp": {
+  "published_ferner_2024": 0.558,
+  "windows": [
+   [
+    1344,
+    133,
+    385
+   ],
+   [
+    1088,
+    158,
+    372
+   ],
+   [
+    0,
+    290,
+    415
+   ],
+   [
+    256,
+    288,
+    370
+   ]
+  ],
+  "Otsu (denoised)": 0.40448445410543005,
+  "Ferner, best-case parameters": 0.5049762446284114,
+  "MillNet 7-slice twin (real geom, seed 0)": 0.5688642161101476,
+  "MillNet 7-slice twin (real geom, seed 1)": 0.5663674745874969,
+  "MillNet 7-slice twin (real geom, seed 2)": 0.5433065956592065,
+  "MillNet 7-slice twin (SliceGAN geom)": 0.5807577861420712,
+  "ResUNet 2D twin (real geom, seed 0)": 0.6018148876796459,
+  "ResUNet 2D twin (real geom, seed 1)": 0.6176744040602515,
+  "ResUNet 2D twin (real geom, seed 2)": 0.5919663902292066,
+  "ResUNet 2D twin (SliceGAN geom)": 0.546696996883818,
+  "MillNet 7-slice twin, calibrated to this acquisition": 0.6459389198455671
+ },
+ "pristine": {
+  "published_ferner_2024": 0.515,
+  "windows": [
+   [
+    1280,
+    0,
+    547
+   ],
+   [
+    448,
+    0,
+    537
+   ],
+   [
+    192,
+    0,
+    528
+   ],
+   [
+    832,
+    0,
+    350
+   ]
+  ],
+  "Otsu (denoised)": 0.2259536068118087,
+  "Ferner, best-case parameters": 0.9525064802343037,
+  "MillNet 7-slice twin (real geom, seed 0)": 0.38682361805136145,
+  "MillNet 7-slice twin (real geom, seed 1)": 0.35258769646035115,
+  "MillNet 7-slice twin (real geom, seed 2)": 0.35431029983664,
+  "MillNet 7-slice twin (SliceGAN geom)": 0.3668412327055287,
+  "ResUNet 2D twin (real geom, seed 0)": 0.22504702725963224,
+  "ResUNet 2D twin (real geom, seed 1)": 0.2508288621545057,
+  "ResUNet 2D twin (real geom, seed 2)": 0.25342100197650524,
+  "ResUNet 2D twin (SliceGAN geom)": 0.26179576213484357,
+  "MillNet 7-slice twin, calibrated to this acquisition": 0.42898636633253007
+ }
+}

@@ -21,3 +21,5 @@ runs/demo_segmentation_*.npy
 !webapp/samples/*.png
 !runs/twin_real/examples/*.png
 !runs/twin/examples/*.png
+*.npz
+runs/*.done

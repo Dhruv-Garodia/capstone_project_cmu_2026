@@ -97,7 +97,7 @@ def predict(model, ck, stack, dev):
 
 
 # ----------------------------------------------------------------------------- training on the twin
-def train_on_twin(name, cfg, k, train_vols, val_vols, dev, iters=3000, bs=8, lr=2e-3, seed=0):
+def train_on_twin(name, cfg, k, train_vols, val_vols, dev, iters=3000, bs=8, lr=2e-3, seed=0, init=None):
     path = OUT / name / "best.pt"
     if path.exists():
         return load_checkpoint(path, dev)
@@ -114,6 +114,8 @@ def train_on_twin(name, cfg, k, train_vols, val_vols, dev, iters=3000, bs=8, lr=
                                 seed=seed + i, stats=stats, scale_range=(0.8, 1.25)))
     dl = DataLoader(ConcatDataset(sets), batch_size=bs, shuffle=True, num_workers=0)
     model = build_model({**cfg, "in_channels": 2 * k + 1, "num_classes": 3}).to(dev)
+    if init is not None:   # fine-tuning: start from another twin's weights
+        model.load_state_dict(torch.load(init, map_location=dev, weights_only=False)["model"])
     w = torch.tensor([1.0, 1.0, 1.0], device=dev)
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     sch = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=iters, pct_start=0.1)
@@ -162,7 +164,8 @@ def main():
     ap.add_argument("--device", default=None)
     ap.add_argument("--iters", type=int, default=3000)
     ap.add_argument("--out", default="runs/twin")
-    ap.add_argument("--geometry", choices=["grf", "real"], default="grf",
+    ap.add_argument("--seed", type=int, default=0, help="training seed (data and test set unchanged)")
+    ap.add_argument("--geometry", choices=["grf", "real", "slicegan"], default="grf",
                     help="grf: random-field structures; real: structures cut from the segmented comp_full stack "
                          "(train slices 0-179, val 180-249, test 250-353) mixed with random-field ones for training")
     a = ap.parse_args()
@@ -176,7 +179,7 @@ def main():
         m = {z: export_to_classes(x) for z, x in load_masks(ROOT / "data/annotations_v2").items() if 60 <= z < 80}
         roi = np.stack([m[z] != 2 for z in range(60, 80)])
         geo = None
-        if a.geometry == "real":
+        if a.geometry in ("real", "slicegan"):
             cls = np.load(ROOT / "runs/twin/comp_full_millnet_classes.npy")
             geo = SIM.real_geometry(cls, range(0, 180), 1, depth=56, width=160, seed=99)[0]
         p, calib = SIM.calibrate(v[roi][::7], solid=geo)
@@ -193,6 +196,15 @@ def main():
         train = SIM.make_dataset(0, seed=1, p=p, geometries=g_train) + SIM.make_dataset(4, seed=11, p=p)
         val = SIM.make_dataset(0, seed=2, p=p, geometries=g_val)
         test = SIM.make_dataset(0, seed=3, p=p, geometries=g_test)
+    elif a.geometry == "slicegan":
+        # train and validate on SliceGAN-generated IrO2 structures (independent of our segmentation),
+        # test on held-out real-derived structures (slices 250-353)
+        z = np.load(ROOT / "runs/slicegan/volumes.npz")
+        gan = [z[k] for k in sorted(z.files, key=lambda s: int(s.split("_")[1]))]
+        cls = np.load(ROOT / "runs/twin/comp_full_millnet_classes.npy")
+        train = SIM.make_dataset(0, seed=1, p=p, geometries=gan[:-2]) + SIM.make_dataset(4, seed=11, p=p)
+        val = SIM.make_dataset(0, seed=2, p=p, geometries=gan[-2:])
+        test = SIM.make_dataset(0, seed=3, p=p, geometries=SIM.real_geometry(cls, range(250, 354), 4, depth=64, seed=3))
     else:
         train = SIM.make_dataset(10, seed=1, p=p)
         val = SIM.make_dataset(2, seed=2, p=p)
@@ -201,11 +213,13 @@ def main():
           f"test porosity {np.mean([v['truth'].mean() for v in test]):.3f} ({time.time()-t0:.0f}s)", flush=True)
 
     # ---- models trained on the twin's exact truth
+    sfx = f"_s{a.seed}" if a.seed else ""
+    tw = lambda n, cfg, k: train_on_twin(n + sfx, cfg, k, train, val, dev, a.iters, seed=a.seed)
     twin_models = {
-        "ResUNet 2D (twin truth)": train_on_twin("resunet_k0", {"arch": "resunet", "base": 24, "depth": 5, "max_ch": 128}, 0, train, val, dev, a.iters),
-        "MillNet 2D (twin truth)": train_on_twin("millnet_k0", {"arch": "millnet"}, 0, train, val, dev, a.iters),
-        "MillNet 7-slice, no streak bank (twin truth)": train_on_twin("millnet_k3_nobank", {"arch": "millnet", "use_bank": False}, 3, train, val, dev, a.iters),
-        "MillNet 7-slice (twin truth)": train_on_twin("millnet_k3", {"arch": "millnet"}, 3, train, val, dev, a.iters),
+        "ResUNet 2D (twin truth)": tw("resunet_k0", {"arch": "resunet", "base": 24, "depth": 5, "max_ch": 128}, 0),
+        "MillNet 2D (twin truth)": tw("millnet_k0", {"arch": "millnet"}, 0),
+        "MillNet 7-slice, no streak bank (twin truth)": tw("millnet_k3_nobank", {"arch": "millnet", "use_bank": False}, 3),
+        "MillNet 7-slice (twin truth)": tw("millnet_k3", {"arch": "millnet"}, 3),
     }
     real_models = {
         "MillNet 2D (real v2 labels)": load_checkpoint(ROOT / "runs/millnet_k0/best.pt", dev),
@@ -245,7 +259,7 @@ def main():
     run_a("Ferner-style z-gradient (pore_pipeline)", lambda st: ferner_style(st, best_shift))
     for name, (m, ck) in {**real_models, **twin_models}.items():
         run_a(name, lambda st, m=m, ck=ck: predict(m, ck, st, dev))
-    (OUT / "part_a_exact_truth.json").write_text(json.dumps(results_a, indent=1))
+    (OUT / f"part_a_exact_truth{sfx}.json").write_text(json.dumps(results_a, indent=1))
 
     # ---- Part B: real comp_full interior, label-free
     stack, rs, cs = real_box()
@@ -268,7 +282,7 @@ def main():
     for name, (m, ck) in twin_models.items():      # trained on layer interiors: predict the interior box
         run_b(name, predict(m, ck, box, dev))
     results_b["_reference"] = {"ferner_2024_published_porosity": 0.417, "box": [rs.start, rs.stop, cs.start, cs.stop]}
-    (OUT / "part_b_real_label_free.json").write_text(json.dumps(results_b, indent=1))
+    (OUT / f"part_b_real_label_free{sfx}.json").write_text(json.dumps(results_b, indent=1))
     print("done", flush=True)
 
 

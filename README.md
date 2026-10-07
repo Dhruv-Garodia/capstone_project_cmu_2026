@@ -32,7 +32,13 @@ Held-out test frames 100–117 of `comp_full.tif` (never used for training or mo
 * Standard architectures tie within 0.02 mIoU; larger pretrained models (incl. TransUNet) did not help.
 * **Digital twin with exact truth** ([docs/DIGITAL_TWIN.md](docs/DIGITAL_TWIN.md)): thresholding under-reads porosity
   by ~0.10 because of shine-through; networks trained on the calibrated twin beat a Ferner-style z-gradient
-  method (pore IoU 0.93 vs 0.85) with true pore shapes, and put comp_full porosity at ≈ 0.52.
+  method (pore IoU 0.93 vs 0.85, 3 seeds; still 0.85 with the method's best-case parameters) with true
+  pore shapes, and put comp_full porosity at ≈ 0.52.
+* **Real hand-labelled data** (Röding/Skärberg public FIB-SEM benchmark): MillNet 7-slice 0.800 ± 0.003 mIoU,
+  level with the published CNN (0.798; paired bootstrap CI includes 0) and above the published random forest
+  (0.762). Pretraining on the IrO₂ twin adds +0.017 when only 10 % of the labels are used.
+* **Honest status for publication**: [docs/REVIEW.md](docs/REVIEW.md) lists which claims the evidence supports,
+  which it does not, and the missing real IrO₂ ground truth.
 * comp_full catalyst layer: porosity ≈ 0.37–0.40, median pore diameter 60–72 nm, through-plane pore
   tortuosity τ ≈ 3.3 (3D), > 95 % of pore volume connected across the layer.
 
@@ -56,9 +62,10 @@ eponge analyze data/raw/comp_full.tif --out results/        # or any PNG / TIFF 
 
 | doc | read it for |
 |---|---|
-| [docs/FINDINGS.md](docs/FINDINGS.md) | the five things we learned about the data, labels and earlier pipelines |
+| [docs/FINDINGS.md](docs/FINDINGS.md) | what we learned about the data, labels, earlier pipelines and shine-through |
 | [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md) | how the napari masks were audited and corrected |
-| [docs/DIGITAL_TWIN.md](docs/DIGITAL_TWIN.md) | calibrated pFIB-SEM simulator, exact-truth benchmark vs Ferner-style and threshold methods |
+| [docs/DIGITAL_TWIN.md](docs/DIGITAL_TWIN.md) | calibrated pFIB-SEM simulator, exact-truth benchmark vs Ferner-style and threshold methods, public real-data benchmark, cross-sample check |
+| [docs/REVIEW.md](docs/REVIEW.md) | self-review at a top-venue standard: supported claims, unsupported claims, what is missing |
 | [docs/MILLNET.md](docs/MILLNET.md) | our MillNet architecture: design reasoning, results, ablations |
 | [docs/MODELS.md](docs/MODELS.md) | architectures, training protocol, full comparison |
 | [docs/LIBRARY.md](docs/LIBRARY.md) | Python API, CLI, metrics, the three visualisations |

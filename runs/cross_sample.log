@@ -1,0 +1,45 @@
+comp: slices 129-224 of 354, frame (630, 1860), windows [(1472, np.int64(238)), (576, np.int64(234)), (320, np.int64(206)), (64, np.int64(201))]
+{
+ "published_ferner_2024": 0.417,
+ "Otsu (denoised)": 0.346,
+ "Ferner, best-case parameters": 0.391,
+ "MillNet 7-slice twin (real geom, seed 0)": 0.541,
+ "MillNet 7-slice twin (real geom, seed 1)": 0.543,
+ "MillNet 7-slice twin (real geom, seed 2)": 0.514,
+ "MillNet 7-slice twin (SliceGAN geom)": 0.55,
+ "ResUNet 2D twin (real geom, seed 0)": 0.515,
+ "ResUNet 2D twin (real geom, seed 1)": 0.548,
+ "ResUNet 2D twin (real geom, seed 2)": 0.517,
+ "ResUNet 2D twin (SliceGAN geom)": 0.46,
+ "MillNet 7-slice twin, calibrated to this acquisition": 0.589
+}
+uncomp: slices 157-252 of 410, frame (689, 1642), windows [(1344, np.int64(252)), (1088, np.int64(214)), (0, np.int64(125)), (256, np.int64(82))]
+{
+ "published_ferner_2024": 0.558,
+ "Otsu (denoised)": 0.404,
+ "Ferner, best-case parameters": 0.505,
+ "MillNet 7-slice twin (real geom, seed 0)": 0.569,
+ "MillNet 7-slice twin (real geom, seed 1)": 0.566,
+ "MillNet 7-slice twin (real geom, seed 2)": 0.543,
+ "MillNet 7-slice twin (SliceGAN geom)": 0.581,
+ "ResUNet 2D twin (real geom, seed 0)": 0.602,
+ "ResUNet 2D twin (real geom, seed 1)": 0.618,
+ "ResUNet 2D twin (real geom, seed 2)": 0.592,
+ "ResUNet 2D twin (SliceGAN geom)": 0.547,
+ "MillNet 7-slice twin, calibrated to this acquisition": 0.698
+}
+pristine: slices 284-379 of 665, frame (1100, 1995), windows [(1280, np.int64(547)), (448, np.int64(537)), (192, np.int64(528)), (832, np.int64(350))]
+{
+ "published_ferner_2024": 0.515,
+ "Otsu (denoised)": 0.226,
+ "Ferner, best-case parameters": 0.953,
+ "MillNet 7-slice twin (real geom, seed 0)": 0.387,
+ "MillNet 7-slice twin (real geom, seed 1)": 0.353,
+ "MillNet 7-slice twin (real geom, seed 2)": 0.354,
+ "MillNet 7-slice twin (SliceGAN geom)": 0.367,
+ "ResUNet 2D twin (real geom, seed 0)": 0.225,
+ "ResUNet 2D twin (real geom, seed 1)": 0.251,
+ "ResUNet 2D twin (real geom, seed 2)": 0.253,
+ "ResUNet 2D twin (SliceGAN geom)": 0.262,
+ "MillNet 7-slice twin, calibrated to this acquisition": 0.694
+}

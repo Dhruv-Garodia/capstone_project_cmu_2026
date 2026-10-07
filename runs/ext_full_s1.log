@@ -1,0 +1,18 @@
+loaded regions (27s)
+reference {'Röding 2021 random forest (published, Table 3)': {'test_mIoU': 0.7616}, 'Skärberg 2021 CNN (released segmentation)': {'test_mIoU': 0.7979562687840297}}
+  millnet_7slice_s1 it 250 loss 0.401 val mIoU 0.6754 (170s)
+  millnet_7slice_s1 it 500 loss 0.360 val mIoU 0.6562 (341s)
+  millnet_7slice_s1 it 750 loss 0.383 val mIoU 0.7762 (510s)
+  millnet_7slice_s1 it 1000 loss 0.329 val mIoU 0.7946 (680s)
+  millnet_7slice_s1 it 1250 loss 0.316 val mIoU 0.7892 (849s)
+  millnet_7slice_s1 it 1500 loss 0.209 val mIoU 0.7995 (1018s)
+  millnet_7slice_s1 it 1750 loss 0.213 val mIoU 0.7942 (1186s)
+  millnet_7slice_s1 it 2000 loss 0.180 val mIoU 0.7858 (1355s)
+  millnet_7slice_s1 it 2250 loss 0.153 val mIoU 0.7899 (1524s)
+  millnet_7slice_s1 it 2500 loss 0.151 val mIoU 0.7876 (1692s)
+TEST millnet_7slice_s1: mIoU 0.7958 per sample {'HPC22': 0.7675141615557939, 'HPC30': 0.8141447541932554, 'HPC45': 0.7824287532539134}
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": 0.7616,
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": 0.7979562687840297,
+ "millnet_7slice_s1": 0.7958145040058746
+}

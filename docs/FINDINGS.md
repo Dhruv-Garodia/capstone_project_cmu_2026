@@ -75,11 +75,23 @@ Networks trained on the twin reach IoU 0.93 with true pore shapes. On the real s
 network and the z-gradient method agree on porosity ≈ 0.52–0.53, above threshold estimates (0.36–0.40)
 and the published 0.417.
 
+## 8. On real hand-labelled FIB-SEM data, the models match the state of the art
+
+On the public Röding/Skärberg benchmark (real FIB-SEM, manual shine-through-aware labels), MillNet 7-slice
+scores 0.800 ± 0.003 mIoU over 3 seeds, level with the published CNN (0.798; the paired bootstrap interval
+of the difference includes 0) and above the published random forest (0.762). Pretraining on the IrO₂ twin
+helps when labels are scarce (+0.017 at 10 % of labels); self-training on unlabelled slices hurts. Details
+in [DIGITAL_TWIN.md](DIGITAL_TWIN.md); what this does and does not support in a paper is in
+[REVIEW.md](REVIEW.md).
+
 ## Limits that remain
 
 * All labels are rule-based. Model scores measure agreement with a rule, so the physical checks
   (porosity against the literature, z-continuity, isotropy, cross-pipeline agreement) carry the
   scientific weight.
 * Otsu-type rules still call bright shine-through solid, so v2 porosity is a lower bound.
-* One stack (comp_full) trains and tests everything. The pristine and uncompressed stacks are the
-  natural next test of generalisation.
+* One stack (comp_full) trains everything on IrO₂. On the uncompressed stack every method agrees comp < uncomp,
+  but pristine and absolute porosity depend on the method; see the cross-sample section of
+  [DIGITAL_TWIN.md](DIGITAL_TWIN.md).
+* There is no hand-labelled IrO₂ ground truth. About 20 patches labelled with ±3-slice context by two
+  annotators would let every real-data claim be tested directly.

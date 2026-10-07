@@ -1,0 +1,18 @@
+loaded regions (28s)
+reference {'Röding 2021 random forest (published, Table 3)': {'test_mIoU': 0.7616}, 'Skärberg 2021 CNN (released segmentation)': {'test_mIoU': 0.7979562687840297}}
+  resunet_7slice_s1 it 250 loss 0.410 val mIoU 0.7179 (154s)
+  resunet_7slice_s1 it 500 loss 0.400 val mIoU 0.7712 (310s)
+  resunet_7slice_s1 it 750 loss 0.489 val mIoU 0.6902 (465s)
+  resunet_7slice_s1 it 1000 loss 0.333 val mIoU 0.7941 (620s)
+  resunet_7slice_s1 it 1250 loss 0.284 val mIoU 0.7680 (776s)
+  resunet_7slice_s1 it 1500 loss 0.178 val mIoU 0.7960 (931s)
+  resunet_7slice_s1 it 1750 loss 0.184 val mIoU 0.7854 (1086s)
+  resunet_7slice_s1 it 2000 loss 0.143 val mIoU 0.7857 (1241s)
+  resunet_7slice_s1 it 2250 loss 0.129 val mIoU 0.7842 (1396s)
+  resunet_7slice_s1 it 2500 loss 0.123 val mIoU 0.7840 (1551s)
+TEST resunet_7slice_s1: mIoU 0.7927 per sample {'HPC22': 0.7724199930426761, 'HPC30': 0.8099427464340001, 'HPC45': 0.7742070372991068}
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": 0.7616,
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": 0.7979562687840297,
+ "resunet_7slice_s1": 0.7927486120243578
+}

@@ -1,0 +1,47 @@
+calibration (real vs twin grey percentiles): [62.0, 98.0, 159.0, 197.0, 231.0, 255.0] [72.0, 90.0, 159.0, 206.0, 228.0, 253.0]
+twin datasets: 16+2+4 volumes; shapes [(40, 147, 256), (40, 148, 256), (40, 151, 256), (40, 160, 160), (72, 256, 256)] test porosity 0.457 (6s)
+  resunet_k0 it 500 loss 0.221 val pore IoU 0.9133 (171s)
+  resunet_k0 it 1000 loss 0.214 val pore IoU 0.9208 (348s)
+  resunet_k0 it 1500 loss 0.168 val pore IoU 0.9223 (495s)
+  resunet_k0 it 2000 loss 0.158 val pore IoU 0.9248 (622s)
+  resunet_k0 it 2500 loss 0.148 val pore IoU 0.9312 (747s)
+  resunet_k0 it 3000 loss 0.174 val pore IoU 0.9324 (873s)
+  millnet_k0 it 500 loss 0.205 val pore IoU 0.9121 (139s)
+  millnet_k0 it 1000 loss 0.185 val pore IoU 0.9203 (277s)
+  millnet_k0 it 1500 loss 0.161 val pore IoU 0.9288 (414s)
+  millnet_k0 it 2000 loss 0.159 val pore IoU 0.9314 (552s)
+  millnet_k0 it 2500 loss 0.137 val pore IoU 0.9300 (688s)
+  millnet_k0 it 3000 loss 0.139 val pore IoU 0.9342 (825s)
+  millnet_k3_nobank it 500 loss 0.185 val pore IoU 0.9387 (145s)
+  millnet_k3_nobank it 1000 loss 0.161 val pore IoU 0.9386 (286s)
+  millnet_k3_nobank it 1500 loss 0.127 val pore IoU 0.9403 (426s)
+  millnet_k3_nobank it 2000 loss 0.128 val pore IoU 0.9416 (562s)
+  millnet_k3_nobank it 2500 loss 0.126 val pore IoU 0.9500 (699s)
+  millnet_k3_nobank it 3000 loss 0.117 val pore IoU 0.9505 (838s)
+  millnet_k3 it 500 loss 0.164 val pore IoU 0.8904 (127s)
+  millnet_k3 it 1000 loss 0.142 val pore IoU 0.9450 (263s)
+  millnet_k3 it 1500 loss 0.137 val pore IoU 0.9481 (398s)
+  millnet_k3 it 2000 loss 0.129 val pore IoU 0.9461 (532s)
+  millnet_k3 it 2500 loss 0.121 val pore IoU 0.9516 (664s)
+  millnet_k3 it 3000 loss 0.111 val pore IoU 0.9507 (797s)
+A | Otsu (denoised)                                  pore IoU 0.768  porosity 0.353 (true 0.456, bias -0.103)  x-z anisotropy 0.218 (true 0.197)
+Ferner-style streak sign: IoU {1.0: 0.8605909951280142, -1.0: 0.8592795589912559} -> using shift 1.0
+A | Ferner-style z-gradient (pore_pipeline)          pore IoU 0.854  porosity 0.449 (true 0.456, bias -0.007)  x-z anisotropy 0.237 (true 0.197)
+A | MillNet 2D (real v2 labels)                      pore IoU 0.506  porosity 0.573 (true 0.456, bias +0.117)  x-z anisotropy 0.553 (true 0.197)
+A | MillNet 7-slice (real v2 labels)                 pore IoU 0.482  porosity 0.531 (true 0.456, bias +0.074)  x-z anisotropy 0.638 (true 0.197)
+A | ResUNet 2D (real v2 labels)                      pore IoU 0.784  porosity 0.378 (true 0.456, bias -0.078)  x-z anisotropy 0.305 (true 0.197)
+A | ResUNet 2D (twin truth)                          pore IoU 0.896  porosity 0.429 (true 0.456, bias -0.028)  x-z anisotropy 0.197 (true 0.197)
+A | MillNet 2D (twin truth)                          pore IoU 0.890  porosity 0.427 (true 0.456, bias -0.029)  x-z anisotropy 0.202 (true 0.197)
+A | MillNet 7-slice, no streak bank (twin truth)     pore IoU 0.907  porosity 0.440 (true 0.456, bias -0.017)  x-z anisotropy 0.204 (true 0.197)
+A | MillNet 7-slice (twin truth)                     pore IoU 0.916  porosity 0.442 (true 0.456, bias -0.014)  x-z anisotropy 0.205 (true 0.197)
+real box: frames 0-129, rows 178-323, cols 483-903
+B | Otsu (denoised)                                  porosity 0.356  x-z anisotropy 0.137  corr len x 7.55 z 7.10  porosity sd over z 0.0339
+B | Ferner-style z-gradient (pore_pipeline)          porosity 0.534  x-z anisotropy 0.179  corr len x 9.50 z 7.72  porosity sd over z 0.0269
+B | MillNet 2D (real v2 labels)                      porosity 0.390  x-z anisotropy 0.139  corr len x 7.47 z 7.09  porosity sd over z 0.0308
+B | MillNet 7-slice (real v2 labels)                 porosity 0.381  x-z anisotropy 0.138  corr len x 7.45 z 7.07  porosity sd over z 0.0303
+B | ResUNet 2D (real v2 labels)                      porosity 0.401  x-z anisotropy 0.135  corr len x 7.45 z 6.88  porosity sd over z 0.0291
+B | ResUNet 2D (twin truth)                          porosity 0.496  x-z anisotropy 0.192  corr len x 6.06 z 5.30  porosity sd over z 0.0284
+B | MillNet 2D (twin truth)                          porosity 0.482  x-z anisotropy 0.179  corr len x 6.48 z 5.81  porosity sd over z 0.0227
+B | MillNet 7-slice, no streak bank (twin truth)     porosity 0.523  x-z anisotropy 0.119  corr len x 5.98 z 5.76  porosity sd over z 0.0293
+B | MillNet 7-slice (twin truth)                     porosity 0.520  x-z anisotropy 0.122  corr len x 6.06 z 5.91  porosity sd over z 0.0337
+done

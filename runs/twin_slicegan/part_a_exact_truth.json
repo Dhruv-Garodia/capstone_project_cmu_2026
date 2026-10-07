@@ -1,0 +1,101 @@
+{
+ "Otsu (denoised)": {
+  "pore_iou": 0.7682872193508095,
+  "accuracy": 0.893898105724702,
+  "porosity_pred": 0.35345173323726475,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.10279992179032416,
+  "porosity_mae": 0.10285201337889,
+  "pore_iou_sd_over_volumes": 0.04965816019232282,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.21794829696847737
+ },
+ "Ferner-style z-gradient (pore_pipeline)": {
+  "pore_iou": 0.8535435856763326,
+  "accuracy": 0.9284643191447434,
+  "porosity_pred": 0.4490996265026111,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.007152028524977816,
+  "porosity_mae": 0.01044040919312899,
+  "pore_iou_sd_over_volumes": 0.03420086411799306,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.23672579949447967
+ },
+ "MillNet 2D (real v2 labels)": {
+  "pore_iou": 0.5061824574582113,
+  "accuracy": 0.662468092607646,
+  "porosity_pred": 0.5732472872943147,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": 0.11699563226672582,
+  "porosity_mae": 0.22327838427130742,
+  "pore_iou_sd_over_volumes": 0.06252903430327215,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.5531565638335925
+ },
+ "MillNet 7-slice (real v2 labels)": {
+  "pore_iou": 0.48211497450323065,
+  "accuracy": 0.6551955934697999,
+  "porosity_pred": 0.5305306403340231,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": 0.07427898530643418,
+  "porosity_mae": 0.19275407482104173,
+  "pore_iou_sd_over_volumes": 0.06237224086444986,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.6375675932176439
+ },
+ "ResUNet 2D (real v2 labels)": {
+  "pore_iou": 0.7837483207590786,
+  "accuracy": 0.8988235448073701,
+  "porosity_pred": 0.37830062536949455,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.07795102965809436,
+  "porosity_mae": 0.07839910245493623,
+  "pore_iou_sd_over_volumes": 0.06601313277795705,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.30468594677659194
+ },
+ "ResUNet 2D (twin truth)": {
+  "pore_iou": 0.8964200871057146,
+  "accuracy": 0.951668575721746,
+  "porosity_pred": 0.42863694237116956,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.02761471265641935,
+  "porosity_mae": 0.02768831383331366,
+  "pore_iou_sd_over_volumes": 0.015467881333133371,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.19742325481773718
+ },
+ "MillNet 2D (twin truth)": {
+  "pore_iou": 0.8898803202655379,
+  "accuracy": 0.9485144010493645,
+  "porosity_pred": 0.42734717552221896,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.02890447950536995,
+  "porosity_mae": 0.02904671921401907,
+  "pore_iou_sd_over_volumes": 0.013645886693277369,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.20152927106793012
+ },
+ "MillNet 7-slice, no streak bank (twin truth)": {
+  "pore_iou": 0.9073133940693485,
+  "accuracy": 0.9564606503719578,
+  "porosity_pred": 0.43970503559463986,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.01654661943294905,
+  "porosity_mae": 0.017276191179722733,
+  "pore_iou_sd_over_volumes": 0.007509931862160559,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.20355166922812765
+ },
+ "MillNet 7-slice (twin truth)": {
+  "pore_iou": 0.9156175387064219,
+  "accuracy": 0.9604161663094887,
+  "porosity_pred": 0.4423650113311656,
+  "porosity_true": 0.4562516550275889,
+  "porosity_bias": -0.013886643696423284,
+  "porosity_mae": 0.014401830395830694,
+  "pore_iou_sd_over_volumes": 0.006816863689050526,
+  "xz_anisotropy_true": 0.1973116910578587,
+  "xz_anisotropy_pred": 0.20479789103915239
+ }
+}

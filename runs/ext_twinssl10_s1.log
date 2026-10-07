@@ -1,0 +1,18 @@
+loaded regions (31s)
+reference {'Röding 2021 random forest (published, Table 3)': {'test_mIoU': 0.7616}, 'Skärberg 2021 CNN (released segmentation)': {'test_mIoU': 0.7979562687840297}}
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 250 loss 0.141 val mIoU 0.7351 (416s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 500 loss 0.085 val mIoU 0.7525 (831s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 750 loss 0.068 val mIoU 0.7551 (1241s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 1000 loss 0.054 val mIoU 0.7541 (1653s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 1250 loss 0.048 val mIoU 0.7566 (2065s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 1500 loss 0.021 val mIoU 0.7586 (2476s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 1750 loss 0.018 val mIoU 0.7598 (2892s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 2000 loss 0.021 val mIoU 0.7607 (3302s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 2250 loss 0.018 val mIoU 0.7618 (3713s)
+  millnet_7slice_frac0.1_twininit_ssl_s1 it 2500 loss 0.022 val mIoU 0.7628 (4125s)
+TEST millnet_7slice_frac0.1_twininit_ssl_s1: mIoU 0.7620 per sample {'HPC22': 0.7428837165240225, 'HPC30': 0.8200295809149201, 'HPC45': 0.7112138097945344}
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": 0.7616,
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": 0.7979562687840297,
+ "millnet_7slice_frac0.1_twininit_ssl_s1": 0.7619994486317077
+}
