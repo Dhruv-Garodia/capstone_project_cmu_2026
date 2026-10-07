@@ -10,6 +10,11 @@ parameters) and trains at the same speed.
 frame-level context (ideas 3 and 4 below). The z-physics ideas (1 and 2) did not help on these
 labels, for a reason explained in [Results](#results).
 
+**Update from the digital twin ([DIGITAL_TWIN.md](DIGITAL_TWIN.md)).** With exact truth, slice context
+does help (MillNet 7-slice +0.02 pore IoU over MillNet 2D), but a plain 2D ResUNet trained on the twin
+reaches the same accuracy (0.928 vs 0.929). MillNet's advantage on the real labels is frame context;
+the larger scientific gain comes from training on physically correct labels, whatever the architecture.
+
 ## Why not just a bigger network?
 
 The architecture comparison ([MODELS.md](MODELS.md)) gave a clear negative result: five architectures

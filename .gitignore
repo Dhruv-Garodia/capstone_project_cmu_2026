@@ -19,3 +19,5 @@ runs/demo_segmentation_*.npy
 # figures and web samples are small and needed by the docs / site
 !docs/figures/*.png
 !webapp/samples/*.png
+!runs/twin_real/examples/*.png
+!runs/twin/examples/*.png

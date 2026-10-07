@@ -66,6 +66,15 @@ network needs to know where a grey value sits within *this frame's* distribution
 cannot tell it. Slice-context ideas (streak alignment, milling-evolution differences) gave no gain on
 slice-wise labels. Details in [MILLNET.md](MILLNET.md).
 
+## 7. Shine-through costs threshold methods about 0.10 porosity, and a digital twin fixes it
+
+A calibrated simulator of the pFIB-SEM measurement ([DIGITAL_TWIN.md](DIGITAL_TWIN.md)) gives exact truth
+on real IrO₂ geometry. Thresholding under-reads porosity by 0.10 (−23 %). A Ferner-style z-gradient
+method removes the porosity bias but places pores less accurately (IoU 0.85) and stretches them along z.
+Networks trained on the twin reach IoU 0.93 with true pore shapes. On the real stack, the twin-trained
+network and the z-gradient method agree on porosity ≈ 0.52–0.53, above threshold estimates (0.36–0.40)
+and the published 0.417.
+
 ## Limits that remain
 
 * All labels are rule-based. Model scores measure agreement with a rule, so the physical checks

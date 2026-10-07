@@ -1,0 +1,35 @@
+{
+ "target_percentiles": [
+  62.0,
+  98.0,
+  159.0,
+  197.0,
+  231.0,
+  255.0
+ ],
+ "sim_percentiles": [
+  72.0,
+  90.0,
+  159.0,
+  206.0,
+  228.0,
+  253.0
+ ],
+ "mean_abs_error": 5.333333333333333,
+ "params": {
+  "streak": 1.0,
+  "t_max": 24,
+  "cut": 222,
+  "edge": 30.0,
+  "back": 185,
+  "floor": 90,
+  "depth_decay": 18,
+  "texture": 12.0,
+  "psf": 0.8,
+  "noise": 9.0,
+  "shot": 0.35,
+  "curtain": 6.0,
+  "grain": 10.0,
+  "streaks": 8.0
+ }
+}

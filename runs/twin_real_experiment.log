@@ -1,0 +1,37 @@
+calibration (real vs twin grey percentiles): [62.0, 98.0, 159.0, 197.0, 231.0, 255.0] [72.0, 90.0, 159.0, 206.0, 228.0, 253.0]
+twin datasets: 14+2+4 volumes; shapes [(40, 106, 256), (40, 128, 256), (40, 146, 256), (40, 147, 256), (40, 148, 256), (40, 151, 256), (40, 152, 256), (40, 158, 256), (40, 159, 256), (40, 161, 256), (40, 162, 256), (72, 256, 256)] test porosity 0.457 (5s)
+  resunet_k0 it 500 loss 0.252 val pore IoU 0.8773 (21s)
+  resunet_k0 it 1000 loss 0.194 val pore IoU 0.9046 (42s)
+  resunet_k0 it 1500 loss 0.238 val pore IoU 0.9015 (62s)
+  resunet_k0 it 2000 loss 0.182 val pore IoU 0.8989 (83s)
+  resunet_k0 it 2500 loss 0.171 val pore IoU 0.9082 (104s)
+  resunet_k0 it 3000 loss 0.166 val pore IoU 0.9169 (125s)
+  millnet_k0 it 500 loss 0.224 val pore IoU 0.9009 (23s)
+  millnet_k0 it 1000 loss 0.182 val pore IoU 0.9075 (46s)
+  millnet_k0 it 1500 loss 0.168 val pore IoU 0.9133 (69s)
+  millnet_k0 it 2000 loss 0.165 val pore IoU 0.9113 (91s)
+  millnet_k0 it 2500 loss 0.215 val pore IoU 0.9126 (114s)
+  millnet_k0 it 3000 loss 0.190 val pore IoU 0.9136 (136s)
+  millnet_k3_nobank it 500 loss 0.218 val pore IoU 0.9209 (23s)
+  millnet_k3_nobank it 1000 loss 0.121 val pore IoU 0.9242 (46s)
+  millnet_k3_nobank it 1500 loss 0.165 val pore IoU 0.9265 (70s)
+  millnet_k3_nobank it 2000 loss 0.140 val pore IoU 0.9318 (93s)
+  millnet_k3_nobank it 2500 loss 0.135 val pore IoU 0.9321 (116s)
+  millnet_k3_nobank it 3000 loss 0.131 val pore IoU 0.9305 (139s)
+  millnet_k3 it 500 loss 0.172 val pore IoU 0.9199 (24s)
+  millnet_k3 it 1000 loss 0.168 val pore IoU 0.9272 (48s)
+  millnet_k3 it 1500 loss 0.142 val pore IoU 0.9269 (72s)
+  millnet_k3 it 2000 loss 0.163 val pore IoU 0.9289 (95s)
+  millnet_k3 it 2500 loss 0.140 val pore IoU 0.9303 (120s)
+  millnet_k3 it 3000 loss 0.148 val pore IoU 0.9316 (143s)
+Traceback (most recent call last):
+  File "/Users/aadityavikram/Desktop/Capstone_Project_Final/repo/eponge/scripts/twin_experiment.py", line 272, in <module>
+    main()
+    ~~~~^^
+  File "/Users/aadityavikram/Desktop/Capstone_Project_Final/repo/eponge/scripts/twin_experiment.py", line 234, in main
+    run_a("Otsu (denoised)", otsu_denoised)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/aadityavikram/Desktop/Capstone_Project_Final/repo/eponge/scripts/twin_experiment.py", line 224, in run_a
+    P, T = np.concatenate(preds), np.concatenate(truths)
+           ~~~~~~~~~~~~~~^^^^^^^
+ValueError: all the input array dimensions except for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 151 and the array at index 1 has size 147

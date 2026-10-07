@@ -30,6 +30,9 @@ Held-out test frames 100–117 of `comp_full.tif` (never used for training or mo
   changed between annotation sessions; they gave porosity 0.18. Corrected labels give 0.354, inside an
   independent classical pipeline's bracket (0.32–0.51) on every test frame.
 * Standard architectures tie within 0.02 mIoU; larger pretrained models (incl. TransUNet) did not help.
+* **Digital twin with exact truth** ([docs/DIGITAL_TWIN.md](docs/DIGITAL_TWIN.md)): thresholding under-reads porosity
+  by ~0.10 because of shine-through; networks trained on the calibrated twin beat a Ferner-style z-gradient
+  method (pore IoU 0.93 vs 0.85) with true pore shapes, and put comp_full porosity at ≈ 0.52.
 * comp_full catalyst layer: porosity ≈ 0.37–0.40, median pore diameter 60–72 nm, through-plane pore
   tortuosity τ ≈ 3.3 (3D), > 95 % of pore volume connected across the layer.
 
@@ -55,6 +58,7 @@ eponge analyze data/raw/comp_full.tif --out results/        # or any PNG / TIFF 
 |---|---|
 | [docs/FINDINGS.md](docs/FINDINGS.md) | the five things we learned about the data, labels and earlier pipelines |
 | [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md) | how the napari masks were audited and corrected |
+| [docs/DIGITAL_TWIN.md](docs/DIGITAL_TWIN.md) | calibrated pFIB-SEM simulator, exact-truth benchmark vs Ferner-style and threshold methods |
 | [docs/MILLNET.md](docs/MILLNET.md) | our MillNet architecture: design reasoning, results, ablations |
 | [docs/MODELS.md](docs/MODELS.md) | architectures, training protocol, full comparison |
 | [docs/LIBRARY.md](docs/LIBRARY.md) | Python API, CLI, metrics, the three visualisations |

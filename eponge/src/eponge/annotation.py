@@ -10,8 +10,9 @@ Findings on the v1 masks of comp_full.tif (frames 0-117, 116 masks):
    (pore back-walls seen through the opening) is labelled solid, giving ROI porosity
    0.14-0.22 versus 0.383 (Otsu) and 0.417 (Ferner et al. 2024) for this region.
 3. ``slice_030.png`` is mis-named (should be ``slice_0030.png``); frames 91-92 are missing.
-4. The ROI (catalyst-layer band) is the genuinely manual part and is good; it only
-   needs light cleanup (holes, specks).
+4. The ROI (catalyst-layer band) is the genuinely manual part and is good. Regions the
+   annotator marked "outside" *inside* the layer (hand-drawn polygons over ambiguous voids and
+   gaps) are deliberate and are kept; only 1-4 px brush specks are cleaned up.
 
 5. The hand-drawn ROI line is loose: it includes a rim of Pt cap (top) and
    membrane / delamination gap (bottom) that is neither CL pore nor CL solid.
@@ -94,14 +95,31 @@ def solid_envelope(solid: np.ndarray, radius: int = 10) -> np.ndarray:
     return ndi.binary_fill_holes(closed)
 
 
+def annotator_exclusions(roi_v1: np.ndarray, min_size: int = 5) -> np.ndarray:
+    """Regions the annotator marked 'outside' (128) *inside* the drawn layer outline.
+
+    These are deliberate exclusions (hand-drawn polygons over ambiguous voids and gaps) and are
+    kept as outside in v2. Spots smaller than ``min_size`` px are brush specks and are dropped.
+    """
+    enclosed = ndi.binary_fill_holes(roi_v1) & ~roi_v1
+    if not enclosed.any():
+        return enclosed
+    lab, n = ndi.label(enclosed)
+    sizes = np.bincount(lab.ravel())
+    keep = np.nonzero(sizes >= min_size)[0]
+    keep = keep[keep > 0]
+    return np.isin(lab, keep)
+
+
 def correct_mask(image: np.ndarray, mask_export: np.ndarray, envelope_radius: int = 10,
                  **kw) -> tuple[np.ndarray, dict]:
     """v1 export mask -> v2 class map (0 solid, 1 pore, 2 outside) plus a per-frame record."""
     roi_v1 = mask_export != 128
-    roi = clean_roi(roi_v1)
+    excluded = annotator_exclusions(roi_v1)
+    roi = clean_roi(roi_v1) & ~excluded
     pore, t = relabel_pores(image, roi, **kw)
     if envelope_radius:
-        roi = clean_roi(roi & solid_envelope(roi & ~pore, envelope_radius))
+        roi = clean_roi(roi & solid_envelope(roi & ~pore, envelope_radius)) & ~excluded
         pore, t = relabel_pores(image, roi, **kw)  # Otsu again without the background rim
     classes = np.full(image.shape, OUTSIDE, np.uint8)
     classes[roi] = SOLID
@@ -114,6 +132,7 @@ def correct_mask(image: np.ndarray, mask_export: np.ndarray, envelope_radius: in
         "v2_otsu_threshold_denoised": round(t, 2),
         "v2_porosity": float(pore[roi].mean()),
         "roi_pixels_changed": int((roi != roi_v1).sum()),
+        "annotator_exclusions_kept_px": int(excluded.sum()),
         "pixels_relabelled_in_roi": int(((mask_export == 0) != pore)[roi & roi_v1].sum()),
     }
     return classes, rec
