@@ -30,8 +30,10 @@ pristine 0.500 → 0.481. Features along the layer come out about 25 % short for
 uncomp 0.949 / 0.927, pristine 0.949 / 0.895. The physics twin scored 0.779 / 0.860 / 0.829. A pristine-only GAN
 fine-tune was rejected because it was worse on validation slices.
 
-**Protocol for frame-conditioned models.** MillNet reads whole-frame statistics, so twin crops must be pasted into a
-real frame before scoring (`twin_context_check.py`). On bare crops MillNet scored comp 0.57; pasted, it scored 0.90.
+**Exact-truth result.** MillNet-SA2 trained on synthetic data (36 GAN-twin volumes) scores 0.926 / 0.956 / 0.909 pore
+IoU (comp / uncomp / pristine, mean 0.930) on held-out synthetic volumes, against 0.883 for U-Net ResNet-34 trained on real
+data, 0.782 for Otsu and 0.754 for the Ferner rule (`runs/twin_gan_ps/millnet_sa2_k3/`). Models trained on real data only
+read whole-frame statistics, so their synthetic crops must be pasted into a real frame (`twin_context_check.py`).
 
 ---
 

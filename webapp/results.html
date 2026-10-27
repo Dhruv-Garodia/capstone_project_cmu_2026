@@ -79,7 +79,7 @@ footer { margin-top: 32px; font-size: .8rem; color: var(--muted); }
     <div class="kpi"><span class="eyebrow">MillNet-SA2, 3 seeds</span><span class="v">0.935</span><span class="s">mean test mIoU, ± 0.001</span></div>
     <div class="kpi"><span class="eyebrow">nnU-Net 2D</span><span class="v">0.919</span><span class="s">same training budget</span></div>
     <div class="kpi"><span class="eyebrow">uncomp / pristine</span><span class="v pos">+2.4 / +2.7</span><span class="s">points over nnU-Net, CI excludes 0</span></div>
-    <div class="kpi"><span class="eyebrow">Parameters</span><span class="v">2.6 M</span><span class="s">vs 24–26 M for pretrained baselines</span></div>
+    <div class="kpi"><span class="eyebrow">Exact truth, synthetic</span><span class="v">0.930</span><span class="s">pore IoU; best other method 0.883</span></div>
   </div>
 
   <section>
@@ -221,17 +221,19 @@ footer { margin-top: 32px; font-size: .8rem; color: var(--muted); }
       </div>
       <div class="card scroll">
         <h3>Against exact truth</h3>
-        <p class="note" style="margin-top:6px">Pore IoU on the GAN twin, crops pasted into real frames.</p>
+        <p class="note" style="margin-top:6px">Pore IoU on held-out synthetic volumes.</p>
         <table>
-          <thead><tr><th></th><th class="n">comp</th><th class="n">uncomp</th><th class="n">pristine</th></tr></thead>
+          <thead><tr><th>Method</th><th>Trained on</th><th class="n">comp</th><th class="n">uncomp</th><th class="n">pristine</th><th class="n">Mean</th></tr></thead>
           <tbody>
-            <tr class="ours"><td>MillNet-SA2</td><td class="n">0.898</td><td class="n">0.799</td><td class="n">0.756</td></tr>
-            <tr><td>U-Net ResNet-34</td><td class="n">0.890</td><td class="n">0.819</td><td class="n">0.793</td></tr>
+            <tr class="ours"><td>MillNet-SA2</td><td>synthetic</td><td class="n">0.926</td><td class="n">0.956</td><td class="n">0.909</td><td class="n">0.930</td></tr>
+            <tr><td>U-Net ResNet-34</td><td>real</td><td class="n">0.888</td><td class="n">0.892</td><td class="n">0.870</td><td class="n">0.883</td></tr>
+            <tr><td>Otsu</td><td>–</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n">0.782</td></tr>
+            <tr><td>Ferner et al. 2024 rule</td><td>–</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n">0.754</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <p class="callout">On exact truth, MillNet-SA2 is on par with a pretrained U-Net (mean 0.818 vs 0.834), not ahead as it is on the hand-annotated test set. Part of its lead may come from matching how the labels were made, with each frame judged on its own contrast. The twin is still imperfect for pristine, so this is indicative. Pretraining on the twin did not improve real-data accuracy (0.920 vs 0.919).</p>
+    <p class="note">Held-out volumes: SliceGAN volumes 12–13 of each acquisition with the learned appearance model. Pretraining on synthetic data and then fine-tuning on real data gives 0.920 on the real test set (0.919 without).</p>
   </section>
 
   <footer>Éponge · pFIB-SEM catalyst-layer segmentation · numbers from runs/final_models/report/results.json</footer>

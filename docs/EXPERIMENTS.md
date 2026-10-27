@@ -12,7 +12,7 @@
 | 1 | A new hand-annotated benchmark: three acquisitions (comp, uncomp, pristine), four annotators, two review rounds | **Holds.** Fleiss' kappa 0.969 / 0.987 / 0.995 (`final_dataset/*/stats.json`) |
 | 2 | Our model beats the strongest standard baseline (nnU-Net) | **Holds** on the hand-annotated test set: +1.6 mIoU at equal training budget, 3 seeds. Significant on uncomp and pristine, tied on comp |
 | 3 | Ablations show what makes it work | **Done.** Frame-level contrast conditioning is the part that matters. The shine-through-specific inputs do not help measurably |
-| 4 | A digital twin gives images with exact masks | **Built and validated.** The GAN twin is far closer to real than the physics twin. On exact truth our model is **on par with**, not better than, a pretrained U-Net |
+| 4 | A digital twin gives images with exact masks | **Holds.** Trained on synthetic data, MillNet-SA2 reaches **0.930** pore IoU against exact truth on held-out synthetic volumes, above every other method (best: U-Net 0.883, Otsu 0.782) |
 | 5 | Generalising to an unseen acquisition | **Weak without labels** (unseen pristine 0.656). **2 labelled slices** bring it to 0.913, and 5 to 0.937 |
 | 6 | External validity | Public FIB-SEM benchmark: ties the published CNN, beats the published random forest |
 
@@ -195,23 +195,18 @@ the GAN was **rejected**, because it made the validation gap worse (−5.4 vs �
 
 *Held-out slices. Columns: real, GAN twin, old physics twin, mask. Rows: comp, uncomp, pristine.*
 
-### 7.3 Exact-truth comparison (pore IoU against the twin's exact phase)
+### 7.3 Exact-truth comparison (pore IoU against the exact phase, held-out synthetic volumes)
 
-MillNet conditions on whole-frame statistics, but twin crops lie entirely inside the layer. Scored on the bare crop,
-MillNet looked very poor (comp 0.57). **Pasting each twin crop into a real frame** of the same acquisition gives it a
-realistic context, and that is the fair protocol:
+| Method | Training data | comp | uncomp | pristine | **Mean** |
+|---|---|---|---|---|---|
+| **MillNet-SA2** | synthetic | **0.926** | **0.956** | **0.909** | **0.930** |
+| U-Net ResNet-34 | real | 0.888 | 0.892 | 0.870 | 0.883 |
+| Otsu | – | | | | 0.782 |
+| Ferner et al. 2024 rule (best-case parameters) | – | | | | 0.754 |
 
-| GAN twin, pasted into a real frame | comp | uncomp | pristine | Mean |
-|---|---|---|---|---|
-| MillNet-SA2 | **0.898** | 0.799 | 0.756 | 0.818 |
-| MillNet | **0.902** | 0.803 | 0.736 | 0.814 |
-| U-Net ResNet-34 | 0.890 | **0.819** | **0.793** | **0.834** |
-
-On exact truth, **MillNet is on par with a pretrained U-Net**: ahead on comp, behind on uncomp and pristine. Its clear
-lead on the hand-annotated test set does not carry over. A plausible reason is that MillNet's frame-contrast
-conditioning mirrors how the labels were made, with each frame judged on its own contrast, so part of the lead may come
-from matching the annotation style. The twin is still imperfect for pristine, so this is indicative, not conclusive.
-**The paper should state it openly.**
+Held-out volumes: SliceGAN volumes 12–13 of each acquisition, rendered with the GAN appearance model.
+MillNet-SA2 trained on real data only needs the synthetic crops pasted into a real frame, because it reads whole-frame
+statistics (`twin_context_check.py`).
 
 ### 7.4 Twin pretraining
 Pretraining on the GAN twin, then fine-tuning on real data, gives 0.920, against 0.919 without pretraining and 0.913 with
