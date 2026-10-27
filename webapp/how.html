@@ -38,9 +38,10 @@ nav a[aria-current="page"] { background: var(--accent); color: #fff; }
 .view { position: relative; background: radial-gradient(ellipse at 50% 35%, #1c2733, #0a0f14 75%); border-radius: var(--r); overflow: hidden;
   aspect-ratio: 16 / 10; box-shadow: var(--shadow); }
 #gl { width: 100%; height: 100%; display: block; }
-.caption { position: absolute; left: 14px; right: 14px; bottom: 12px; max-width: 760px; color: #e5ecf2; font-size: .92rem; background: rgba(8,12,16,.72);
-  border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 10px 14px; backdrop-filter: blur(4px); }
+.caption { margin-top: 10px; color: var(--ink); font-size: .92rem; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 12px 14px; }
 .caption b { font-family: var(--font-display); font-size: 1.05rem; display: block; margin-bottom: 2px; }
+.caption em { display: block; font-style: normal; font-size: .84rem; color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
 .hud { position: absolute; top: 12px; left: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
 .pill { font: 500 .74rem var(--font-mono); color: #e5ecf2; background: rgba(8,12,16,.65); border: 1px solid rgba(255,255,255,.1);
   padding: 4px 9px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; }
@@ -103,7 +104,7 @@ table.acq td { padding: 3px 0; border-bottom: 1px solid var(--line); } table.acq
     <div class="brand"><h1>Éponge</h1><span class="tag">pFIB-SEM porosity lab · IrO₂ catalyst layers</span></div>
     <nav aria-label="Pages"><a href="index.html">Lab</a><a href="how.html" aria-current="page">How it works</a><a href="dataset.html">Dataset</a><a href="results.html">Results</a></nav>
   </header>
-  <p class="lede">How a 3D pore network is measured with a plasma focused-ion-beam scanning electron microscope, and why it is hard. An ion beam shaves the sample one slice at a time; an electron beam images every fresh face. Through each pore the electrons reach material <em>behind</em> the face (shine-through), so pores do not look black. This is exactly what our digital twin simulates and what MillNet is built to undo. Drag to rotate.</p>
+  <p class="lede">How a 3D pore network is measured with a plasma focused-ion-beam scanning electron microscope, and why it is hard. An ion beam shaves the sample one slice at a time; an electron beam images every fresh face. Through each pore the electrons reach material <em>behind</em> the face (shine-through), so pores do not look black. This is exactly what our digital twin simulates and what MillNet is built to undo. The camera is fixed for each step, placed where that step is easiest to see; the caption says where you are looking from.</p>
 
   <div class="stage">
     <div class="leftcol">
@@ -115,8 +116,8 @@ table.acq td { padding: 3px 0; border-bottom: 1px solid var(--line); } table.acq
         <span class="pill"><i style="background:var(--shine)"></i>shine-through</span>
         <span class="pill" id="sliceHud">slice 0</span>
       </div>
-      <div class="caption" id="caption"><b>–</b><span></span></div>
     </div>
+    <div class="caption" id="caption" aria-live="polite"><b>–</b><span></span><em id="viewTxt"></em></div>
 
     <section class="card" aria-labelledby="histh">
       <span class="eyebrow">Sample history</span>
@@ -335,7 +336,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(38, 1.6, 0.1, 500);
 camera.position.set(74, 46, -84);
 const controls = new OrbitControls(camera, canvas);
-controls.target.set(0, -7, -8); controls.enableDamping = true; controls.maxDistance = 160; controls.minDistance = 30;
+controls.target.set(0, -7, -8); controls.enabled = false; controls.autoRotate = false;   // fixed camera per chapter (VIEWS)
 scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a1f26, 1.1));
 const sun = new THREE.DirectionalLight(0xffffff, 1.4); sun.position.set(30, 60, -40); scene.add(sun);
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -485,6 +486,22 @@ const CH = [
   { t: "Slice after slice", d: "Mill, image, repeat. Each detector image is one slice of the stack. Because the beam is tilted, material seen through a pore moves down ~1 px per slice, while real cut faces stay put." },
   { t: "3D reconstruction", d: "A 7-slice network (MillNet) labels pore vs solid in every image, using the neighbouring slices to undo shine-through. The labelled slices stack into the 3D pore network (blue), from which porosity, pore size and tortuosity are measured." },
 ];
+// one fixed camera per chapter, placed where that step reads best (world units: block is 40 x 26 x 36, front face at z = -18)
+const VIEWS = [
+  { pos: [-58, 38, -72], tgt: [0, -2, -4],
+    txt: "Camera: front-left, above the sample. The face nearest you is where milling starts. The ion column (FIB) sits above it; the electron column (SEM) is in front, tilted." },
+  { pos: [96, 34, -46], tgt: [0, 14, -16],
+    txt: "Camera: side view from the right, a little above the sample. The ion beam (cyan) comes straight down from the column at the top onto the front face and shaves off one slice; the block gets shorter towards the back." },
+  { pos: [-62, 40, -74], tgt: [0, 4, -20],
+    txt: "Camera: front-left, above, looking straight at the fresh cut face. The electron column is in front of the face to your right, tilted 52°. Orange lines: electrons stopping on the cut face. Amber: electrons that went through a pore and hit material behind it." },
+  { pos: [80, 40, -110], tgt: [0, -2, -28],
+    txt: "Camera: front-right. The block is milled back one slice at a time, and every recorded image is stacked in front of it, newest closest to you." },
+  { pos: [55, 45, -62], tgt: [0, 0, 0],
+    txt: "Camera: three-quarter view from above. Blue: the pore network rebuilt from the labelled slices. Faint grey: the original block." },
+];
+const camPos = new THREE.Vector3(...VIEWS[0].pos), camTgt = new THREE.Vector3(...VIEWS[0].tgt);
+camera.position.copy(camPos); controls.target.copy(camTgt);
+function sliceStatus(state) { document.getElementById("sliceHud").textContent = `slice ${cut} · ${state}`; }
 const chapEl = document.getElementById("chapters");
 CH.forEach((c, i) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `<span>${i + 1}</span>${c.t}`; b.onclick = () => go(i); chapEl.appendChild(b); });
 const cap = document.getElementById("caption");
@@ -494,6 +511,7 @@ function setChapter(i) {
   chapter = i; tChap = 0;
   [...chapEl.children].forEach((b, j) => b.setAttribute("aria-current", j === i ? "step" : "false"));
   cap.querySelector("b").textContent = `${i + 1} · ${CH[i].t}`; cap.querySelector("span").textContent = CH[i].d;
+  camPos.set(...VIEWS[i].pos); camTgt.set(...VIEWS[i].tgt); document.getElementById("viewTxt").textContent = VIEWS[i].txt;
 }
 function resetAll() {
   cut = 0; phase = 0; reconUpTo = 0; while (stackGroup.children.length) stackGroup.remove(stackGroup.children[0]);
@@ -606,19 +624,19 @@ function placeIon(x, cutZ) {
 // per-slice cycle: 0 mill (sweep) -> 1 image (rays) -> 2 store
 function tick(dt) {
   tChap += dt;
-  if (chapter === 0) { controls.autoRotate = true; if (tChap > 4.5) go(1); return; }
-  controls.autoRotate = false;
+  if (chapter === 0) { if (tChap > 6) go(1); return; }
   if (chapter === 1 || chapter === 2 || chapter === 3) {
     const dur = chapter === 3 ? [0.55, 0.45, 0.1] : [1.6, 2.2, 0.4];
     phase += dt;
     if (phase < dur[0]) {                                                  // milling sweep
-      const x = Math.min(NX - 1, Math.floor(phase / dur[0] * NX)); placeIon(x, cut); spawnDebris(x, cut);
+      const x = Math.min(NX - 1, Math.floor(phase / dur[0] * NX)); placeIon(x, cut); spawnDebris(x, cut); sliceStatus("ion beam milling");
       rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
     } else if (phase < dur[0] + dur[1]) {
-      if (ionBeam.visible) { ionBeam.visible = ionGlow.visible = false; cut++; layoutSolid(cut, 0); document.getElementById("sliceHud").textContent = `slice ${cut}`; }
+      if (ionBeam.visible) { ionBeam.visible = ionGlow.visible = false; cut++; layoutSolid(cut, 0); }
+      sliceStatus(chapter >= 2 ? "electron beam imaging" : "fresh face exposed");
       if (chapter >= 2) setRays(cut, (phase - dur[0]) / dur[1] * 1.05);
     } else {
-      const tex = showSEM(cut); if (chapter >= 2) addStackPlane(cut, tex); addFilm(cut, tex);
+      const tex = showSEM(cut); if (chapter >= 2) addStackPlane(cut, tex); addFilm(cut, tex); sliceStatus("image stored");
       phase = 0; rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
       if (chapter === 1 && cut >= 2) go(2);
       else if (chapter === 2 && cut >= 4) setChapter(3);
@@ -630,10 +648,11 @@ function tick(dt) {
   if (chapter === 4) {
     ionBeam.visible = ionGlow.visible = false; rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
     const r = Math.min(NZ, Math.floor(tChap * 7));
-    if (r !== reconUpTo) { reconUpTo = r; layoutPores(r); layoutSolid(cut, Math.max(1, r)); }
+    if (r !== reconUpTo) { reconUpTo = r; layoutPores(r); layoutSolid(cut, Math.max(1, r));
+      document.getElementById("sliceHud").textContent = `rebuilding 3D · ${Math.min(r, cut)} of ${cut} slices`; }
     stackGroup.children.forEach(p => { p.material.opacity = Math.max(0, .9 - tChap * .3); p.visible = p.material.opacity > .01; });
-    outline.material.opacity = .35; controls.autoRotate = true;
-    if (tChap > 12) go(0);
+    outline.material.opacity = .35;
+    if (tChap > 14) go(0);
   }
 }
 document.getElementById("play").onclick = e => { playing = !playing; e.target.textContent = playing ? "❚❚ Pause" : "▶ Play"; };
@@ -654,7 +673,9 @@ for (let i = 0, n = Math.round((+Q.get("ff") || 0) * 30); i < n; i++) { tick(1 /
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), .05);
   if (playing) { tick(dt * speed); stepDebris(dt * speed); }
-  controls.autoRotateSpeed = .6; controls.update(); renderer.render(scene, camera);
+  const k = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 0.06;
+  camera.position.lerp(camPos, k); controls.target.lerp(camTgt, k); camera.lookAt(controls.target);
+  renderer.render(scene, camera);
 });
 </script>
 </body>
