@@ -152,8 +152,7 @@ nav.pages a[aria-current="page"] { background: var(--accent); color: var(--accen
 .note { font-size: .82rem; color: var(--muted); }
 .stage3d { position: relative; height: min(70vh, 560px); min-height: 360px; border-radius: 10px; overflow: hidden;
   border: 1px solid var(--line); background: radial-gradient(120% 90% at 50% 20%, var(--surface-2), var(--bg)); touch-action: none; }
-.stage3d canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
-.stage3d canvas:active { cursor: grabbing; }
+.stage3d canvas { display: block; width: 100% !important; height: 100% !important; }
 .hud { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; justify-content: space-between; gap: 10px;
   pointer-events: none; flex-wrap: wrap; }
 .hud > * { pointer-events: auto; }
@@ -301,9 +300,15 @@ footer { margin-top: 28px; font-size: .8rem; color: var(--muted); display: flex;
           </div>
         </div>
         <div class="ctl3d">
-          <label>Cut along milling direction <input type="range" id="cut3d" min="0" max="100" value="100"></label>
-          <label class="check" style="align-items:center"><input type="checkbox" id="spin3d" checked style="margin:0"> Auto-rotate</label>
-          <button class="ghost" id="reset3d" type="button">Reset view</button>
+          <div class="chipset" role="group" aria-label="Viewing direction">
+            <button class="mode" data-v3="overview" aria-pressed="true" type="button">Overview</button>
+            <button class="mode" data-v3="face" aria-pressed="false" type="button">Cut face</button>
+            <button class="mode" data-v3="side" aria-pressed="false" type="button">Side</button>
+            <button class="mode" data-v3="top" aria-pressed="false" type="button">Top</button>
+          </div>
+          <button class="ghost" id="play3d" type="button">▶ Build slice by slice</button>
+          <label>Slices shown <input type="range" id="cut3d" min="0" max="100" value="100"></label>
+          <span class="mono" id="slice3d">all slices</span>
           <span class="legend" id="legend3d"></span>
         </div>
         <div class="stats3d" id="stats3d">
@@ -312,7 +317,8 @@ footer { margin-top: 28px; font-size: .8rem; color: var(--muted); display: flex;
           <div><span>Tortuosity τ (y)</span><b id="s3-tau">–</b></div>
           <div><span>Percolating</span><b id="s3-perc">–</b></div>
         </div>
-        <p class="note" id="note3d">The pore network of 128 consecutive comp_full slices, meshed at full 6 nm resolution. Drag to rotate, scroll to zoom, slide the cut to look inside.</p>
+        <p class="note" id="view3d">Overview: looking at the first cut face from the front, a little to the right and above. Milling runs away from you, into the block.</p>
+        <p class="note" id="note3d">The pore network of 128 consecutive comp_full slices, meshed at full 6 nm resolution. The camera is fixed; pick a viewing direction, or build the network slice by slice in the order the microscope recorded it.</p>
       </section>
 
       <section class="panel card" aria-labelledby="mh">
@@ -362,7 +368,7 @@ const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; controls.dampingFactor = 0.08; controls.autoRotate = true; controls.autoRotateSpeed = 0.6;
+controls.enabled = false; controls.autoRotate = false;          // fixed camera: named views only (VIEWS3D)
 const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(2, 3, 2); scene.add(key);
 scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x20242a, 0.6));
 const clip = new THREE.Plane(new THREE.Vector3(0, 0, -1), 10);
@@ -376,7 +382,33 @@ function cssColor(name, fallback) { const v = getComputedStyle(document.document
 
 function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
 new ResizeObserver(resize).observe(stage); resize();
-(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+// three.js frame: x along the layer, y up (out of the layer), z = milling direction (first slice at z min)
+const VIEWS3D = {
+  overview: { dir: [-0.55, 0.42, -0.72], txt: "Overview: looking at the first cut face from the front, a little to the right and above. Milling runs away from you, into the block." },
+  face: { dir: [0, 0.02, -1], txt: "Cut face: looking straight along the milling direction, as the microscope sees each new slice. Width is along the layer, height is through it." },
+  side: { dir: [-1, 0.05, 0], txt: "Side: looking along the layer. Left to right is the milling direction (slice 1 on the left), up and down is through the layer." },
+  top: { dir: [0.0, 1, -0.02], txt: "Top: looking down onto the layer. Left to right is along the layer; bottom to top is the milling direction (slice 1 at the bottom)." },
+};
+let fitD = 4, viewName = "overview";
+const camGoal = new THREE.Vector3(), upY = new THREE.Vector3(0, 1, 0), upZ = new THREE.Vector3(0, 0, 1);
+function setView(name, instant) {
+  viewName = name; const v = VIEWS3D[name];
+  let d = fitD;
+  if (current && name !== "overview") {        // fit the face this view looks at: [screen width, screen height, depth]
+    const H = current.half, ext = { face: [H.x, H.y, H.z], side: [H.z, H.y, H.x], top: [H.x, H.z, H.y] }[name];
+    const vf = THREE.MathUtils.degToRad(camera.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * camera.aspect);
+    d = 1.15 * Math.max(ext[0] / Math.tan(hf / 2), ext[1] / Math.tan(vf / 2)) + ext[2];
+  }
+  camGoal.copy(new THREE.Vector3(...v.dir).normalize().multiplyScalar(d));
+  camera.up.copy(name === "top" ? upZ : upY);
+  if (instant) camera.position.copy(camGoal);
+  const t = document.getElementById("view3d"); if (t) t.textContent = v.txt;
+}
+(function loop() {
+  requestAnimationFrame(loop);
+  const k = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 0.08;
+  camera.position.lerp(camGoal, k); camera.lookAt(0, 0, 0); renderer.render(scene, camera);
+})();
 
 function buildColors(diam, perc, mode) {
   const n = diam.length, c = new Float32Array(n * 3);
@@ -414,8 +446,7 @@ function show({ positions, indices, diam, perc, meta }) {
   geo.computeBoundingSphere();
   const r = geo.boundingSphere.radius, vfov = THREE.MathUtils.degToRad(camera.fov);
   const hfov = 2 * Math.atan(Math.tan(vfov / 2) * camera.aspect), d = 1.08 * r / Math.sin(Math.min(vfov, hfov) / 2);
-  camera.position.copy(new THREE.Vector3(0.62, 0.36, 0.7).normalize().multiplyScalar(d)); camera.near = d / 50; camera.far = d * 10;
-  camera.updateProjectionMatrix(); controls.target.set(0, 0, 0); controls.update();
+  fitD = d; camera.near = d / 50; camera.far = d * 10; camera.updateProjectionMatrix(); setView(viewName, true);
   home = camera.position.clone();
   setCut(Number(document.getElementById("cut3d").value));
   document.getElementById("load3d").hidden = true;
@@ -465,8 +496,8 @@ window.Viewer3D = {
     const meta = await mr.json(); show(decodeWeb(await br.arrayBuffer(), meta)); return meta;
   },
   show, setColor, setCut, setSlicePlane,
-  reset() { if (home) { camera.position.copy(home); controls.target.set(0, 0, 0); controls.update(); } },
-  spin(on) { controls.autoRotate = on; },
+  setView,
+  nSlices() { return current && current.meta && current.meta.volume_shape ? current.meta.volume_shape[0] : 0; },
   ready: true,
 };
 document.getElementById("load3d").textContent = "";
@@ -1188,7 +1219,7 @@ async function showDemo3D() {
     if (state.stack) state.stack.meshShown = false;
     const [z, y, x] = meta.volume_shape;
     $("tag3d").textContent = `comp_full · ${z} slices · ${(x * 6 / 1000).toFixed(2)} × ${(y * 6 / 1000).toFixed(2)} × ${(z * 6 / 1000).toFixed(2)} µm · ${meta.n_faces.toLocaleString()} triangles`;
-    setStats3d(meta); $("note3d").textContent = meta.note + " Drag to rotate, scroll to zoom, slide the cut to look inside.";
+    setStats3d(meta); $("note3d").textContent = meta.note + " The camera is fixed: pick a viewing direction, or build the network slice by slice in the order it was milled.";
   } catch (e) { $("load3d").textContent = "The 3D reconstruction could not be loaded: " + e.message; $("load3d").hidden = false; }
 }
 
@@ -1440,9 +1471,33 @@ $("show3dDemo").addEventListener("click", showDemo3D);
 document.querySelectorAll("[data-c3]").forEach((b) => b.addEventListener("click", () => {
   document.querySelectorAll("[data-c3]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
   whenViewer().then((V) => V.setColor(b.dataset.c3)); }));
-$("cut3d").addEventListener("input", (e) => whenViewer().then((V) => V.setCut(Number(e.target.value))));
-$("spin3d").addEventListener("change", (e) => whenViewer().then((V) => V.spin(e.target.checked)));
-$("reset3d").addEventListener("click", () => whenViewer().then((V) => V.reset()));
+function showSlices3D(V, pct, plane) {
+  V.setCut(pct); const n = V.nSlices(), k = Math.max(0, Math.round(pct / 100 * n));
+  $("slice3d").textContent = pct >= 100 ? `all ${n || ""} slices`.replace("  ", " ") : `slices 1–${k} of ${n}`;
+  if (!state.stack || !state.stack.meshShown) V.setSlicePlane(plane && pct < 100 ? pct / 100 : null);
+}
+$("cut3d").addEventListener("input", (e) => { stopBuild3d(); whenViewer().then((V) => showSlices3D(V, Number(e.target.value), true)); });
+document.querySelectorAll("[data-v3]").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-v3]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+  whenViewer().then((V) => V.setView(b.dataset.v3)); }));
+let build3d = null;
+function stopBuild3d() { if (build3d) { cancelAnimationFrame(build3d); build3d = null; $("play3d").textContent = "▶ Build slice by slice"; } }
+{ const q = new URLSearchParams(location.search);
+  if (q.get("view3d") || q.get("cut3d")) whenViewer().then(async (V) => {
+    for (let i = 0; i < 200 && !V.nSlices(); i++) await new Promise((r) => setTimeout(r, 100));
+    if (q.get("view3d")) { document.querySelector(`[data-v3="${q.get("view3d")}"]`)?.click(); }
+    if (q.get("cut3d")) { $("cut3d").value = q.get("cut3d"); showSlices3D(V, Number(q.get("cut3d")), true); } }); }
+$("play3d").addEventListener("click", () => whenViewer().then((V) => {
+  if (build3d) { stopBuild3d(); return; }
+  const n = Math.max(1, V.nSlices()), t0 = performance.now(), dur = 9000;   // whole stack in ~9 s, one slice at a time
+  $("play3d").textContent = "❚❚ Stop";
+  const step = (t) => {
+    const k = Math.min(n, 1 + Math.floor((t - t0) / dur * n)), pct = k / n * 100;
+    $("cut3d").value = pct; showSlices3D(V, pct, true);
+    if (k < n) build3d = requestAnimationFrame(step); else { build3d = null; $("play3d").textContent = "▶ Build slice by slice"; showSlices3D(V, 100, false); }
+  };
+  build3d = requestAnimationFrame(step);
+}));
 $("copy").addEventListener("click", async () => {
   const R = state.result; if (!R) return;
   const out = { file: state.fileName, pixel_nm: R.pxnm, porosity: R.porosity, porosity_range_threshold: [R.porLo, R.porHi],
