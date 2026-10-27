@@ -143,7 +143,7 @@ def train_eval(name, cfg, k, data_sets, dev, iters, kmax, out, train_frac=1.0, s
         teacher = copy.deepcopy(model).eval()
         for prm in teacher.parameters():
             prm.requires_grad_(False)
-    lr = 1e-3 if init else 2e-3
+    lr = 4e-4 if cfg.get("arch") == "zafunet" else (1e-3 if init else 2e-3)   # pretrained encoder: lower lr
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     sch = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=iters, pct_start=0.1)
     best, best_state, t0 = -1, None, time.time()
@@ -239,6 +239,9 @@ def main():
         "resunet_7slice": ({"arch": "resunet", "base": 24, "depth": 5, "max_ch": 128}, 3),
         "millnet_2d": ({"arch": "millnet", "use_bank": False}, 0),
         "millnet_7slice": ({"arch": "millnet", "use_bank": False}, 3),
+        # learned slide field (MillNet-SA): the slide rate of this microscope is not known in advance
+        "millnet_sa_7slice": ({"arch": "millnet", "use_bank": False, "learned_slide": True}, 3),
+        "zafunet_7slice": ({"arch": "zafunet", "encoder": "resnet34"}, 3),
     }
     only = a.only.split(",") if a.only else list(runs)
     for frac in [float(f) for f in a.fractions.split(",")]:

@@ -1,0 +1,26 @@
+{
+ "pristine": {
+  "real": {
+   "mean_iou": 0.9533644895742389,
+   "pore_iou": 0.9358287129020785,
+   "porosity_mae": 0.004232050212224629,
+   "pred_porosity_mean": 0.4976298180841493,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "gan_twin": {
+   "mean_iou": 0.8992497572711599,
+   "pore_iou": 0.8618766118406007,
+   "porosity_mae": 0.04541757022487439,
+   "pred_porosity_mean": 0.5468199155155274,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "physics_twin": {
+   "mean_iou": 0.8019083465845745,
+   "pore_iou": 0.6825530509872653,
+   "porosity_mae": 0.10829202067970935,
+   "pred_porosity_mean": 0.39311032461094353,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "noise": 1.0
+ }
+}

@@ -15,6 +15,7 @@ Requires the official SliceGAN code in external/SliceGAN (github.com/stke9/Slice
     python eponge/scripts/slicegan_twin.py generate --n 14
 """
 import argparse
+import json
 import sys
 import time
 from pathlib import Path
@@ -45,6 +46,62 @@ def prepare():
     for name, im in imgs.items():
         Image.fromarray(np.where(im == 1, 0, 255).astype(np.uint8)).save(OUT / name)   # pore black, solid white
         print(name, im.shape, "porosity", round(float((im == 1).mean()), 3))
+
+
+def prepare_hand(stack, sf=1):
+    """Training planes from the final hand masks of one acquisition (train slices 0-83 only).
+
+    All three orientations come from the real stack, so no in-plane/through-plane equivalence is assumed
+    (the voxels are anisotropic: slice spacing differs from pixel size)."""
+    sys.path.insert(0, str(Path(__file__).parent))
+    import twin_refiner as TR
+    from eponge.metrics import largest_inner_rectangle
+    cls, _, sp = TR.load_pairs(stack)
+    cls = cls[: max(sp["train"]) + 1]
+    rs, cs = largest_inner_rectangle((cls != 2).all(0))
+    blk = cls[:, rs, cs]                                            # (z, y, x) inside the layer for every slice
+    if sf > 1:          # learn at 1/sf in-plane resolution (z kept: only ~84 slices); generate() scales back up
+        from scipy import ndimage as ndi
+        pore = ndi.zoom((blk == 1).astype(np.float32), (1, 1 / sf, 1 / sf), order=1) > 0.5
+        blk = np.where(pore, 1, 0).astype(np.uint8)
+    OUT.mkdir(parents=True, exist_ok=True)
+    faces = list(blk[::2])
+    nrow = int(np.ceil(64 / blk.shape[1]))                          # thin layers: tile faces in rows to reach the 64 px window
+    per = len(faces) // nrow
+    tiled = np.concatenate([np.concatenate(faces[i * per:(i + 1) * per], 1) for i in range(nrow)], 0)
+    imgs = {"plane_z_yx.png": tiled,                                          # cut faces: rows y, cols x
+            "plane_y_zx.png": np.concatenate([blk[:, y, :] for y in range(0, blk.shape[1], 4)], 1),   # rows z, cols x
+            "plane_x_zy.png": np.concatenate([blk[:, :, x] for x in range(0, blk.shape[2], 8)], 1)}   # rows z, cols y
+    for name, im in imgs.items():
+        Image.fromarray(np.where(im == 1, 0, 255).astype(np.uint8)).save(OUT / name)
+        print(name, im.shape, "porosity", round(float((im == 1).mean()), 3))
+    (OUT / "source.json").write_text(json.dumps({"stack": stack, "slices": [0, int(len(cls) - 1)], "sf": sf,
+                                                 "rows": [rs.start, rs.stop], "cols": [cs.start, cs.stop]}))
+
+
+def chords(b, axis):
+    a = np.moveaxis(b, axis, -1).reshape(-1, b.shape[axis]).astype(np.int8)
+    d = np.diff(np.pad(a, ((0, 0), (1, 1))), axis=1)
+    return float((np.where(d == -1)[1] - np.where(d == 1)[1]).mean())
+
+
+def validate(stack):
+    """Porosity and chord lengths (z, y, x) of generated volumes vs the hand masks of the same acquisition."""
+    sys.path.insert(0, str(Path(__file__).parent))
+    import twin_refiner as TR
+    cls, _, sp = TR.load_pairs(stack)
+    real = cls[: max(sp["train"]) + 1]
+    vols = np.load(OUT / "volumes.npz")
+    gen = np.stack([vols[k] for k in vols.files])
+    res = {"real": {"porosity": float((real == 1).sum() / (real != 2).sum())},
+           "slicegan": {"porosity": float(1 - gen.mean())}}
+    for ph, rv, gv in (("pore", real == 1, ~gen), ("solid", real == 0, gen)):
+        for ax, nm in ((0, "z"), (1, "y"), (2, "x")):
+            res["real"][f"{ph}_chord_{nm}"] = chords(rv, ax)
+            res["slicegan"][f"{ph}_chord_{nm}"] = float(np.mean([chords(g, ax) for g in gv]))
+    (OUT / "validation.json").write_text(json.dumps(res, indent=1))
+    for k in res["real"]:
+        print(f"{k:16s} real {res['real'][k]:7.3f}   slicegan {res['slicegan'][k]:7.3f}")
 
 
 def nets():
@@ -114,13 +171,26 @@ def generate(n, seed=0):
     with torch.no_grad():
         for _ in range(n):
             out = netG(torch.randn(1, nz, 4, 7, 10))[0]           # output 32*(latent-2): 64 x 160 x 256
-            solid = (out.argmax(0) == 1).numpy()                # channel order follows sorted phases: 0 black=pore, 1 white=solid
-            vols.append(solid)
+            sf = json.loads((OUT / "source.json").read_text()).get("sf", 1) if (OUT / "source.json").exists() else 1
+            if sf > 1:                                          # back to full in-plane resolution
+                from scipy import ndimage as ndi
+                p_solid = torch.softmax(out, 0)[1].numpy()
+                solid = ndi.zoom(p_solid, (1, sf, sf), order=1) > 0.5
+                solid = solid[:, :256, :256]                    # twin volumes: 64 x 256 x 256
+            else:
+                solid = (out.argmax(0) == 1).numpy()            # channel order follows sorted phases: 0 black=pore, 1 white=solid
+            vols.append(np.ascontiguousarray(solid))
     np.savez_compressed(OUT / "volumes.npz", *vols)
     print("generated", len(vols), vols[0].shape, "porosity", round(float(1 - np.mean([v.mean() for v in vols])), 3))
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("cmd"); ap.add_argument("--minutes", type=float, default=60)
-    ap.add_argument("--n", type=int, default=14); a = ap.parse_args()
-    {"prepare": prepare, "train": lambda: train(a.minutes), "generate": lambda: generate(a.n)}[a.cmd]()
+    ap.add_argument("--n", type=int, default=14)
+    ap.add_argument("--sf", type=int, default=1, help="in-plane down-scaling for training (structures larger than the 64 px window)")
+    ap.add_argument("--stack", default=None, help="train on this acquisition's hand masks -> runs/slicegan_<stack>/")
+    a = ap.parse_args()
+    if a.stack:
+        OUT = ROOT / f"runs/slicegan_{a.stack}"
+    {"prepare": (lambda: prepare_hand(a.stack, a.sf)) if a.stack else prepare, "train": lambda: train(a.minutes),
+     "generate": lambda: generate(a.n), "validate": lambda: validate(a.stack)}[a.cmd]()

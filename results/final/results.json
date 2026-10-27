@@ -1,0 +1,3971 @@
+{
+ "models": {
+  "abl_millnet_k0_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8968865257373362,
+     "mean_iou_ci95": [
+      0.8952150439381836,
+      0.8986192154317305
+     ],
+     "pore_iou": 0.8473254409178743,
+     "layer_iou": 0.9606457260069653,
+     "porosity_error": 0.015161316085504629,
+     "physics": {
+      "porosity": 0.4135782677373349,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.373546324854686,
+      "connected_pore_fraction": 0.9504082405116383,
+      "tortuosity_through_plane": 7.4117383446714395
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.017910073352403688,
+      "ci95": [
+       -0.019279965218168826,
+       -0.016347192409806633
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9221305911624161,
+     "mean_iou_ci95": [
+      0.9196529875303224,
+      0.924687302096267
+     ],
+     "pore_iou": 0.9179998911435688,
+     "layer_iou": 0.9683150473731064,
+     "porosity_error": 0.002573589498879092,
+     "physics": {
+      "porosity": 0.525666580076988,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.873275099290256,
+      "connected_pore_fraction": 0.828951879700151,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00013683861821633947,
+      "ci95": [
+       -0.0027166368618690095,
+       0.0024068886733099493
+      ],
+      "p_better": 0.4655
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9217527413901677,
+     "mean_iou_ci95": [
+      0.9193841886704499,
+      0.9242309874805851
+     ],
+     "pore_iou": 0.9054324496201497,
+     "layer_iou": 0.9701953731255092,
+     "porosity_error": 0.01519363341215964,
+     "physics": {
+      "porosity": 0.4945962210182101,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 16.54737348491261,
+      "connected_pore_fraction": 0.9872847783449945,
+      "tortuosity_through_plane": 6.400406195433931
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.00049197321946437,
+      "ci95": [
+       -0.0016750675074538811,
+       0.002749214281500253
+      ],
+      "p_better": 0.67
+     }
+    }
+   },
+   "params_M": 2.54485,
+   "sec_per_slice": 0.42774559469784007
+  },
+  "abl_millnet_k1_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.900578682693193,
+     "mean_iou_ci95": [
+      0.8993110178099188,
+      0.9017731989327353
+     ],
+     "pore_iou": 0.8552152787466915,
+     "layer_iou": 0.9610743886861837,
+     "porosity_error": 0.00873860467357513,
+     "physics": {
+      "porosity": 0.42180152259332926,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.530102551233956,
+      "connected_pore_fraction": 0.9449626295923371,
+      "tortuosity_through_plane": 4.79766673579986
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.014217916396546904,
+      "ci95": [
+       -0.01531581635763404,
+       -0.01309395793681455
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.928903111964126,
+     "mean_iou_ci95": [
+      0.9259126320890221,
+      0.9319486791191757
+     ],
+     "pore_iou": 0.9284990547146358,
+     "layer_iou": 0.9659981937043519,
+     "porosity_error": 0.00556909943200625,
+     "physics": {
+      "porosity": 0.5340195893029009,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.366396547508327,
+      "connected_pore_fraction": 0.8330672110056931,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.00663568218349353,
+      "ci95": [
+       0.00482776271398255,
+       0.008494873104577156
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9208617421182539,
+     "mean_iou_ci95": [
+      0.9187736162220135,
+      0.9228200658465827
+     ],
+     "pore_iou": 0.9176784849986999,
+     "layer_iou": 0.9605918310954614,
+     "porosity_error": 0.03051262197976813,
+     "physics": {
+      "porosity": 0.4837374407825685,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.121904133840175,
+      "connected_pore_fraction": 0.9629932538322838,
+      "tortuosity_through_plane": 9.278853286401096
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0003990260524494582,
+      "ci95": [
+       -0.0032634790619869374,
+       0.002359165777385691
+      ],
+      "p_better": 0.39
+     }
+    }
+   },
+   "params_M": 2.54845,
+   "sec_per_slice": 0.43942535624784584
+  },
+  "abl_millnet_minimal_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8720162223465664,
+     "mean_iou_ci95": [
+      0.8698925244354099,
+      0.8740087284499923
+     ],
+     "pore_iou": 0.7965889300788916,
+     "layer_iou": 0.961233254419498,
+     "porosity_error": 0.07035890375639484,
+     "physics": {
+      "porosity": 0.3551353858909088,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 15.921819748021125,
+      "connected_pore_fraction": 0.9046742157677677,
+      "tortuosity_through_plane": 8.477114858618156
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.042780376743173476,
+      "ci95": [
+       -0.04502442692656161,
+       -0.0407637215471257
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8784801118580486,
+     "mean_iou_ci95": [
+      0.8757831689185424,
+      0.8810952775052956
+     ],
+     "pore_iou": 0.8648798038794057,
+     "layer_iou": 0.9476845549313477,
+     "porosity_error": 0.005692447054687104,
+     "physics": {
+      "porosity": 0.5428372540229204,
+      "d50_nm": 120.0,
+      "specific_surface_per_um": 13.938041444326746,
+      "connected_pore_fraction": 0.9435199573655025,
+      "tortuosity_through_plane": 7.187937131024825
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.043787317922583835,
+      "ci95": [
+       -0.0458893019696059,
+       -0.04166316667828362
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.8957125866127486,
+     "mean_iou_ci95": [
+      0.8938541256510775,
+      0.8977928085030312
+     ],
+     "pore_iou": 0.8908217712679949,
+     "layer_iou": 0.9514538808496731,
+     "porosity_error": 0.030167101370450103,
+     "physics": {
+      "porosity": 0.4771907088665966,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.438740311908486,
+      "connected_pore_fraction": 0.9732153985718852,
+      "tortuosity_through_plane": 3.6660566297433874
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.025548181557954797,
+      "ci95": [
+       -0.02805893776792745,
+       -0.023106319641260597
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.392859,
+   "sec_per_slice": 0.4167207128861371
+  },
+  "abl_millnet_nostats_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8830213408927671,
+     "mean_iou_ci95": [
+      0.8806155982899975,
+      0.8852643379003643
+     ],
+     "pore_iou": 0.821447953909365,
+     "layer_iou": 0.96293932262964,
+     "porosity_error": 0.0511496687472733,
+     "physics": {
+      "porosity": 0.37712018222883126,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.01457882654711,
+      "connected_pore_fraction": 0.9328379952673658,
+      "tortuosity_through_plane": 7.888043388766928
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0317752581969728,
+      "ci95": [
+       -0.034153367245797664,
+       -0.02957430811662041
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8963205356415718,
+     "mean_iou_ci95": [
+      0.8949740269426025,
+      0.897620054847436
+     ],
+     "pore_iou": 0.9027118411351689,
+     "layer_iou": 0.9455092094777181,
+     "porosity_error": 0.019629687383839654,
+     "physics": {
+      "porosity": 0.559262174380982,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.350418549695737,
+      "connected_pore_fraction": 0.8877083927145873,
+      "tortuosity_through_plane": 28.70585240743101
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.025946894139060706,
+      "ci95": [
+       -0.030790283808253608,
+       -0.02108437090026908
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9145414577747918,
+     "mean_iou_ci95": [
+      0.9132739018695236,
+      0.9159805560394432
+     ],
+     "pore_iou": 0.9334910126401214,
+     "layer_iou": 0.9467572100313787,
+     "porosity_error": 0.008878332037066852,
+     "physics": {
+      "porosity": 0.5097986512177342,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.573757924481649,
+      "connected_pore_fraction": 0.9616459901699143,
+      "tortuosity_through_plane": 4.7915672339405
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00671931039591156,
+      "ci95": [
+       -0.008476305890306643,
+       -0.004834045160089963
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.530482,
+   "sec_per_slice": 0.4431466355043299
+  },
+  "abl_millnet_plainhead_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9004550736488417,
+     "mean_iou_ci95": [
+      0.8990782828174091,
+      0.9017612492371632
+     ],
+     "pore_iou": 0.8553650047145727,
+     "layer_iou": 0.960643450800266,
+     "porosity_error": 0.007503531914664992,
+     "physics": {
+      "porosity": 0.42311391430511863,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.38334342055354,
+      "connected_pore_fraction": 0.9435469484205666,
+      "tortuosity_through_plane": 6.301568825132755
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.014341525440898173,
+      "ci95": [
+       -0.0153141806082779,
+       -0.01324528930560977
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9253630783393461,
+     "mean_iou_ci95": [
+      0.9227095171025904,
+      0.9280315858635937
+     ],
+     "pore_iou": 0.9226139883074884,
+     "layer_iou": 0.9676395929135313,
+     "porosity_error": 0.010417047870369442,
+     "physics": {
+      "porosity": 0.5378574596298635,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.086335204452427,
+      "connected_pore_fraction": 0.8383246346033263,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.003095648558713582,
+      "ci95": [
+       0.0010365965649647146,
+       0.005163798343207518
+      ],
+      "p_better": 0.9995
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9233290924022034,
+     "mean_iou_ci95": [
+      0.9211746563821814,
+      0.925599602421548
+     ],
+     "pore_iou": 0.9197937676812658,
+     "layer_iou": 0.9643104625700462,
+     "porosity_error": 0.03198762908686983,
+     "physics": {
+      "porosity": 0.47312744336689483,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.897067907891303,
+      "connected_pore_fraction": 0.9781330377744946,
+      "tortuosity_through_plane": 9.606351880277177
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0020683242315000516,
+      "ci95": [
+       -0.0006765910306712669,
+       0.004819506865762716
+      ],
+      "p_better": 0.9295
+     }
+    }
+   },
+   "params_M": 2.551355,
+   "sec_per_slice": 0.4563883613137638
+  },
+  "abl_millnet_raw_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.901153367393788,
+     "mean_iou_ci95": [
+      0.8997541069186186,
+      0.9024432622454912
+     ],
+     "pore_iou": 0.857159216774332,
+     "layer_iou": 0.9618210818534592,
+     "porosity_error": 0.0092719155481916,
+     "physics": {
+      "porosity": 0.41971409463376985,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.324094643433607,
+      "connected_pore_fraction": 0.9608999684151196,
+      "tortuosity_through_plane": 6.295592846254717
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01364323169595183,
+      "ci95": [
+       -0.014705088010797559,
+       -0.012479143759209346
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9266333342416001,
+     "mean_iou_ci95": [
+      0.9239847169866946,
+      0.9293577784505661
+     ],
+     "pore_iou": 0.9264729989180855,
+     "layer_iou": 0.9669530405306683,
+     "porosity_error": 0.00447002456626,
+     "physics": {
+      "porosity": 0.5318430260946471,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.000667144403863,
+      "connected_pore_fraction": 0.845984517085516,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004365904460967629,
+      "ci95": [
+       0.0022162998079975184,
+       0.006616139898165032
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9260928102843708,
+     "mean_iou_ci95": [
+      0.9239506842589421,
+      0.928418376560934
+     ],
+     "pore_iou": 0.9192379329949433,
+     "layer_iou": 0.9681197921576741,
+     "porosity_error": 0.032785620173941404,
+     "physics": {
+      "porosity": 0.473804771091875,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.897916222173844,
+      "connected_pore_fraction": 0.9756851157599519,
+      "tortuosity_through_plane": 3.622453692194837
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004832042113667501,
+      "ci95": [
+       0.0018889062675605806,
+       0.007633101501235125
+      ],
+      "p_better": 0.9995
+     }
+    }
+   },
+   "params_M": 2.54629,
+   "sec_per_slice": 0.43807464487412395
+  },
+  "abl_millnet_raw_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9014626884164588,
+     "mean_iou_ci95": [
+      0.9001393392447032,
+      0.9026350416028229
+     ],
+     "pore_iou": 0.8561745545221431,
+     "layer_iou": 0.960666224220556,
+     "porosity_error": 0.010065450938227598,
+     "physics": {
+      "porosity": 0.4200242367986323,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.176004770007587,
+      "connected_pore_fraction": 0.954006415922062,
+      "tortuosity_through_plane": 6.500022646448413
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.013333910673281046,
+      "ci95": [
+       -0.014188752512475061,
+       -0.012431226698473944
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9236365032415609,
+     "mean_iou_ci95": [
+      0.9208617813029057,
+      0.9264662219586578
+     ],
+     "pore_iou": 0.9232598159731678,
+     "layer_iou": 0.9633108078370121,
+     "porosity_error": 0.003798909924459735,
+     "physics": {
+      "porosity": 0.5323027063342504,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.902495390204487,
+      "connected_pore_fraction": 0.8408295369013192,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.001369073460928405,
+      "ci95": [
+       -0.0005729250722246559,
+       0.0032571225140291538
+      ],
+      "p_better": 0.9215
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9274643958802283,
+     "mean_iou_ci95": [
+      0.9250957013100279,
+      0.9299379576484123
+     ],
+     "pore_iou": 0.9138615625672064,
+     "layer_iou": 0.9713158161360507,
+     "porosity_error": 0.035803585266024396,
+     "physics": {
+      "porosity": 0.4696902673725319,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.881705182508572,
+      "connected_pore_fraction": 0.9770849932519228,
+      "tortuosity_through_plane": 3.6840111601770054
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.006203627709524984,
+      "ci95": [
+       0.003105772121676814,
+       0.009187787829734189
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.54629,
+   "sec_per_slice": 0.43785717908073873
+  },
+  "abl_millnet_raw_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8998649654474428,
+     "mean_iou_ci95": [
+      0.8983242911694915,
+      0.9013437108970676
+     ],
+     "pore_iou": 0.8531100088313877,
+     "layer_iou": 0.9597280459707774,
+     "porosity_error": 0.008104966172402143,
+     "physics": {
+      "porosity": 0.4225928126593076,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.327121197011962,
+      "connected_pore_fraction": 0.9324113548470367,
+      "tortuosity_through_plane": 6.405763282887495
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.014931633642297104,
+      "ci95": [
+       -0.01590179893109177,
+       -0.01385426680933422
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9257347831696928,
+     "mean_iou_ci95": [
+      0.9235374421969437,
+      0.9279400026081908
+     ],
+     "pore_iou": 0.9227023218892637,
+     "layer_iou": 0.9711423787857668,
+     "porosity_error": 0.009487546737719801,
+     "physics": {
+      "porosity": 0.5349039469793551,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.069437732180651,
+      "connected_pore_fraction": 0.8387627230896223,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.003467353389060346,
+      "ci95": [
+       0.0008922878337936979,
+       0.006084602440604309
+      ],
+      "p_better": 0.9975
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9211304561021946,
+     "mean_iou_ci95": [
+      0.9193217415216213,
+      0.9230049143864697
+     ],
+     "pore_iou": 0.9228407531195205,
+     "layer_iou": 0.9594400160139406,
+     "porosity_error": 0.027608857392990432,
+     "physics": {
+      "porosity": 0.48407753461727465,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.070361719012366,
+      "connected_pore_fraction": 0.9549677748255243,
+      "tortuosity_through_plane": 3.5241002643825543
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00013031206850877552,
+      "ci95": [
+       -0.0025784256117472315,
+       0.002258980850586096
+      ],
+      "p_better": 0.461
+     }
+    }
+   },
+   "params_M": 2.54629,
+   "sec_per_slice": 0.4382028299219468
+  },
+  "abl_millnet_sa2_noaxial": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9036580595271303,
+     "mean_iou_ci95": [
+      0.9023554238501049,
+      0.9049191077018485
+     ],
+     "pore_iou": 0.8605294520223457,
+     "layer_iou": 0.9602913339178696,
+     "porosity_error": 0.011317041306075686,
+     "physics": {
+      "porosity": 0.41724632145683715,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.365097232449322,
+      "connected_pore_fraction": 0.9492286753857173,
+      "tortuosity_through_plane": 6.13245340860975
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.011138539562609573,
+      "ci95": [
+       -0.012297362271787345,
+       -0.009886001286925261
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9310918190991151,
+     "mean_iou_ci95": [
+      0.9289034863944123,
+      0.9333220146314953
+     ],
+     "pore_iou": 0.9263177473318308,
+     "layer_iou": 0.9726828905997006,
+     "porosity_error": 0.003466902558355526,
+     "physics": {
+      "porosity": 0.5271974316500989,
+      "d50_nm": 120.0,
+      "specific_surface_per_um": 13.252184543482764,
+      "connected_pore_fraction": 0.7883662131142087,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.008824389318482617,
+      "ci95": [
+       0.006174852222323124,
+       0.011498114192913918
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.925384257810168,
+     "mean_iou_ci95": [
+      0.9233130185740611,
+      0.9275590841633552
+     ],
+     "pore_iou": 0.9090366268678977,
+     "layer_iou": 0.9705328441587675,
+     "porosity_error": 0.03843484041644666,
+     "physics": {
+      "porosity": 0.46898673499254057,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.901637634634785,
+      "connected_pore_fraction": 0.9750750818925397,
+      "tortuosity_through_plane": 3.5820904522598545
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004123489639464628,
+      "ci95": [
+       0.001089638780345198,
+       0.0070717580848987625
+      ],
+      "p_better": 0.9975
+     }
+    }
+   },
+   "params_M": 2.441955,
+   "sec_per_slice": 0.5057478091296028
+  },
+  "abl_millnet_sa2_nobank": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8984890030705904,
+     "mean_iou_ci95": [
+      0.8967915224048464,
+      0.9000717727311145
+     ],
+     "pore_iou": 0.8511321693223376,
+     "layer_iou": 0.9599935460608273,
+     "porosity_error": 0.0059276878925817,
+     "physics": {
+      "porosity": 0.42790185681405724,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.389096451289884,
+      "connected_pore_fraction": 0.9336098753643323,
+      "tortuosity_through_plane": 6.252886376487492
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01630759601914944,
+      "ci95": [
+       -0.017323615007240722,
+       -0.015103452932698448
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9240373468307238,
+     "mean_iou_ci95": [
+      0.9215011488602239,
+      0.9266062792958695
+     ],
+     "pore_iou": 0.9264373379907694,
+     "layer_iou": 0.9660968888521411,
+     "porosity_error": 0.016134138483947853,
+     "physics": {
+      "porosity": 0.5442556876255812,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.184244924216063,
+      "connected_pore_fraction": 0.7952682022296196,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0017699170500913297,
+      "ci95": [
+       -0.0005150715481531925,
+       0.0040441244496685165
+      ],
+      "p_better": 0.945
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9296708188505501,
+     "mean_iou_ci95": [
+      0.92780666431042,
+      0.9314701096172294
+     ],
+     "pore_iou": 0.9237760047498628,
+     "layer_iou": 0.9694648518890934,
+     "porosity_error": 0.028183072855598387,
+     "physics": {
+      "porosity": 0.47950624447325985,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.16075250973029,
+      "connected_pore_fraction": 0.9723531472158035,
+      "tortuosity_through_plane": 3.5431000579288363
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.008410050679846792,
+      "ci95": [
+       0.005516918273660043,
+       0.01125067803147917
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.570243,
+   "sec_per_slice": 0.4929486583260929
+  },
+  "abl_millnet_sa2_nostats": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9016054020998053,
+     "mean_iou_ci95": [
+      0.8992984065297247,
+      0.9038952646211524
+     ],
+     "pore_iou": 0.8562969124513568,
+     "layer_iou": 0.9601293874174411,
+     "porosity_error": 0.006589691140319108,
+     "physics": {
+      "porosity": 0.42475727393089596,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.675602640450425,
+      "connected_pore_fraction": 0.9592534064223557,
+      "tortuosity_through_plane": 5.624127679561027
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01319119698993454,
+      "ci95": [
+       -0.01490024715817329,
+       -0.011203353389508817
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.877887069719331,
+     "mean_iou_ci95": [
+      0.8755490427860576,
+      0.8802605539651537
+     ],
+     "pore_iou": 0.8668207530941169,
+     "layer_iou": 0.947006648688656,
+     "porosity_error": 0.03296616576572709,
+     "physics": {
+      "porosity": 0.5724574709351211,
+      "d50_nm": 144.0,
+      "specific_surface_per_um": 13.123632859084505,
+      "connected_pore_fraction": 0.9497273189161878,
+      "tortuosity_through_plane": 6.880374760971021
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.04438036006130153,
+      "ci95": [
+       -0.04866593627094602,
+       -0.039981170419626774
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.921516913381157,
+     "mean_iou_ci95": [
+      0.9193195276267468,
+      0.9236398384072873
+     ],
+     "pore_iou": 0.907813088015748,
+     "layer_iou": 0.9690408870989067,
+     "porosity_error": 0.015530315735102704,
+     "physics": {
+      "porosity": 0.5244804132133543,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.360858159014896,
+      "connected_pore_fraction": 0.9928943292765877,
+      "tortuosity_through_plane": 2.8114889618816723
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0002561452104536954,
+      "ci95": [
+       -0.0014894756657329116,
+       0.001968794211513326
+      ],
+      "p_better": 0.601
+     }
+    }
+   },
+   "params_M": 2.553715,
+   "sec_per_slice": 0.4911402253543629
+  },
+  "fs_pristine_10_millnet_sa2": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9338101246843024,
+     "mean_iou_ci95": [
+      0.9321717771638148,
+      0.9356115262629091
+     ],
+     "pore_iou": 0.9230343654503502,
+     "layer_iou": 0.9723036790671672,
+     "porosity_error": 0.024423013773943437,
+     "physics": {
+      "porosity": 0.48315231772809175,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.139318362129783,
+      "connected_pore_fraction": 0.9845793422159398,
+      "tortuosity_through_plane": 3.3864160606495597
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.012549356513599008,
+      "ci95": [
+       0.011075560860837098,
+       0.01405688871492955
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.181767702102661
+  },
+  "fs_pristine_10_millnet_sa2_scratch": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9257703234421871,
+     "mean_iou_ci95": [
+      0.9248200946843593,
+      0.9268663114708321
+     ],
+     "pore_iou": 0.9237404781329165,
+     "layer_iou": 0.9617635770839785,
+     "porosity_error": 0.012774620139439877,
+     "physics": {
+      "porosity": 0.49826433632045836,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.27955624353693,
+      "connected_pore_fraction": 0.9837413543289866,
+      "tortuosity_through_plane": 3.411375954441838
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004509555271483778,
+      "ci95": [
+       0.0031356962283423996,
+       0.0059317901405331564
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.2795815888573143
+  },
+  "fs_pristine_10_unet_r34": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9135771957266999,
+     "mean_iou_ci95": [
+      0.9092837658009315,
+      0.9179742762849049
+     ],
+     "pore_iou": 0.8864278929500373,
+     "layer_iou": 0.9739535151848506,
+     "porosity_error": 0.023866074902446556,
+     "physics": {
+      "porosity": 0.5311760210289227,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.810054178155207,
+      "connected_pore_fraction": 0.989476359713458,
+      "tortuosity_through_plane": 2.548575362405172
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.007683572444003417,
+      "ci95": [
+       -0.012298548047544816,
+       -0.0031192048871070245
+      ],
+      "p_better": 0.0005
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 1.5346337767208325
+  },
+  "fs_pristine_2_millnet_sa2": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9128112902806406,
+     "mean_iou_ci95": [
+      0.9098628692581302,
+      0.9157624399116769
+     ],
+     "pore_iou": 0.8916336739744652,
+     "layer_iou": 0.96628557080344,
+     "porosity_error": 0.049615381486334036,
+     "physics": {
+      "porosity": 0.4555052764503599,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.426901015653156,
+      "connected_pore_fraction": 0.9796320439952303,
+      "tortuosity_through_plane": 3.8561225322347776
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.008449477890062784,
+      "ci95": [
+       -0.01114243629557728,
+       -0.005598679259650627
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.3675554640152874
+  },
+  "fs_pristine_2_millnet_sa2_scratch": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9228997460876922,
+     "mean_iou_ci95": [
+      0.9196404222766904,
+      0.9254404398353365
+     ],
+     "pore_iou": 0.9313727375943365,
+     "layer_iou": 0.9545136270512814,
+     "porosity_error": 0.006484254272415106,
+     "physics": {
+      "porosity": 0.5052829025836264,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.591798842712825,
+      "connected_pore_fraction": 0.9844416560775677,
+      "tortuosity_through_plane": 3.611056169806738
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0016389779169888596,
+      "ci95": [
+       -0.0020066059460192355,
+       0.004953069147741577
+      ],
+      "p_better": 0.8225
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.3611640649683334
+  },
+  "fs_pristine_2_unet_r34": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9145740142752171,
+     "mean_iou_ci95": [
+      0.9110187955260135,
+      0.9183546994295708
+     ],
+     "pore_iou": 0.8890834803188283,
+     "layer_iou": 0.9707589364629378,
+     "porosity_error": 0.01964478215668636,
+     "physics": {
+      "porosity": 0.5287071475009583,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.848350981398058,
+      "connected_pore_fraction": 0.990922985548249,
+      "tortuosity_through_plane": 2.4644255978066267
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0066867538954862304,
+      "ci95": [
+       -0.010410031508854565,
+       -0.0028461668094330855
+      ],
+      "p_better": 0.0005
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 1.5387112393098719
+  },
+  "fs_pristine_5_millnet_sa2": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9365363582348342,
+     "mean_iou_ci95": [
+      0.935015542517135,
+      0.9380825120817403
+     ],
+     "pore_iou": 0.9229206066472705,
+     "layer_iou": 0.9736893425060804,
+     "porosity_error": 0.025656511092648982,
+     "physics": {
+      "porosity": 0.4825055629380885,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.083029381359717,
+      "connected_pore_fraction": 0.9846042360271192,
+      "tortuosity_through_plane": 3.4372403371180247
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.015275590064130817,
+      "ci95": [
+       0.013790075491686557,
+       0.0166793101062874
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.387006409027997
+  },
+  "fs_pristine_5_millnet_sa2_scratch": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.8435641205469052,
+     "mean_iou_ci95": [
+      0.8423325213146353,
+      0.8449145975745085
+     ],
+     "pore_iou": 0.9255314064482025,
+     "layer_iou": 0.8614522767195407,
+     "porosity_error": 0.014359671309817638,
+     "physics": {
+      "porosity": 0.5729958122983321,
+      "d50_nm": 120.0,
+      "specific_surface_per_um": 12.89242864129877,
+      "connected_pore_fraction": 0.9923346938149282,
+      "tortuosity_through_plane": 3.5042277968559103
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.07769664762379813,
+      "ci95": [
+       -0.07984722265123918,
+       -0.07523366848396476
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.3682342837838566
+  },
+  "fs_pristine_5_unet_r34": {
+   "train_stacks": "pristine",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.9101221769041011,
+     "mean_iou_ci95": [
+      0.9067602064563794,
+      0.9138315193272459
+     ],
+     "pore_iou": 0.8817968814543472,
+     "layer_iou": 0.9731712572813191,
+     "porosity_error": 0.02946765119306009,
+     "physics": {
+      "porosity": 0.5378531745269147,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.755789662211866,
+      "connected_pore_fraction": 0.9947542658352021,
+      "tortuosity_through_plane": 2.6860713265051
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.011138591266602216,
+      "ci95": [
+       -0.014971598860607591,
+       -0.007032169076667915
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 1.4921661685494816
+  },
+  "loso_comp_millnet": {
+   "train_stacks": "uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8456798000114052,
+     "mean_iou_ci95": [
+      0.8415624214348582,
+      0.8496882830605439
+     ],
+     "pore_iou": 0.7694213239119628,
+     "layer_iou": 0.9438618589435812,
+     "porosity_error": 0.03845167306016931,
+     "physics": {
+      "porosity": 0.4797735024849248,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.217434195686295,
+      "connected_pore_fraction": 0.9697023308253604,
+      "tortuosity_through_plane": 4.589783633746402
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.06911679907833468,
+      "ci95": [
+       -0.07221076605042678,
+       -0.06594307090526257
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.46235210755292105
+  },
+  "loso_comp_millnet_sa2": {
+   "train_stacks": "uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8425619230671599,
+     "mean_iou_ci95": [
+      0.8383222581922608,
+      0.8467385198112403
+     ],
+     "pore_iou": 0.7646618050077103,
+     "layer_iou": 0.9428170111618639,
+     "porosity_error": 0.0392117304150424,
+     "physics": {
+      "porosity": 0.48098229273685955,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.17994553805192,
+      "connected_pore_fraction": 0.9737839515933857,
+      "tortuosity_through_plane": 4.603068087914058
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.07223467602257994,
+      "ci95": [
+       -0.0754919263434206,
+       -0.06887670205150088
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.49945448426639333
+  },
+  "loso_comp_unet_r34": {
+   "train_stacks": "uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8630740250691155,
+     "mean_iou_ci95": [
+      0.8615772917316263,
+      0.8645108644403429
+     ],
+     "pore_iou": 0.790297103168374,
+     "layer_iou": 0.9434030742343578,
+     "porosity_error": 0.0089222150931298,
+     "physics": {
+      "porosity": 0.4285465509669022,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.16237481101584,
+      "connected_pore_fraction": 0.9683279053981575,
+      "tortuosity_through_plane": 6.2592843463952255
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.05172257402062441,
+      "ci95": [
+       -0.05274851628704965,
+       -0.050709044701101956
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.3449427660773782
+  },
+  "loso_pristine_millnet": {
+   "train_stacks": "comp,uncomp",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.6287057334543352,
+     "mean_iou_ci95": [
+      0.6250835560458785,
+      0.6321351221506847
+     ],
+     "pore_iou": 0.9138938297703535,
+     "layer_iou": 0.6357777130131754,
+     "porosity_error": 0.02885698095704719,
+     "physics": {
+      "porosity": 0.3916028908281572,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 10.211377093446124,
+      "connected_pore_fraction": 0.9830155614811001,
+      "tortuosity_through_plane": 6.391022119552149
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.2925550347163681,
+      "ci95": [
+       -0.2961363099927692,
+       -0.28928637634654747
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 2.053617000579834
+  },
+  "loso_pristine_millnet_sa2": {
+   "train_stacks": "comp,uncomp",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.6563827623225095,
+     "mean_iou_ci95": [
+      0.6547045962937483,
+      0.6583199574054206
+     ],
+     "pore_iou": 0.9249574414532971,
+     "layer_iou": 0.6496287694911839,
+     "porosity_error": 0.017468984996904455,
+     "physics": {
+      "porosity": 0.35435538156304236,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 10.446636959364021,
+      "connected_pore_fraction": 0.9865379123805511,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.2648780058481939,
+      "ci95": [
+       -0.2672158498995287,
+       -0.2626077601197571
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 2.410388301400577
+  },
+  "loso_pristine_unet_r34": {
+   "train_stacks": "comp,uncomp",
+   "test": {
+    "pristine": {
+     "mean_iou": 0.8371206480395914,
+     "mean_iou_ci95": [
+      0.8351075930947721,
+      0.839220493487739
+     ],
+     "pore_iou": 0.8832548340942844,
+     "layer_iou": 0.8898362772173896,
+     "porosity_error": 0.02924340335136508,
+     "physics": {
+      "porosity": 0.5033030488154421,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.383381863030113,
+      "connected_pore_fraction": 0.9921017562819929,
+      "tortuosity_through_plane": 2.834330457985948
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.08414012013111194,
+      "ci95": [
+       -0.0869445445798214,
+       -0.0812376694008832
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 1.5801762412576115
+  },
+  "loso_uncomp_millnet": {
+   "train_stacks": "comp,pristine",
+   "test": {
+    "uncomp": {
+     "mean_iou": 0.8875578624716197,
+     "mean_iou_ci95": [
+      0.8849298680149349,
+      0.890484539792031
+     ],
+     "pore_iou": 0.8979694471144611,
+     "layer_iou": 0.9409666243646384,
+     "porosity_error": 0.043925658625722785,
+     "physics": {
+      "porosity": 0.4947512548029668,
+      "d50_nm": 120.0,
+      "specific_surface_per_um": 12.719069429270258,
+      "connected_pore_fraction": 0.7890797537001113,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03470956730901276,
+      "ci95": [
+       -0.03743535284505598,
+       -0.03190387026365531
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.49511365329518037
+  },
+  "loso_uncomp_millnet_sa2": {
+   "train_stacks": "comp,pristine",
+   "test": {
+    "uncomp": {
+     "mean_iou": 0.8877322652527031,
+     "mean_iou_ci95": [
+      0.8842120357651032,
+      0.8915293549604345
+     ],
+     "pore_iou": 0.9035177614983134,
+     "layer_iou": 0.9412669393652955,
+     "porosity_error": 0.03885680858634928,
+     "physics": {
+      "porosity": 0.49846017711908003,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.577785066880171,
+      "connected_pore_fraction": 0.7996448758617704,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.034535164527929374,
+      "ci95": [
+       -0.036846716928515294,
+       -0.03229713204892688
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5400875456192914
+  },
+  "loso_uncomp_unet_r34": {
+   "train_stacks": "comp,pristine",
+   "test": {
+    "uncomp": {
+     "mean_iou": 0.8329720347371841,
+     "mean_iou_ci95": [
+      0.8299241050430576,
+      0.8360857503917979
+     ],
+     "pore_iou": 0.8135350179821028,
+     "layer_iou": 0.9286676842200325,
+     "porosity_error": 0.029176870932242305,
+     "physics": {
+      "porosity": 0.5767144183571563,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 14.15175905783089,
+      "connected_pore_fraction": 0.9469683126095758,
+      "tortuosity_through_plane": 1.5077061459453223
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.08929539504344841,
+      "ci95": [
+       -0.0912714876409906,
+       -0.08706184518468012
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.3710185780244715
+  },
+  "millnet_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8990938506912226,
+     "mean_iou_ci95": [
+      0.8973206220466375,
+      0.900784010983288
+     ],
+     "pore_iou": 0.8546007281470392,
+     "layer_iou": 0.9608742527005781,
+     "porosity_error": 0.005083518088987627,
+     "physics": {
+      "porosity": 0.4322899622578153,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.500736557199666,
+      "connected_pore_fraction": 0.9610786254640731,
+      "tortuosity_through_plane": 6.187025302935751
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.015702748398517263,
+      "ci95": [
+       -0.01693252932776841,
+       -0.014334828892286561
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.910302291471195,
+     "mean_iou_ci95": [
+      0.9069955173298595,
+      0.9137907139975638
+     ],
+     "pore_iou": 0.9250431619400616,
+     "layer_iou": 0.9543484224965706,
+     "porosity_error": 0.02093246352379166,
+     "physics": {
+      "porosity": 0.553762304207269,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.258033222571907,
+      "connected_pore_fraction": 0.8570723580573936,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.011965138309437462,
+      "ci95": [
+       -0.013889384568446766,
+       -0.010047440636298356
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9236401462733875,
+     "mean_iou_ci95": [
+      0.9215376793745123,
+      0.9259267117071062
+     ],
+     "pore_iou": 0.9207903220107793,
+     "layer_iou": 0.964407780168813,
+     "porosity_error": 0.031387145872973865,
+     "physics": {
+      "porosity": 0.4781230432060113,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.20931343515301,
+      "connected_pore_fraction": 0.9744232215281433,
+      "tortuosity_through_plane": 9.844464809213482
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.002379378102684182,
+      "ci95": [
+       -0.0007015054793419101,
+       0.005394029946179312
+      ],
+      "p_better": 0.943
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.4573167632607853,
+   "twin_pore_iou": 0.6971614811476904,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.541233204852899,
+    "uncomp": 0.860801249728758,
+    "pristine": 0.6894499888614138
+   },
+   "twin_gan_pore_iou": 0.6822630053791268,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.5576252136316422,
+    "uncomp": 0.8249354124931783,
+    "pristine": 0.6642283900125598
+   }
+  },
+  "millnet_k3_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9028091911276075,
+     "mean_iou_ci95": [
+      0.9014672871635078,
+      0.9040365165459251
+     ],
+     "pore_iou": 0.8563729123772189,
+     "layer_iou": 0.9590132882763993,
+     "porosity_error": 0.016842116348810512,
+     "physics": {
+      "porosity": 0.4131040570391075,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.372558999748236,
+      "connected_pore_fraction": 0.9313768432040792,
+      "tortuosity_through_plane": 6.5748711712074135
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01198740796213238,
+      "ci95": [
+       -0.012844288468827713,
+       -0.011006697379470416
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9240879319643206,
+     "mean_iou_ci95": [
+      0.9219656237908177,
+      0.9262596329952412
+     ],
+     "pore_iou": 0.9205841928970885,
+     "layer_iou": 0.967700114389917,
+     "porosity_error": 0.00764925235436049,
+     "physics": {
+      "porosity": 0.5352107534639032,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.265206014148688,
+      "connected_pore_fraction": 0.7892088217089104,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0018205021836881219,
+      "ci95": [
+       -0.0009465541335821559,
+       0.0045685814139974105
+      ],
+      "p_better": 0.9035
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.925522706918167,
+     "mean_iou_ci95": [
+      0.923004744939713,
+      0.9281127335725715
+     ],
+     "pore_iou": 0.9103129132378921,
+     "layer_iou": 0.9710602886464882,
+     "porosity_error": 0.039214213653111,
+     "physics": {
+      "porosity": 0.4668117524980511,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.092889311752725,
+      "connected_pore_fraction": 0.9744065067262084,
+      "tortuosity_through_plane": 3.648202497650749
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004261938747463612,
+      "ci95": [
+       0.001018798169039223,
+       0.007499948753312698
+      ],
+      "p_better": 0.998
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.4620054609635297
+  },
+  "millnet_k3_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8983650124179331,
+     "mean_iou_ci95": [
+      0.8960002458776207,
+      0.900638702413365
+     ],
+     "pore_iou": 0.851448310918616,
+     "layer_iou": 0.9588109604660998,
+     "porosity_error": 0.005757709168859537,
+     "physics": {
+      "porosity": 0.43400566884812636,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.381235466074475,
+      "connected_pore_fraction": 0.9545798637395913,
+      "tortuosity_through_plane": 6.0331997135626025
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.016431586671806775,
+      "ci95": [
+       -0.017976972870859226,
+       -0.014638215573999162
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.923018874845083,
+     "mean_iou_ci95": [
+      0.9201803827976415,
+      0.9257983244744905
+     ],
+     "pore_iou": 0.917756274772177,
+     "layer_iou": 0.9704378659968164,
+     "porosity_error": 0.023897362474302436,
+     "physics": {
+      "porosity": 0.5503164264523929,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.954625346865154,
+      "connected_pore_fraction": 0.8499486818478224,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0007514450644505732,
+      "ci95": [
+       -0.0018789624878341904,
+       0.0034509408175181834
+      ],
+      "p_better": 0.7015
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9308408426367906,
+     "mean_iou_ci95": [
+      0.9293460337382533,
+      0.9323692158273328
+     ],
+     "pore_iou": 0.9254374269440512,
+     "layer_iou": 0.9682363713516641,
+     "porosity_error": 0.023445626918473655,
+     "physics": {
+      "porosity": 0.4852497137629623,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.859839014504942,
+      "connected_pore_fraction": 0.9678714623046413,
+      "tortuosity_through_plane": 5.132826642046394
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.009580074466087218,
+      "ci95": [
+       0.006951973919382554,
+       0.012302152918987284
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.4712417686686796
+  },
+  "millnet_long_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9118012621533825,
+     "mean_iou_ci95": [
+      0.9090126194774996,
+      0.9143022392994758
+     ],
+     "pore_iou": 0.8758337516743746,
+     "layer_iou": 0.9647832585091016,
+     "porosity_error": 0.008371357082305842,
+     "physics": {
+      "porosity": 0.43658249170806074,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.03856911113724,
+      "connected_pore_fraction": 0.9601955651922643,
+      "tortuosity_through_plane": 5.550984753831149
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00299533693635734,
+      "ci95": [
+       -0.004668680494551047,
+       -0.0011767558947268007
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9479695181032971,
+     "mean_iou_ci95": [
+      0.946006940369757,
+      0.9499509092469368
+     ],
+     "pore_iou": 0.947493511326024,
+     "layer_iou": 0.9803632152857177,
+     "porosity_error": 0.008278956427992583,
+     "physics": {
+      "porosity": 0.5281999314936163,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.71754034335122,
+      "connected_pore_fraction": 0.8347279110883057,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.02570208832266463,
+      "ci95": [
+       0.022916713996887748,
+       0.028398408061311733
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9500169076793306,
+     "mean_iou_ci95": [
+      0.9491238595166122,
+      0.9508493875169152
+     ],
+     "pore_iou": 0.9387164592632037,
+     "layer_iou": 0.9818998585868952,
+     "porosity_error": 0.01869608910049654,
+     "physics": {
+      "porosity": 0.4854750007839159,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 13.476851681213882,
+      "connected_pore_fraction": 0.9786062527266444,
+      "tortuosity_through_plane": 4.542333885719693
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.02875613950862721,
+      "ci95": [
+       0.02684137759521287,
+       0.03066531211672141
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.55133,
+   "sec_per_slice": 0.47223572170033173,
+   "twin_pore_iou": 0.7334481194056464,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.5592409582701318,
+    "uncomp": 0.8758173333071526,
+    "pristine": 0.7652860666396548
+   },
+   "twin_gan_pore_iou": 0.6879424984761954,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.5566610216055561,
+    "uncomp": 0.815999751052586,
+    "pristine": 0.6911667227704438
+   }
+  },
+  "millnet_sa2_k3_gantwin_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9049693237366325,
+     "mean_iou_ci95": [
+      0.9030392580520684,
+      0.9067658849766931
+     ],
+     "pore_iou": 0.8621287535079347,
+     "layer_iou": 0.9601883500268109,
+     "porosity_error": 0.004799761504845499,
+     "physics": {
+      "porosity": 0.42762298467541826,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.372958492413677,
+      "connected_pore_fraction": 0.932804471541205,
+      "tortuosity_through_plane": 6.012226258874785
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.009827275353107345,
+      "ci95": [
+       -0.011394735204366343,
+       -0.008297611625381283
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9369595894378939,
+     "mean_iou_ci95": [
+      0.9344565544310834,
+      0.9394893223013929
+     ],
+     "pore_iou": 0.9399954123894257,
+     "layer_iou": 0.9728562651771715,
+     "porosity_error": 0.011705556074323317,
+     "physics": {
+      "porosity": 0.5360902206765188,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.031365264047498,
+      "connected_pore_fraction": 0.812796836482151,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.01469215965726145,
+      "ci95": [
+       0.012322998227687638,
+       0.01705439213623597
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9191766515876626,
+     "mean_iou_ci95": [
+      0.9164851977430741,
+      0.9219916626990727
+     ],
+     "pore_iou": 0.9051254432961676,
+     "layer_iou": 0.9702172380904249,
+     "porosity_error": 0.04315620738096744,
+     "physics": {
+      "porosity": 0.46299358611677444,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.65815027334727,
+      "connected_pore_fraction": 0.9727427680348459,
+      "tortuosity_through_plane": 3.725077404090682
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0020841165830407515,
+      "ci95": [
+       -0.004881844794371601,
+       0.0008822184847739609
+      ],
+      "p_better": 0.087
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5043338326846852,
+   "twin_pore_iou": 0.7384025239906346,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.5999010038545847,
+    "uncomp": 0.8691763615151946,
+    "pristine": 0.7461302066021245
+   },
+   "twin_gan_pore_iou": 0.7116970262994924,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.5866928053697523,
+    "uncomp": 0.827767388500566,
+    "pristine": 0.7206308850281586
+   }
+  },
+  "millnet_sa2_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9020148907974167,
+     "mean_iou_ci95": [
+      0.9004877106737903,
+      0.903425976870088
+     ],
+     "pore_iou": 0.8567331187748815,
+     "layer_iou": 0.9597268338395615,
+     "porosity_error": 0.007554093326774321,
+     "physics": {
+      "porosity": 0.42377810214237466,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.438901094075515,
+      "connected_pore_fraction": 0.9452288919733682,
+      "tortuosity_through_plane": 6.205426190408525
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.012781708292323168,
+      "ci95": [
+       -0.013885630515910163,
+       -0.011554518552422918
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9279771505149057,
+     "mean_iou_ci95": [
+      0.9254431468009768,
+      0.9305136138439224
+     ],
+     "pore_iou": 0.9284408931013994,
+     "layer_iou": 0.970973952425425,
+     "porosity_error": 0.009789817173028645,
+     "physics": {
+      "porosity": 0.5345160262465327,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.179463316531173,
+      "connected_pore_fraction": 0.7942832846629334,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.005709720734273227,
+      "ci95": [
+       0.0033671470160251795,
+       0.007983842294868492
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9261689648205188,
+     "mean_iou_ci95": [
+      0.9236958284407897,
+      0.9287604271132076
+     ],
+     "pore_iou": 0.9177977540543001,
+     "layer_iou": 0.9682410924132081,
+     "porosity_error": 0.03344708561896016,
+     "physics": {
+      "porosity": 0.47018561758595995,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.021429945093887,
+      "connected_pore_fraction": 0.9748625196045271,
+      "tortuosity_through_plane": 3.6979184143895676
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.004908196649815455,
+      "ci95": [
+       0.0017869424343818884,
+       0.008005300163639813
+      ],
+      "p_better": 0.9995
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5052364714005414,
+   "twin_pore_iou": 0.7042993277743667,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.5520116401264392,
+    "uncomp": 0.8650198266071727,
+    "pristine": 0.6958665165894881
+   },
+   "twin_gan_pore_iou": 0.6866329718422626,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.558510045930543,
+    "uncomp": 0.826717596552653,
+    "pristine": 0.6746712730435918
+   }
+  },
+  "millnet_sa2_k3_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8964657924477395,
+     "mean_iou_ci95": [
+      0.8942189153704421,
+      0.8985355849253763
+     ],
+     "pore_iou": 0.8476232141757528,
+     "layer_iou": 0.9572274886512763,
+     "porosity_error": 0.0051850093886616246,
+     "physics": {
+      "porosity": 0.4307153349234348,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.37782422922942,
+      "connected_pore_fraction": 0.9438563904363458,
+      "tortuosity_through_plane": 5.801777883973868
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.018330806642000375,
+      "ci95": [
+       -0.019663623895554917,
+       -0.016841834720171856
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.920246017970043,
+     "mean_iou_ci95": [
+      0.9177331213849832,
+      0.9226120011977227
+     ],
+     "pore_iou": 0.9097202446134831,
+     "layer_iou": 0.969750631371199,
+     "porosity_error": 0.016861088812478074,
+     "physics": {
+      "porosity": 0.5435384191564341,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.14001912244119,
+      "connected_pore_fraction": 0.8495816132204898,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0020214118105894574,
+      "ci95": [
+       -0.004428721722974543,
+       0.00031958217131372363
+      ],
+      "p_better": 0.0475
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9276571620885514,
+     "mean_iou_ci95": [
+      0.9260717054664126,
+      0.9293056119759372
+     ],
+     "pore_iou": 0.9247533638867015,
+     "layer_iou": 0.9652704748233969,
+     "porosity_error": 0.025456177026633397,
+     "physics": {
+      "porosity": 0.4776459433193809,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.00264309780304,
+      "connected_pore_fraction": 0.9750284428149535,
+      "tortuosity_through_plane": 8.807905572141697
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0063963939178480755,
+      "ci95": [
+       0.003873719881893814,
+       0.008877378676390449
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5075615995070514
+  },
+  "millnet_sa2_k3_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8954006418698045,
+     "mean_iou_ci95": [
+      0.893528279858894,
+      0.897166438069821
+     ],
+     "pore_iou": 0.8475448038739314,
+     "layer_iou": 0.9588561111957719,
+     "porosity_error": 0.005200865249948851,
+     "physics": {
+      "porosity": 0.4353742506248327,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.42549325542888,
+      "connected_pore_fraction": 0.9611007088786742,
+      "tortuosity_through_plane": 6.264322309849573
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.019395957219935367,
+      "ci95": [
+       -0.020610034794352618,
+       -0.01799217964301892
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.92348028435021,
+     "mean_iou_ci95": [
+      0.9208178377130486,
+      0.9260336780506848
+     ],
+     "pore_iou": 0.9161476860051951,
+     "layer_iou": 0.971060947811206,
+     "porosity_error": 0.0198332334133239,
+     "physics": {
+      "porosity": 0.5463408909752068,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.159554948046464,
+      "connected_pore_fraction": 0.8442089305723026,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0012128545695775372,
+      "ci95": [
+       -0.001097064744714185,
+       0.003547297148976022
+      ],
+      "p_better": 0.846
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9263313705036323,
+     "mean_iou_ci95": [
+      0.9242713029479386,
+      0.9285335301990872
+     ],
+     "pore_iou": 0.9234948359058454,
+     "layer_iou": 0.9639917073184471,
+     "porosity_error": 0.027436760466073403,
+     "physics": {
+      "porosity": 0.4840478251639007,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.87414375276091,
+      "connected_pore_fraction": 0.9668002635235474,
+      "tortuosity_through_plane": 9.027476726190542
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.005070602332928997,
+      "ci95": [
+       0.002223654104266859,
+       0.00788798754222822
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5109635381137624
+  },
+  "millnet_sa2_k3_twin_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9015292358204642,
+     "mean_iou_ci95": [
+      0.8995523655216948,
+      0.9032938126475859
+     ],
+     "pore_iou": 0.8563911985853224,
+     "layer_iou": 0.9585539404433834,
+     "porosity_error": 0.005047968746121303,
+     "physics": {
+      "porosity": 0.4296650569036418,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.43727833829063,
+      "connected_pore_fraction": 0.9459203691527587,
+      "tortuosity_through_plane": 6.1367082151785635
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01326736326927569,
+      "ci95": [
+       -0.014706256082020693,
+       -0.011903322507180479
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9165855618085761,
+     "mean_iou_ci95": [
+      0.9141307486557538,
+      0.9190468359342934
+     ],
+     "pore_iou": 0.9084393089997365,
+     "layer_iou": 0.9700872853748498,
+     "porosity_error": 0.027463725182900967,
+     "physics": {
+      "porosity": 0.5537357185069625,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.195839390263417,
+      "connected_pore_fraction": 0.8413585264800917,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.005681867972056387,
+      "ci95": [
+       -0.008370757235634152,
+       -0.0029627820284680254
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9219529162635539,
+     "mean_iou_ci95": [
+      0.9195252693917574,
+      0.9244276494146031
+     ],
+     "pore_iou": 0.9163456375820598,
+     "layer_iou": 0.9646873047056845,
+     "porosity_error": 0.03457608813023973,
+     "physics": {
+      "porosity": 0.47351036605272634,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.654866581171635,
+      "connected_pore_fraction": 0.9698930457614511,
+      "tortuosity_through_plane": 3.694524051404937
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0006921480928505641,
+      "ci95": [
+       -0.0025845720130992763,
+       0.004100745949015983
+      ],
+      "p_better": 0.639
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5102655326618868,
+   "twin_pore_iou": 0.7401138593386775,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.6517755220796884,
+    "uncomp": 0.8607717548919921,
+    "pristine": 0.7077943010443517
+   },
+   "twin_gan_pore_iou": 0.7239831818173722,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.6344622108833162,
+    "uncomp": 0.8468759455101058,
+    "pristine": 0.6906113890586945
+   }
+  },
+  "millnet_sa2_long_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9146866055896363,
+     "mean_iou_ci95": [
+      0.9124729646201544,
+      0.9167382691289082
+     ],
+     "pore_iou": 0.8811488352888874,
+     "layer_iou": 0.9657321056522615,
+     "porosity_error": 0.006729799612906732,
+     "physics": {
+      "porosity": 0.4342737081062066,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.961553299787106,
+      "connected_pore_fraction": 0.9574167952111889,
+      "tortuosity_through_plane": 6.799539297822899
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00010999350010354458,
+      "ci95": [
+       -0.001423650648119576,
+       0.001479591826329795
+      ],
+      "p_better": 0.4315
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9476163238648097,
+     "mean_iou_ci95": [
+      0.9445380495386575,
+      0.9505590227578559
+     ],
+     "pore_iou": 0.949504535492284,
+     "layer_iou": 0.978900885795063,
+     "porosity_error": 0.0037032214007885512,
+     "physics": {
+      "porosity": 0.5237798608699421,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.650855473215891,
+      "connected_pore_fraction": 0.7859114424111343,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.025348894084177176,
+      "ci95": [
+       0.023629744510347536,
+       0.027108071192853956
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9468182392001628,
+     "mean_iou_ci95": [
+      0.9457215621101618,
+      0.947871087102463
+     ],
+     "pore_iou": 0.9333780664657673,
+     "layer_iou": 0.982003875073518,
+     "porosity_error": 0.02399706394668006,
+     "physics": {
+      "porosity": 0.480251331314134,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 13.388927404621375,
+      "connected_pore_fraction": 0.977642201338315,
+      "tortuosity_through_plane": 4.957631967728493
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.02555747102945949,
+      "ci95": [
+       0.02344323699491937,
+       0.027703733981622312
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5091300010681152,
+   "twin_pore_iou": 0.747522468492194,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.5778691577117789,
+    "uncomp": 0.8761729558482012,
+    "pristine": 0.7885252919166016
+   },
+   "twin_gan_pore_iou": 0.6992340261057292,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.5689364782742553,
+    "uncomp": 0.8261166360539745,
+    "pristine": 0.7026489639889573
+   }
+  },
+  "millnet_sa2_long_k3_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9144409769170317,
+     "mean_iou_ci95": [
+      0.9121356674106776,
+      0.9165605636548335
+     ],
+     "pore_iou": 0.8800097602137454,
+     "layer_iou": 0.9639187671581462,
+     "porosity_error": 0.004285290280528153,
+     "physics": {
+      "porosity": 0.43046830406336883,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.04524741534456,
+      "connected_pore_fraction": 0.9482636960947621,
+      "tortuosity_through_plane": 8.398058346960305
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.00035562217270812546,
+      "ci95": [
+       -0.0016680522988834824,
+       0.0011450451930255614
+      ],
+      "p_better": 0.323
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9467582021194968,
+     "mean_iou_ci95": [
+      0.9443799340698772,
+      0.9490974320009342
+     ],
+     "pore_iou": 0.9443997562019312,
+     "layer_iou": 0.9799926690856648,
+     "porosity_error": 0.0045949969195496695,
+     "physics": {
+      "porosity": 0.5243809254699138,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.721242464336799,
+      "connected_pore_fraction": 0.7832589030669461,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.02449077233886432,
+      "ci95": [
+       0.02229035833607595,
+       0.02680130473557655
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9459259188340482,
+     "mean_iou_ci95": [
+      0.9447712480558009,
+      0.9470747555584123
+     ],
+     "pore_iou": 0.9349029094628393,
+     "layer_iou": 0.9810317317573375,
+     "porosity_error": 0.022150185923312308,
+     "physics": {
+      "porosity": 0.4815110834399141,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.462775483892889,
+      "connected_pore_fraction": 0.9772658794353029,
+      "tortuosity_through_plane": 4.737558142301148
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.024665150663344848,
+      "ci95": [
+       0.022442264651198657,
+       0.026933508619410372
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5039587722105139
+  },
+  "millnet_sa2_long_k3_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9091324717530708,
+     "mean_iou_ci95": [
+      0.9065252160992895,
+      0.9115005552674615
+     ],
+     "pore_iou": 0.8725300236869534,
+     "layer_iou": 0.9639770660818832,
+     "porosity_error": 0.009152474782634886,
+     "physics": {
+      "porosity": 0.43822576964369436,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.37931055097566,
+      "connected_pore_fraction": 0.7706239285799882,
+      "tortuosity_through_plane": 8.0917760852829
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0056641273366691,
+      "ci95": [
+       -0.00719149976473985,
+       -0.003938980042618452
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9433389862265432,
+     "mean_iou_ci95": [
+      0.9417594579267102,
+      0.9448704424781095
+     ],
+     "pore_iou": 0.9379580209512979,
+     "layer_iou": 0.9812461969858509,
+     "porosity_error": 0.01432281392647532,
+     "physics": {
+      "porosity": 0.5343886943030641,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 12.757206394195233,
+      "connected_pore_fraction": 0.8329969257830142,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.021071556445910744,
+      "ci95": [
+       0.01788046166637527,
+       0.024416783028868662
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9500621986169557,
+     "mean_iou_ci95": [
+      0.9492698993104636,
+      0.9508284189005072
+     ],
+     "pore_iou": 0.9378606199732995,
+     "layer_iou": 0.9826926170376139,
+     "porosity_error": 0.01742958526701584,
+     "physics": {
+      "porosity": 0.48723226977100537,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.470867606126472,
+      "connected_pore_fraction": 0.9784637879208539,
+      "tortuosity_through_plane": 4.801508539255936
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.028801430446252385,
+      "ci95": [
+       0.027076892487334553,
+       0.03048920648308545
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.508191753836239
+  },
+  "millnet_sa_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9028892112922441,
+     "mean_iou_ci95": [
+      0.9016142920298948,
+      0.904091117979757
+     ],
+     "pore_iou": 0.8599471616591509,
+     "layer_iou": 0.9619529004080167,
+     "porosity_error": 0.008704258991514153,
+     "physics": {
+      "porosity": 0.42084473623405344,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.281769344226674,
+      "connected_pore_fraction": 0.933742610802303,
+      "tortuosity_through_plane": 6.489301189167584
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.011907387797495783,
+      "ci95": [
+       -0.012942441168956143,
+       -0.010767317602102226
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.928649892983929,
+     "mean_iou_ci95": [
+      0.9258548418802867,
+      0.9314305359601993
+     ],
+     "pore_iou": 0.9328314417868028,
+     "layer_iou": 0.9679018959201999,
+     "porosity_error": 0.006549529585394068,
+     "physics": {
+      "porosity": 0.5334054384353025,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.206872435044618,
+      "connected_pore_fraction": 0.7880552994163161,
+      "tortuosity_through_plane": Infinity
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.006382463203296496,
+      "ci95": [
+       0.004316890257697372,
+       0.00842746509900183
+      ],
+      "p_better": 1.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.915391725734532,
+     "mean_iou_ci95": [
+      0.9126806684166043,
+      0.9181673014564028
+     ],
+     "pore_iou": 0.9108753685350794,
+     "layer_iou": 0.9618534237168159,
+     "porosity_error": 0.03988397025445236,
+     "physics": {
+      "porosity": 0.4697273442150525,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.982370918161678,
+      "connected_pore_fraction": 0.9612520466576432,
+      "tortuosity_through_plane": 3.749424737477301
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.005869042436171368,
+      "ci95": [
+       -0.009484094517608057,
+       -0.0021888747627076192
+      ],
+      "p_better": 0.0015
+     }
+    }
+   },
+   "params_M": 2.574563,
+   "sec_per_slice": 0.5152564749998205,
+   "twin_pore_iou": 0.7354866760943194,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.5991855818063314,
+    "uncomp": 0.8737466435652963,
+    "pristine": 0.7335278029113306
+   },
+   "twin_gan_pore_iou": 0.6999173105696942,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.5680895048720249,
+    "uncomp": 0.8335879925120702,
+    "pristine": 0.6980744343249878
+   }
+  },
+  "milltrace2_k7_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8807468363407364,
+     "mean_iou_ci95": [
+      0.8784041701193848,
+      0.8830764812110508
+     ],
+     "pore_iou": 0.8216047927555906,
+     "layer_iou": 0.9589079190151601,
+     "porosity_error": 0.004715444292496977,
+     "physics": {
+      "porosity": 0.42905721129015073,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 18.006315971171293,
+      "connected_pore_fraction": 0.9695289656766419,
+      "tortuosity_through_plane": 8.233896344549311
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03404976274900351,
+      "ci95": [
+       -0.03606868844656434,
+       -0.03191240157494654
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8238466143880604,
+     "mean_iou_ci95": [
+      0.8223280731651769,
+      0.8254805900923968
+     ],
+     "pore_iou": 0.8018393265758108,
+     "layer_iou": 0.9431807614837792,
+     "porosity_error": 0.06377030124929574,
+     "physics": {
+      "porosity": 0.6028795712199326,
+      "d50_nm": 144.0,
+      "specific_surface_per_um": 14.305126067845936,
+      "connected_pore_fraction": 0.952897153836241,
+      "tortuosity_through_plane": 6.6808638712188815
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.09842081539257208,
+      "ci95": [
+       -0.1020039730642795,
+       -0.09483417425339294
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.881199246670783,
+     "mean_iou_ci95": [
+      0.8779324865272864,
+      0.8842284381628721
+     ],
+     "pore_iou": 0.8740020076461631,
+     "layer_iou": 0.948737208059728,
+     "porosity_error": 0.030819901454214576,
+     "physics": {
+      "porosity": 0.5434005824623477,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 15.069386744334274,
+      "connected_pore_fraction": 0.9926561359638857,
+      "tortuosity_through_plane": 2.6318957025251253
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.04006152149992037,
+      "ci95": [
+       -0.04457318137557377,
+       -0.03564411562314836
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 1.227019,
+   "sec_per_slice": 1.7887400038102095,
+   "twin_pore_iou": 0.835818114531651,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7943312471481265,
+    "uncomp": 0.8945027007984828,
+    "pristine": 0.8186203956483439
+   },
+   "twin_gan_pore_iou": 0.865138972243331,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8582777933822969,
+    "uncomp": 0.8998472848212463,
+    "pristine": 0.83729183852645
+   }
+  },
+  "milltrace_k7_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8801612029765792,
+     "mean_iou_ci95": [
+      0.8781221722021544,
+      0.8821349420800403
+     ],
+     "pore_iou": 0.819650237993381,
+     "layer_iou": 0.9586749089437366,
+     "porosity_error": 0.005349122380131505,
+     "physics": {
+      "porosity": 0.4258693731474451,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 18.202168040711282,
+      "connected_pore_fraction": 0.9681878390318418,
+      "tortuosity_through_plane": 6.3277940523600655
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03463539611316069,
+      "ci95": [
+       -0.03627641904772354,
+       -0.03290232891282868
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8278055054065461,
+     "mean_iou_ci95": [
+      0.8265689384068026,
+      0.829116908555276
+     ],
+     "pore_iou": 0.8024815016878645,
+     "layer_iou": 0.9457469124905733,
+     "porosity_error": 0.058821224474966224,
+     "physics": {
+      "porosity": 0.5967498410256443,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 14.572145607118259,
+      "connected_pore_fraction": 0.986524486399642,
+      "tortuosity_through_plane": 7.198213353077084
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0944619243740864,
+      "ci95": [
+       -0.09840055319077266,
+       -0.09036637230388983
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.8783927566762086,
+     "mean_iou_ci95": [
+      0.8765373913124181,
+      0.8801498275672103
+     ],
+     "pore_iou": 0.8674755275250862,
+     "layer_iou": 0.9499615891929856,
+     "porosity_error": 0.03720864665903552,
+     "physics": {
+      "porosity": 0.5479070120721514,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 15.036406461853879,
+      "connected_pore_fraction": 0.9959726667336865,
+      "tortuosity_through_plane": 2.6198078494038004
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.04286801149449471,
+      "ci95": [
+       -0.045739581675969844,
+       -0.039936220789639876
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 1.204635,
+   "sec_per_slice": 1.5451227075913374,
+   "twin_pore_iou": 0.8420055293435386,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.8043433455465039,
+    "uncomp": 0.8993546359862545,
+    "pristine": 0.8223186064978569
+   },
+   "twin_gan_pore_iou": 0.8663070121913113,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8596705488466061,
+    "uncomp": 0.8989218541417787,
+    "pristine": 0.8403286335855493
+   }
+  },
+  "nnunet_2d": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.9147965990897399,
+     "mean_iou_ci95": [
+      0.9133361422447183,
+      0.916154774330641
+     ],
+     "pore_iou": 0.8787737854403942,
+     "layer_iou": 0.9621889749713486,
+     "porosity_error": 0.010916608799222164,
+     "physics": {
+      "porosity": 0.41884405261266855,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.683469836816162,
+      "connected_pore_fraction": 0.7314484216738665,
+      "tortuosity_through_plane": 8.18959289823775
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.9222674297806325,
+     "mean_iou_ci95": [
+      0.9178565098270874,
+      0.9267180774927715
+     ],
+     "pore_iou": 0.9081864079473315,
+     "layer_iou": 0.9745888209600916,
+     "porosity_error": 0.01046002540890093,
+     "physics": {
+      "porosity": 0.5341759798550498,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 14.10609682744645,
+      "connected_pore_fraction": 0.8854785674235662,
+      "tortuosity_through_plane": 2.0875587279560124
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9212607681707033,
+     "mean_iou_ci95": [
+      0.91936364935563,
+      0.9231213391033918
+     ],
+     "pore_iou": 0.9014907483411864,
+     "layer_iou": 0.9738890199620811,
+     "porosity_error": 0.003326617598846625,
+     "physics": {
+      "porosity": 0.5034407242904947,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 16.38031948431827,
+      "connected_pore_fraction": 0.987611390345267,
+      "tortuosity_through_plane": 3.719834463418025
+     }
+    }
+   }
+  },
+  "nnunet_3d_fullres": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8845183172263574,
+     "mean_iou_ci95": [
+      0.8824227034254063,
+      0.8865574658385307
+     ],
+     "pore_iou": 0.8353413893059763,
+     "layer_iou": 0.9535532697001138,
+     "porosity_error": 0.011519315441090501,
+     "physics": {
+      "porosity": 0.43849118339177723,
+      "d50_nm": 84.0,
+      "specific_surface_per_um": 16.642130112882043,
+      "connected_pore_fraction": 0.9632948607185097,
+      "tortuosity_through_plane": 6.059516229638358
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03027828186338244,
+      "ci95": [
+       -0.03187837649851016,
+       -0.028575107745143186
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8854476873078391,
+     "mean_iou_ci95": [
+      0.8834083599871494,
+      0.8874854497833564
+     ],
+     "pore_iou": 0.87332654939602,
+     "layer_iou": 0.9568693856181343,
+     "porosity_error": 0.02494866883393394,
+     "physics": {
+      "porosity": 0.5577972865055701,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.47952122032718,
+      "connected_pore_fraction": 0.9782414267165661,
+      "tortuosity_through_plane": 4.405577687125167
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.036819742472793404,
+      "ci95": [
+       -0.04187216359849101,
+       -0.0315781743182029
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.7957959135038039,
+     "mean_iou_ci95": [
+      0.7895591288460477,
+      0.8019846466547854
+     ],
+     "pore_iou": 0.9344136794639727,
+     "layer_iou": 0.8092045338216312,
+     "porosity_error": 0.006039039055015803,
+     "physics": {
+      "porosity": 0.5318527576073125,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.025915691478192,
+      "connected_pore_fraction": 0.8689253352400821,
+      "tortuosity_through_plane": 3.8880697470626657
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.1254648546668995,
+      "ci95": [
+       -0.1329218130988431,
+       -0.11784012836193297
+      ],
+      "p_better": 0.0
+     }
+    }
+   }
+  },
+  "resunet_k0_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.877947926115251,
+     "mean_iou_ci95": [
+      0.8756937881864839,
+      0.8801408635681294
+     ],
+     "pore_iou": 0.8094025131323186,
+     "layer_iou": 0.9625987683258415,
+     "porosity_error": 0.0532725803744075,
+     "physics": {
+      "porosity": 0.372298697054389,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.753370115708552,
+      "connected_pore_fraction": 0.9335569771739192,
+      "tortuosity_through_plane": 9.868555194252284
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.036848672974488905,
+      "ci95": [
+       -0.03890513601737567,
+       -0.034750338035625154
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8562560247516874,
+     "mean_iou_ci95": [
+      0.8536711252930756,
+      0.8589531744164326
+     ],
+     "pore_iou": 0.8433149385694844,
+     "layer_iou": 0.9414666074645233,
+     "porosity_error": 0.03187515745095392,
+     "physics": {
+      "porosity": 0.5728128563377084,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 14.825549906052402,
+      "connected_pore_fraction": 0.9825710260005944,
+      "tortuosity_through_plane": 7.538660279060284
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.06601140502894509,
+      "ci95": [
+       -0.06795036292085761,
+       -0.06390604266196682
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9027907541832669,
+     "mean_iou_ci95": [
+      0.9008587857519004,
+      0.9047993076885018
+     ],
+     "pore_iou": 0.8815142113923625,
+     "layer_iou": 0.9656830724843428,
+     "porosity_error": 0.003595752132600046,
+     "physics": {
+      "porosity": 0.5125368226725323,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 17.23791500177139,
+      "connected_pore_fraction": 0.9940111561532247,
+      "tortuosity_through_plane": 3.9908394254573927
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.018470013987436418,
+      "ci95": [
+       -0.02037506713260119,
+       -0.01671361599425998
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.391419,
+   "sec_per_slice": 0.416197468252743,
+   "twin_pore_iou": 0.7929208586109079,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7122558128319608,
+    "uncomp": 0.8808097039753923,
+    "pristine": 0.7856970590253705
+   },
+   "twin_gan_pore_iou": 0.8720587363798114,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8759603267346752,
+    "uncomp": 0.9037639919801325,
+    "pristine": 0.8364518904246263
+   }
+  },
+  "resunet_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8884246065786231,
+     "mean_iou_ci95": [
+      0.8864577997795806,
+      0.8903788968835397
+     ],
+     "pore_iou": 0.833952417417996,
+     "layer_iou": 0.9592361507681791,
+     "porosity_error": 0.005853626816738851,
+     "physics": {
+      "porosity": 0.42369151141783923,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.275661140822034,
+      "connected_pore_fraction": 0.9643142144096751,
+      "tortuosity_through_plane": 6.269146687872115
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.02637199251111677,
+      "ci95": [
+       -0.027940416893561842,
+       -0.024560469165004387
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.836158335231317,
+     "mean_iou_ci95": [
+      0.834864235246676,
+      0.8373920627614614
+     ],
+     "pore_iou": 0.8095718449173624,
+     "layer_iou": 0.9508677286386569,
+     "porosity_error": 0.07076668575811619,
+     "physics": {
+      "porosity": 0.6085432902726395,
+      "d50_nm": 144.0,
+      "specific_surface_per_um": 13.822100729696084,
+      "connected_pore_fraction": 0.9891907380288603,
+      "tortuosity_through_plane": 5.505869645564323
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.08610909454931548,
+      "ci95": [
+       -0.08967739087434227,
+       -0.08253624670110617
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.8968668256088345,
+     "mean_iou_ci95": [
+      0.8942432875412304,
+      0.8997148904333524
+     ],
+     "pore_iou": 0.8730343584875744,
+     "layer_iou": 0.9643460204616262,
+     "porosity_error": 0.03447386313289379,
+     "physics": {
+      "porosity": 0.5440308185931875,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.719276384991849,
+      "connected_pore_fraction": 0.9908493349310524,
+      "tortuosity_through_plane": 2.6365193212714586
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.024393942561868887,
+      "ci95": [
+       -0.027128101809403206,
+       -0.021505867575653412
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.392859,
+   "sec_per_slice": 0.4179631822249469,
+   "twin_pore_iou": 0.8244528747796579,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7904832071563275,
+    "uncomp": 0.8829279827958486,
+    "pristine": 0.7999474343867978
+   },
+   "twin_gan_pore_iou": 0.873414060706701,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8723160587768648,
+    "uncomp": 0.903817220922521,
+    "pristine": 0.8441089024207171
+   }
+  },
+  "resunet_k3_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8841990682608936,
+     "mean_iou_ci95": [
+      0.8823922356860499,
+      0.8861936680768601
+     ],
+     "pore_iou": 0.8261417749294869,
+     "layer_iou": 0.9571748252775096,
+     "porosity_error": 0.00436010566121088,
+     "physics": {
+      "porosity": 0.42847106126061923,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.203958823335917,
+      "connected_pore_fraction": 0.9641618639300509,
+      "tortuosity_through_plane": 6.171467296481405
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03059753082884631,
+      "ci95": [
+       -0.032100252641223015,
+       -0.028751889161821073
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8250522108330584,
+     "mean_iou_ci95": [
+      0.8232873966739003,
+      0.8269818431510514
+     ],
+     "pore_iou": 0.7954936793334886,
+     "layer_iou": 0.9483933525806266,
+     "porosity_error": 0.07830666244707842,
+     "physics": {
+      "porosity": 0.6185435879736839,
+      "d50_nm": 144.0,
+      "specific_surface_per_um": 13.82130000692823,
+      "connected_pore_fraction": 0.9890056508986712,
+      "tortuosity_through_plane": 1.4039499896020307
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.09721521894757412,
+      "ci95": [
+       -0.10109928348838028,
+       -0.09350612093432784
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.8908717013828182,
+     "mean_iou_ci95": [
+      0.8877614223003707,
+      0.894188517051784
+     ],
+     "pore_iou": 0.862648094216042,
+     "layer_iou": 0.9661183824143473,
+     "porosity_error": 0.04277205392779472,
+     "physics": {
+      "porosity": 0.5539784287843523,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.745225160189774,
+      "connected_pore_fraction": 0.9956725008109992,
+      "tortuosity_through_plane": 2.426354793795806
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03038906678788511,
+      "ci95": [
+       -0.033308136494695335,
+       -0.02736475274109867
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.392859,
+   "sec_per_slice": 0.42244163681479063
+  },
+  "resunet_k3_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8636737400697957,
+     "mean_iou_ci95": [
+      0.8609424963102799,
+      0.8662660890190957
+     ],
+     "pore_iou": 0.782028553714374,
+     "layer_iou": 0.9619571688817069,
+     "porosity_error": 0.07022194079174013,
+     "physics": {
+      "porosity": 0.35675768815576203,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 15.502323316592415,
+      "connected_pore_fraction": 0.9118373687687524,
+      "tortuosity_through_plane": 27.675886048358976
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.05112285901994418,
+      "ci95": [
+       -0.053904075486684244,
+       -0.04860435687647467
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8586278315379205,
+     "mean_iou_ci95": [
+      0.8565793892147883,
+      0.8605727401949
+     ],
+     "pore_iou": 0.8435164180902079,
+     "layer_iou": 0.940600752636297,
+     "porosity_error": 0.014460731374617609,
+     "physics": {
+      "porosity": 0.556021442137112,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.720909654582824,
+      "connected_pore_fraction": 0.9480700774895688,
+      "tortuosity_through_plane": 7.149172021223117
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.06363959824271193,
+      "ci95": [
+       -0.06666128268890129,
+       -0.060794225840910855
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9114695450712409,
+     "mean_iou_ci95": [
+      0.9103213300247727,
+      0.9126450948083503
+     ],
+     "pore_iou": 0.898316010687387,
+     "layer_iou": 0.9671712412672039,
+     "porosity_error": 0.017684741872082566,
+     "physics": {
+      "porosity": 0.4890140186055977,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.498480744916693,
+      "connected_pore_fraction": 0.9902009952572474,
+      "tortuosity_through_plane": 3.3550091183529
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.009791223099462454,
+      "ci95": [
+       -0.011906060975437241,
+       -0.007590303394565493
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 2.392859,
+   "sec_per_slice": 0.4180392377516803
+  },
+  "segformer_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8884515632901203,
+     "mean_iou_ci95": [
+      0.8872139014545917,
+      0.8897373130091174
+     ],
+     "pore_iou": 0.8406854120938085,
+     "layer_iou": 0.9641997048393419,
+     "porosity_error": 0.004073368120638403,
+     "physics": {
+      "porosity": 0.42943503235670877,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.167625436076953,
+      "connected_pore_fraction": 0.9690269882910516,
+      "tortuosity_through_plane": 5.376272566590626
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.026345035799619554,
+      "ci95": [
+       -0.02743339279943368,
+       -0.025154952705393332
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8347535083040025,
+     "mean_iou_ci95": [
+      0.8310736004130784,
+      0.8386819225349128
+     ],
+     "pore_iou": 0.7932376808103478,
+     "layer_iou": 0.955035681085717,
+     "porosity_error": 0.07534237919862084,
+     "physics": {
+      "porosity": 0.6124519374318288,
+      "d50_nm": 144.0,
+      "specific_surface_per_um": 12.858505192106641,
+      "connected_pore_fraction": 0.9868760701125008,
+      "tortuosity_through_plane": 4.092224539610279
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.08751392147662995,
+      "ci95": [
+       -0.0948075786733175,
+       -0.07964784676202849
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9096038640771278,
+     "mean_iou_ci95": [
+      0.9080025459600063,
+      0.9114174809185328
+     ],
+     "pore_iou": 0.8790065185152218,
+     "layer_iou": 0.9613062791562018,
+     "porosity_error": 0.02414917037137335,
+     "physics": {
+      "porosity": 0.48907839479895,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 13.652507888674482,
+      "connected_pore_fraction": 0.9750261110207387,
+      "tortuosity_through_plane": 3.322792484997256
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.01165690409357556,
+      "ci95": [
+       -0.013179495846552067,
+       -0.010100425120124051
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 24.735427,
+   "sec_per_slice": 0.6990160521338967,
+   "twin_pore_iou": 0.8006398386271942,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7735200371992881,
+    "uncomp": 0.849395792952901,
+    "pristine": 0.7790036857293937
+   },
+   "twin_gan_pore_iou": 0.8700715605901119,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8548045069857306,
+    "uncomp": 0.8989082557446348,
+    "pristine": 0.8565019190399701
+   }
+  },
+  "unet_r34_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8935097348982208,
+     "mean_iou_ci95": [
+      0.8922472968942569,
+      0.8947564113493158
+     ],
+     "pore_iou": 0.842119266373265,
+     "layer_iou": 0.9617614036674931,
+     "porosity_error": 0.015247244851621159,
+     "physics": {
+      "porosity": 0.4114498702725007,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.58140327576422,
+      "connected_pore_fraction": 0.7886974561807373,
+      "tortuosity_through_plane": 5.5043530449895455
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.02128686419151904,
+      "ci95": [
+       -0.02276010744235891,
+       -0.01978191655746893
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8650857174100918,
+     "mean_iou_ci95": [
+      0.8636881391251492,
+      0.86657202282895
+     ],
+     "pore_iou": 0.8419669461255159,
+     "layer_iou": 0.9550279869764344,
+     "porosity_error": 0.04842388546463711,
+     "physics": {
+      "porosity": 0.5842679815896136,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.555208206487421,
+      "connected_pore_fraction": 0.8960777491425568,
+      "tortuosity_through_plane": 12.723750679577758
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.057181712370540705,
+      "ci95": [
+       -0.06075065755868656,
+       -0.05342561724919177
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9240469993686563,
+     "mean_iou_ci95": [
+      0.9231812775558144,
+      0.9249449542654183
+     ],
+     "pore_iou": 0.8977147450831371,
+     "layer_iou": 0.9711031078063013,
+     "porosity_error": 0.006906359726981432,
+     "physics": {
+      "porosity": 0.5048306238194767,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.442649500805954,
+      "connected_pore_fraction": 0.9852265895363223,
+      "tortuosity_through_plane": 2.8501175744221228
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.0027862311979529597,
+      "ci95": [
+       0.0008441727228263779,
+       0.004981277388704926
+      ],
+      "p_better": 0.9985
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.38577929665060606,
+   "twin_pore_iou": 0.7947364216897396,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7311256758685853,
+    "uncomp": 0.8738734668134074,
+    "pristine": 0.7792101223872263
+   },
+   "twin_gan_pore_iou": 0.8532235375333365,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8317343560910786,
+    "uncomp": 0.8734665232726868,
+    "pristine": 0.8544697332362439
+   }
+  },
+  "unet_r34_k3_s1": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8916692060919061,
+     "mean_iou_ci95": [
+      0.8900939896892721,
+      0.8933009452147237
+     ],
+     "pore_iou": 0.8388470699671583,
+     "layer_iou": 0.9602354218757332,
+     "porosity_error": 0.017812976165951674,
+     "physics": {
+      "porosity": 0.40993164268685667,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.634646545546843,
+      "connected_pore_fraction": 0.792091438679705,
+      "tortuosity_through_plane": 5.8688818335622095
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.02312739299783373,
+      "ci95": [
+       -0.02508241835745064,
+       -0.02130816107340079
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8630411503774292,
+     "mean_iou_ci95": [
+      0.8613808077926084,
+      0.8647614999705773
+     ],
+     "pore_iou": 0.8403818959020961,
+     "layer_iou": 0.954804007111797,
+     "porosity_error": 0.04840580328745558,
+     "physics": {
+      "porosity": 0.584459141469341,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.690496363557928,
+      "connected_pore_fraction": 0.8965218392280395,
+      "tortuosity_through_plane": 9.697986317060979
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.05922627940320324,
+      "ci95": [
+       -0.06275453563994578,
+       -0.05564393922539119
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9217421759059432,
+     "mean_iou_ci95": [
+      0.9204783294240396,
+      0.9232306091199394
+     ],
+     "pore_iou": 0.8960762978795904,
+     "layer_iou": 0.9686614568474328,
+     "porosity_error": 0.004344981702874291,
+     "physics": {
+      "porosity": 0.5136450465641723,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.422235972271642,
+      "connected_pore_fraction": 0.9903958571102721,
+      "tortuosity_through_plane": 3.277920681549445
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.00048140773523985825,
+      "ci95": [
+       -0.0017202872204076264,
+       0.0027942032243928293
+      ],
+      "p_better": 0.65
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.3678280605989344
+  },
+  "unet_r34_k3_s2": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.892564706718078,
+     "mean_iou_ci95": [
+      0.8911615295461502,
+      0.8941002545931429
+     ],
+     "pore_iou": 0.8448474404552808,
+     "layer_iou": 0.963441691512041,
+     "porosity_error": 0.008604609661969465,
+     "physics": {
+      "porosity": 0.4365516730297882,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.22557329341121,
+      "connected_pore_fraction": 0.7892259677289554,
+      "tortuosity_through_plane": 5.193413228422738
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0222318923716619,
+      "ci95": [
+       -0.023356948405592215,
+       -0.020910620045194502
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.846509422202483,
+     "mean_iou_ci95": [
+      0.8446888411030374,
+      0.8484389889447258
+     ],
+     "pore_iou": 0.8254451633750615,
+     "layer_iou": 0.9515924212833048,
+     "porosity_error": 0.06569266469079302,
+     "physics": {
+      "porosity": 0.6027413593866592,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.847703709803666,
+      "connected_pore_fraction": 0.9831430071863301,
+      "tortuosity_through_plane": 6.9800907206168095
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.07575800757814943,
+      "ci95": [
+       -0.07907980787551647,
+       -0.07251003613261613
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9194395072324287,
+     "mean_iou_ci95": [
+      0.9179162910865916,
+      0.9212715017002585
+     ],
+     "pore_iou": 0.8965715868684793,
+     "layer_iou": 0.9698195272321594,
+     "porosity_error": 0.00563975025994369,
+     "physics": {
+      "porosity": 0.5154566494247528,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 14.5949253471696,
+      "connected_pore_fraction": 0.9901136251807329,
+      "tortuosity_through_plane": 3.1034899870337593
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.0018212609382746159,
+      "ci95": [
+       -0.0033703104812028957,
+       -0.0002786553613855299
+      ],
+      "p_better": 0.01
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.34839245852302103
+  },
+  "unet_r34_long_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8998866408040257,
+     "mean_iou_ci95": [
+      0.8982000048904532,
+      0.9015249921553617
+     ],
+     "pore_iou": 0.8562517189721126,
+     "layer_iou": 0.9629253507343637,
+     "porosity_error": 0.004147944491130644,
+     "physics": {
+      "porosity": 0.43047833494923227,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.80324077954592,
+      "connected_pore_fraction": 0.7887888821726409,
+      "tortuosity_through_plane": 5.998501685389565
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.014909958285714175,
+      "ci95": [
+       -0.01594223805315525,
+       -0.013913817666779064
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.8930013635206877,
+     "mean_iou_ci95": [
+      0.8877841362010563,
+      0.8980987178491412
+     ],
+     "pore_iou": 0.887127525328027,
+     "layer_iou": 0.956272772814821,
+     "porosity_error": 0.0195895832798286,
+     "physics": {
+      "porosity": 0.5518592401879926,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.336080940126854,
+      "connected_pore_fraction": 0.8624730908773245,
+      "tortuosity_through_plane": 13.80133440395739
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.029266066259944767,
+      "ci95": [
+       -0.030500663095578924,
+       -0.027995987554348102
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9330630669680735,
+     "mean_iou_ci95": [
+      0.9321221611544378,
+      0.9340501392153492
+     ],
+     "pore_iou": 0.9131925965116594,
+     "layer_iou": 0.9785889642978223,
+     "porosity_error": 0.009157014600091485,
+     "physics": {
+      "porosity": 0.515604349374567,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.120519866883006,
+      "connected_pore_fraction": 0.9887522977879586,
+      "tortuosity_through_plane": 2.799600982011346
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.011802298797370159,
+      "ci95": [
+       0.01009069032113323,
+       0.013642020519274633
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 24.449203,
+   "sec_per_slice": 0.3561672322890338,
+   "twin_pore_iou": 0.8287849495573667,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.798694651753256,
+    "uncomp": 0.8832130986845097,
+    "pristine": 0.8044470982343341
+   },
+   "twin_gan_pore_iou": 0.8866209625797002,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8886725329661035,
+    "uncomp": 0.9007552058095809,
+    "pristine": 0.8704351489634163
+   }
+  },
+  "unetpp_r34_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8933948527202418,
+     "mean_iou_ci95": [
+      0.8921011241137573,
+      0.8946360946486677
+     ],
+     "pore_iou": 0.8421446850119471,
+     "layer_iou": 0.9608277589617676,
+     "porosity_error": 0.012568142635762483,
+     "physics": {
+      "porosity": 0.4152922882371538,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 16.469534774862208,
+      "connected_pore_fraction": 0.7967419312863646,
+      "tortuosity_through_plane": 5.395340102873173
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.021401746369498098,
+      "ci95": [
+       -0.0225363180338312,
+       -0.020245500692343613
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.873718954724345,
+     "mean_iou_ci95": [
+      0.8718257686337888,
+      0.8755896828681163
+     ],
+     "pore_iou": 0.8522184402989054,
+     "layer_iou": 0.9594422214978618,
+     "porosity_error": 0.04692161209750039,
+     "physics": {
+      "porosity": 0.5800336461334883,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 13.533737342886315,
+      "connected_pore_fraction": 0.9515108979377063,
+      "tortuosity_through_plane": 14.24797831129818
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.048548475056287455,
+      "ci95": [
+       -0.05241842262279594,
+       -0.0445310574756119
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.9284699282524932,
+     "mean_iou_ci95": [
+      0.9272108356569594,
+      0.9298057009287829
+     ],
+     "pore_iou": 0.9051176736077683,
+     "layer_iou": 0.9738052000559433,
+     "porosity_error": 0.00588490459397265,
+     "physics": {
+      "porosity": 0.5033118158348834,
+      "d50_nm": 108.0,
+      "specific_surface_per_um": 14.228282684538906,
+      "connected_pore_fraction": 0.9896088843253629,
+      "tortuosity_through_plane": 4.259454017359623
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": 0.007209160081789845,
+      "ci95": [
+       0.005569557405211628,
+       0.0089876832359818
+      ],
+      "p_better": 1.0
+     }
+    }
+   },
+   "params_M": 26.091443,
+   "sec_per_slice": 0.6979658182929543,
+   "twin_pore_iou": 0.8146899571018235,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7748449939615456,
+    "uncomp": 0.8785733551254408,
+    "pristine": 0.790651522218484
+   },
+   "twin_gan_pore_iou": 0.8799734511015561,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8807924742183637,
+    "uncomp": 0.8951219005055335,
+    "pristine": 0.8640059785807714
+   }
+  },
+  "zafunet_r34_k3_s0": {
+   "train_stacks": "comp,uncomp,pristine",
+   "test": {
+    "comp": {
+     "mean_iou": 0.8801025970119395,
+     "mean_iou_ci95": [
+      0.8780971522358056,
+      0.8820739235991266
+     ],
+     "pore_iou": 0.8199385751296959,
+     "layer_iou": 0.9582709883780827,
+     "porosity_error": 0.01711753498430368,
+     "physics": {
+      "porosity": 0.408821622596557,
+      "d50_nm": 72.0,
+      "specific_surface_per_um": 17.569389213862124,
+      "connected_pore_fraction": 0.9387764846822959,
+      "tortuosity_through_plane": 6.308993056766466
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.03469400207780038,
+      "ci95": [
+       -0.03655179960195886,
+       -0.03278527854557301
+      ],
+      "p_better": 0.0
+     }
+    },
+    "uncomp": {
+     "mean_iou": 0.845282915306611,
+     "mean_iou_ci95": [
+      0.8437409739196424,
+      0.8466928074540394
+     ],
+     "pore_iou": 0.8219492550757843,
+     "layer_iou": 0.9383920320254876,
+     "porosity_error": 0.021576638879839745,
+     "physics": {
+      "porosity": 0.5622463854794004,
+      "d50_nm": 132.0,
+      "specific_surface_per_um": 14.632383678703663,
+      "connected_pore_fraction": 0.9830448785709253,
+      "tortuosity_through_plane": 1.5678213917790462
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.07698451447402144,
+      "ci95": [
+       -0.08072572458335273,
+       -0.07335892144693298
+      ],
+      "p_better": 0.0
+     }
+    },
+    "pristine": {
+     "mean_iou": 0.879773848881643,
+     "mean_iou_ci95": [
+      0.8781034516431958,
+      0.8815295223530124
+     ],
+     "pore_iou": 0.8284734016601306,
+     "layer_iou": 0.9596572593162261,
+     "porosity_error": 0.06106292914698656,
+     "physics": {
+      "porosity": 0.4486303279016865,
+      "d50_nm": 96.0,
+      "specific_surface_per_um": 15.312586377159027,
+      "connected_pore_fraction": 0.9719064714803008,
+      "tortuosity_through_plane": 10.951380602911899
+     },
+     "diff_vs_nnunet_2d": {
+      "mean": -0.04148691928906034,
+      "ci95": [
+       -0.042649233416674905,
+       -0.040269243074903184
+      ],
+      "p_better": 0.0
+     }
+    }
+   },
+   "params_M": 25.862579,
+   "sec_per_slice": 3.3292143064386703,
+   "twin_pore_iou": 0.8074371551476904,
+   "twin_pore_iou_by_stack": {
+    "comp": 0.7663649861783309,
+    "uncomp": 0.8292391804077297,
+    "pristine": 0.8267072988570104
+   },
+   "twin_gan_pore_iou": 0.7809898522374644,
+   "twin_gan_pore_iou_by_stack": {
+    "comp": 0.8234311831007894,
+    "uncomp": 0.7989372771946619,
+    "pristine": 0.720601096416942
+   }
+  }
+ },
+ "labels_physics": {
+  "comp": {
+   "porosity": 0.41640941783374175,
+   "d50_nm": 72.0,
+   "specific_surface_per_um": 16.188299042242495,
+   "connected_pore_fraction": 0.9412908437924394,
+   "tortuosity_through_plane": Infinity
+  },
+  "uncomp": {
+   "porosity": 0.5139029409692712,
+   "d50_nm": 132.0,
+   "specific_surface_per_um": 12.430984805718941,
+   "connected_pore_fraction": 0.8073851912839709,
+   "tortuosity_through_plane": Infinity
+  },
+  "pristine": {
+   "porosity": 0.49988823995466325,
+   "d50_nm": 108.0,
+   "specific_surface_per_um": 13.286102965045584,
+   "connected_pore_fraction": 0.981258912706553,
+   "tortuosity_through_plane": 4.192829670658163
+  }
+ },
+ "twin_baselines": {
+  "otsu": 0.7587171141214926,
+  "ferner_rule": 0.7115940409685705,
+  "otsu_gan": 0.7824185887341254,
+  "ferner_rule_gan": 0.7537797281839639
+ }
+}

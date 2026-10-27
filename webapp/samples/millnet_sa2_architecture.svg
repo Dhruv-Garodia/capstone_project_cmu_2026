@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="900" viewBox="0 0 1120 900" role="img" aria-label="MillNet-SA2: seven input slices feed a fixed slide bank, a learned slide field and frame statistics; the first two are concatenated into 38 channels for a five-level residual U-Net with axial attention at the bottleneck; frame statistics modulate the stem and bottleneck through FiLM; a factorised head outputs solid, pore and outside."><style>
+.box{fill:#ffffff;stroke:#c9cfda;stroke-width:1.2}.box-acc{fill:#e2f3f1;stroke:#0f7f7a;stroke-width:1.6}
+.box-film{fill:#fbefdf;stroke:#b4690e;stroke-width:1.2}.blk{fill:#f6f7f9;stroke:#5b6577;stroke-width:1.1}
+.slice{fill:#ffffff;stroke:#5b6577;stroke-width:1}.slice-c{fill:#e2f3f1;stroke:#0f7f7a;stroke-width:1.6}
+.t{fill:#1c2330;font-family:Helvetica,Arial,sans-serif;font-size:12.5px}.tt{fill:#1c2330;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600}
+.tm{fill:#5b6577;font-family:Menlo,Consolas,monospace;font-size:11.5px}.tc{fill:#1c2330;font-family:Menlo,Consolas,monospace;font-size:12px}
+.ta{fill:#0f7f7a;font-family:Menlo,Consolas,monospace;font-size:12px;font-weight:500}.tf{fill:#b4690e;font-family:Menlo,Consolas,monospace;font-size:11.5px;font-weight:500}
+.ln{stroke:#1c2330;stroke-width:1.4;fill:none}.ln-skip{stroke:#5b6577;stroke-width:1.1;stroke-dasharray:4 4;fill:none}
+.ln-film{stroke:#b4690e;stroke-width:1.5;stroke-dasharray:6 4;fill:none}.ln-acc{stroke:#0f7f7a;stroke-width:1.6;fill:none}
+.mk{fill:#1c2330}.mk-film{fill:#b4690e}.mk-acc{fill:#0f7f7a}
+.sw-solid{fill:#d9dde4;stroke:#5b6577}.sw-pore{fill:#2f3542;stroke:#5b6577}.sw-out{fill:#8fa3c4;stroke:#5b6577}
+</style><rect x="0" y="0" width="1120" height="900" fill="#ffffff"/>
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-film" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+
+      <!-- input -->
+      <rect class="box" x="20" y="20" width="300" height="115" rx="4"/>
+      <rect class="slice" x="34" y="30" width="90" height="50"/>
+      <rect class="slice" x="41" y="37" width="90" height="50"/>
+      <rect class="slice" x="48" y="44" width="90" height="50"/>
+      <rect class="slice-c" x="55" y="51" width="90" height="50"/>
+      <rect class="slice" x="62" y="58" width="90" height="50"/>
+      <rect class="slice" x="69" y="65" width="90" height="50"/>
+      <rect class="slice" x="76" y="72" width="90" height="50"/>
+      <text class="ta" x="83" y="101">z</text>
+      <text class="tt" x="182" y="50">Input</text>
+      <text class="t" x="182" y="72">7 slices, z−3 … z+3</text>
+      <text class="tm" x="182" y="92">B × 7 × H × W</text>
+      <text class="tm" x="182" y="110">label slice = z</text>
+
+      <!-- legend -->
+      <text class="tt" x="380" y="44">Legend</text>
+      <rect class="box-acc" x="380" y="60" width="26" height="14" rx="2"/>
+      <text class="t" x="414" y="72">new in MillNet-SA / SA2</text>
+      <line class="ln-film" x1="380" y1="94" x2="406" y2="94"/>
+      <text class="t" x="414" y="98">FiLM conditioning from frame statistics</text>
+      <line class="ln-skip" x1="380" y1="118" x2="406" y2="118"/>
+      <text class="t" x="414" y="122">U-Net skip connection</text>
+      <text class="tm" x="720" y="72">ResBlock = conv-BN-GELU ×2 + residual</text>
+      <text class="tm" x="720" y="98">base 24 ch, max 128 ch, depth 5</text>
+      <text class="tm" x="720" y="122">2.58 M parameters</text>
+
+      <!-- bus to branches -->
+      <polyline class="ln" points="140,135 140,155"/>
+      <line class="ln" x1="140" y1="155" x2="930" y2="155"/>
+      <line class="ln" x1="190" y1="155" x2="190" y2="178" marker-end="url(#a)"/>
+      <line class="ln-acc" x1="560" y1="155" x2="560" y2="178" marker-end="url(#aa)"/>
+      <line class="ln" x1="930" y1="155" x2="930" y2="178" marker-end="url(#a)"/>
+
+      <!-- branch 1 -->
+      <rect class="box" x="20" y="180" width="340" height="190" rx="4"/>
+      <text class="tt" x="36" y="208">① Fixed slide bank</text>
+      <text class="t" x="36" y="236">Shift each neighbour by s·d rows for</text>
+      <text class="t" x="36" y="256">three guesses s ∈ {−1, 0, +1} px/slice</text>
+      <text class="t" x="36" y="282">Per guess: 6 shifted slices + 3 milling channels</text>
+      <text class="tc" x="36" y="306">fwd = (z+1) − z    bwd = z − (z−1)</text>
+      <text class="tc" x="36" y="326">fmax = max(future) − z</text>
+      <text class="tm" x="36" y="356">→ 3 × 9 = 27 channels</text>
+
+      <!-- branch 2 (new) -->
+      <rect class="box-acc" x="390" y="180" width="340" height="190" rx="4"/>
+      <text class="tt" x="406" y="208">② Learned slide field</text>
+      <text class="ta" x="600" y="208">SA / SA2</text>
+      <text class="t" x="406" y="236">Dilated CNN at ¼ resolution predicts</text>
+      <text class="t" x="406" y="256">s(x, y) px/slice, bounded ±1.5 (tanh), smoothed</text>
+      <text class="t" x="406" y="282">warp_rows: sub-pixel shift of neighbour d by s·d</text>
+      <text class="tc" x="406" y="306">+ same 9 milling channels + s</text>
+      <text class="tc" x="406" y="326">SA2 loss: + 0.05 · (s / 1.5)²</text>
+      <text class="ta" x="406" y="356">→ 10 channels</text>
+
+      <!-- branch 3 -->
+      <rect class="box-film" x="760" y="180" width="340" height="190" rx="4"/>
+      <text class="tt" x="776" y="208">③ Frame statistics</text>
+      <text class="t" x="776" y="236">16 grey-level quantiles of the</text>
+      <text class="t" x="776" y="256">whole centre frame (not just the crop)</text>
+      <text class="tc" x="776" y="282">MLP 16 → 64 → (γ, β)</text>
+      <text class="tc" x="776" y="306">h ← h · (1 + γ) + β</text>
+      <text class="t" x="776" y="326">at the stem and at the bottleneck</text>
+      <text class="tf" x="776" y="356">→ γ₀, β₀ and γ_L, β_L</text>
+
+      <!-- concat -->
+      <line class="ln" x1="190" y1="370" x2="190" y2="403" marker-end="url(#a)"/>
+      <line class="ln-acc" x1="560" y1="370" x2="560" y2="403" marker-end="url(#aa)"/>
+      <rect class="box" x="40" y="405" width="580" height="45" rx="4"/>
+      <text class="t" x="56" y="433">Concatenate: centre slice (1) + bank (27) + slide field (10) = <tspan class="tc">38 channels</tspan></text>
+      <line class="ln" x1="70" y1="450" x2="70" y2="488" marker-end="url(#a)"/>
+
+      <!-- FiLM routes -->
+      <polyline class="ln-film" points="780,370 780,470 112,470 112,488" marker-end="url(#af)"/>
+      <text class="tf" x="460" y="464">FiLM γ₀, β₀ → stem</text>
+      <polyline class="ln-film" points="1100,370 1100,846 662,846" marker-end="url(#af)"/>
+      <text class="tf" x="860" y="840">FiLM γ_L, β_L → bottleneck</text>
+
+      <!-- skips -->
+      <line class="ln-skip" x1="124" y1="512" x2="816" y2="512"/>
+      <line class="ln-skip" x1="170" y1="578" x2="770" y2="578"/>
+      <line class="ln-skip" x1="216" y1="644" x2="724" y2="644"/>
+      <line class="ln-skip" x1="262" y1="710" x2="678" y2="710"/>
+      <line class="ln-skip" x1="308" y1="776" x2="632" y2="776"/>
+      <text class="tm" x="430" y="506">skip</text>
+
+      <!-- encoder -->
+      <text class="tm" x="130" y="482">ENCODER</text>
+      <rect class="blk" x="40" y="490" width="84" height="44" rx="3"/><text class="tc" x="50" y="510">stem 24</text><text class="tm" x="50" y="526">1/1</text>
+      <rect class="blk" x="86" y="556" width="84" height="44" rx="3"/><text class="tc" x="96" y="576">48 ch</text><text class="tm" x="96" y="592">1/2</text>
+      <rect class="blk" x="132" y="622" width="84" height="44" rx="3"/><text class="tc" x="142" y="642">96 ch</text><text class="tm" x="142" y="658">1/4</text>
+      <rect class="blk" x="178" y="688" width="84" height="44" rx="3"/><text class="tc" x="188" y="708">128 ch</text><text class="tm" x="188" y="724">1/8</text>
+      <rect class="blk" x="224" y="754" width="84" height="44" rx="3"/><text class="tc" x="234" y="774">128 ch</text><text class="tm" x="234" y="790">1/16</text>
+      <line class="ln" x1="82" y1="534" x2="120" y2="554" marker-end="url(#a)"/>
+      <line class="ln" x1="128" y1="600" x2="166" y2="620" marker-end="url(#a)"/>
+      <line class="ln" x1="174" y1="666" x2="212" y2="686" marker-end="url(#a)"/>
+      <line class="ln" x1="220" y1="732" x2="258" y2="752" marker-end="url(#a)"/>
+      <line class="ln" x1="266" y1="798" x2="296" y2="810" marker-end="url(#a)"/>
+      <text class="tm" x="20" y="620">max-pool</text><text class="tm" x="20" y="636">↓2</text>
+
+      <!-- bottleneck -->
+      <rect class="box" x="280" y="812" width="380" height="72" rx="4"/>
+      <text class="tt" x="296" y="838">④ Axial attention · 1/32 · 128 ch</text>
+      <text class="t" x="296" y="860">row attention along the layer, then</text>
+      <text class="t" x="296" y="876">column attention through it (4 heads)</text>
+
+      <!-- decoder -->
+      <text class="tm" x="830" y="482">DECODER</text>
+      <rect class="blk" x="632" y="754" width="84" height="44" rx="3"/><text class="tc" x="642" y="774">128 ch</text><text class="tm" x="642" y="790">1/16</text>
+      <rect class="blk" x="678" y="688" width="84" height="44" rx="3"/><text class="tc" x="688" y="708">128 ch</text><text class="tm" x="688" y="724">1/8</text>
+      <rect class="blk" x="724" y="622" width="84" height="44" rx="3"/><text class="tc" x="734" y="642">96 ch</text><text class="tm" x="734" y="658">1/4</text>
+      <rect class="blk" x="770" y="556" width="84" height="44" rx="3"/><text class="tc" x="780" y="576">48 ch</text><text class="tm" x="780" y="592">1/2</text>
+      <rect class="blk" x="816" y="490" width="84" height="44" rx="3"/><text class="tc" x="826" y="510">24 ch</text><text class="tm" x="826" y="526">1/1</text>
+      <line class="ln" x1="640" y1="810" x2="668" y2="800" marker-end="url(#a)"/>
+      <line class="ln" x1="682" y1="752" x2="712" y2="734" marker-end="url(#a)"/>
+      <line class="ln" x1="728" y1="686" x2="758" y2="668" marker-end="url(#a)"/>
+      <line class="ln" x1="774" y1="620" x2="804" y2="602" marker-end="url(#a)"/>
+      <line class="ln" x1="820" y1="554" x2="850" y2="536" marker-end="url(#a)"/>
+      <text class="tm" x="868" y="620">upsample ↑2</text><text class="tm" x="868" y="636">+ skip, ResBlock</text><text class="tm" x="868" y="652">dropout 0.1</text>
+
+      <!-- head -->
+      <line class="ln" x1="900" y1="512" x2="918" y2="512" marker-end="url(#a)"/>
+      <rect class="box" x="920" y="480" width="160" height="150" rx="4"/>
+      <text class="tt" x="934" y="504">⑤ Factorised head</text>
+      <text class="tc" x="934" y="528">r → P(outside)</text>
+      <text class="tc" x="934" y="548">u → P(pore | in)</text>
+      <text class="tm" x="934" y="574">solid = σ(−r)·σ(−u)</text>
+      <text class="tm" x="934" y="594">pore = σ(−r)·σ(u)</text>
+      <text class="tm" x="934" y="614">outside = σ(r)</text>
+      <line class="ln" x1="1000" y1="630" x2="1000" y2="668" marker-end="url(#a)"/>
+      <rect class="box" x="920" y="670" width="160" height="112" rx="4"/>
+      <text class="tt" x="934" y="694">Output, slice z</text>
+      <rect class="sw-solid" x="934" y="706" width="14" height="14"/><text class="t" x="956" y="718">solid</text>
+      <rect class="sw-pore" x="934" y="728" width="14" height="14"/><text class="t" x="956" y="740">pore</text>
+      <rect class="sw-out" x="934" y="750" width="14" height="14"/><text class="t" x="956" y="762">outside layer</text>
+    </svg>

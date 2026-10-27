@@ -26,6 +26,8 @@ if DIST.exists():
     shutil.rmtree(DIST)
 DIST.mkdir()
 (DIST / "index.html").write_text(doc, encoding="utf-8")
+for extra in ("how.html", "dataset.html", "results.html"):                     # standalone pages (full documents already)
+    shutil.copy(HERE / extra, DIST / extra)
 shutil.copytree(HERE / "samples", DIST / "samples")
 shutil.copytree(HERE / "model", DIST / "model", ignore=shutil.ignore_patterns("_ref_*"))
 (DIST / "vercel.json").write_text(json.dumps({

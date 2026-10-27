@@ -67,6 +67,9 @@ button, input, select { font: inherit; color: inherit; }
   background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); flex: none; }
 .dot.ok { background: var(--good); }
+nav.pages { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+nav.pages a { text-decoration: none; color: var(--muted); font: 500 .86rem var(--font-body); padding: 6px 14px; border-radius: 999px; }
+nav.pages a[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
 
 .lede { max-width: 72ch; color: var(--muted); margin-bottom: 20px; }
 .lede strong { color: var(--ink); font-weight: 600; }
@@ -196,7 +199,10 @@ footer { margin-top: 28px; font-size: .8rem; color: var(--muted); display: flex;
       <h1>Éponge</h1>
       <span class="tag">pFIB-SEM porosity lab · IrO₂ catalyst layers</span>
     </div>
-    <div class="engine" id="engine"><span class="dot" id="engineDot"></span><span id="engineText">Loading model…</span></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <nav class="pages" aria-label="Pages"><a href="index.html" aria-current="page">Lab</a><a href="how.html">How it works</a><a href="dataset.html">Dataset</a><a href="results.html">Results</a></nav>
+      <div class="engine" id="engine"><span class="dot" id="engineDot"></span><span id="engineText">Loading model…</span></div>
+    </div>
   </header>
   <p class="lede">Drop in a pFIB-SEM slice or a multi-page TIFF stack. MillNet, a segmentation network built for FIB-SEM and trained on corrected annotations of <strong>comp_full.tif</strong>, finds the catalyst layer, separates <strong>pore</strong> from <strong>solid</strong>, and the page measures porosity, pore-size distribution, connectivity and tortuosity. Everything runs on your GPU in this tab. Your image is never uploaded.</p>
 

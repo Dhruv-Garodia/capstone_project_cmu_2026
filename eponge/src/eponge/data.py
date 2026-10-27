@@ -43,7 +43,7 @@ class CropDataset(Dataset):
     def __getitem__(self, i):
         rng = self.rng
         z = self.frames[rng.integers(len(self.frames))]
-        img = context_stack(self.norm, z, self.k)
+        img = context_stack(self.norm, z, self.k).astype(np.float32, copy=False)
         lab = self.labels[z]
         lo, hi = self.scale_range
         scale = float(np.exp(rng.uniform(np.log(lo), np.log(hi)))) if self.augment else 1.0

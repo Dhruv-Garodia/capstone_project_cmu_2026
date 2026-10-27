@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Éponge Results</title>
+<meta name="description" content="Final results: MillNet-SA2 against nnU-Net and pretrained baselines on the four-annotator pFIB-SEM dataset, ablations, cross-acquisition tests, a public benchmark and the GAN digital twin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column of result sections; each table that can outgrow a phone scrolls inside its own card. */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #f6f8fa; --ink: #14202b; --muted: #576573; --line: #d6dde4;
+  --accent: #2b55c8; --ours: #2b55c8; --base: #9aa5b1; --good: #1a7f4b; --bad: #b42318; --warn: #a15c00;
+  --shadow: 0 1px 2px rgba(20,32,43,.06), 0 4px 18px rgba(20,32,43,.06);
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace; --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0; --line: #283541;
+  --accent: #7aa2ff; --ours: #7aa2ff; --base: #5b6672; --good: #4cc38a; --bad: #ff7b72; --warn: #e8b13a; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0;
+  --line: #283541; --accent: #7aa2ff; --ours: #7aa2ff; --base: #5b6672; --good: #4cc38a; --bad: #ff7b72; --warn: #e8b13a; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h2 { font-size: 1.45rem; font-weight: 600; } h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; } a { color: var(--accent); }
+.eyebrow { font: 500 .72rem/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 12px; } .brand h1 { font-size: 1.9rem; font-weight: 700; }
+.brand .tag { font: .8rem var(--font-mono); color: var(--muted); }
+nav { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; flex-wrap: wrap; }
+nav a { text-decoration: none; color: var(--muted); font: 500 .86rem var(--font-body); padding: 6px 14px; border-radius: 999px; }
+nav a[aria-current="page"] { background: var(--accent); color: #fff; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lede { max-width: 76ch; color: var(--muted); margin-bottom: 20px; }
+section { display: grid; gap: 12px; margin-top: 30px; }
+section > p { max-width: 76ch; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+.kpi .v { font: 600 1.6rem/1.15 var(--font-mono); font-variant-numeric: tabular-nums; display: block; margin-top: 6px; }
+.kpi .s { font-size: .8rem; color: var(--muted); }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font: 500 .7rem var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+tr.ours td { font-weight: 600; } tr.ours td:first-child { box-shadow: inset 3px 0 0 var(--ours); }
+.pos { color: var(--good); } .neg { color: var(--bad); } .flat { color: var(--muted); }
+.barcell { width: 38%; min-width: 160px; }
+.bar { position: relative; height: 12px; background: var(--surface-2); border-radius: 3px; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: var(--base); }
+tr.ours .bar i { background: var(--ours); }
+.axis { display: flex; justify-content: space-between; font: .7rem var(--font-mono); color: var(--muted); margin-top: 4px; }
+.note { font-size: .84rem; color: var(--muted); max-width: 80ch; }
+.callout { border-left: 3px solid var(--warn); background: var(--surface-2); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: .92rem; max-width: 80ch; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+figure { margin: 0; } figure img { width: 100%; height: auto; border-radius: 8px; display: block; background: #fff; }
+figcaption { font-size: .84rem; color: var(--muted); margin-top: 8px; }
+footer { margin-top: 32px; font-size: .8rem; color: var(--muted); }
+@media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>Éponge</h1><span class="tag">results</span></div>
+    <nav aria-label="Pages"><a href="index.html">Lab</a><a href="how.html">How it works</a><a href="dataset.html">Dataset</a><a href="results.html" aria-current="page">Results</a></nav>
+  </header>
+  <p class="lede">Final results on the four-annotator pFIB-SEM dataset (comp, uncomp, pristine; test slices 101–117). All models were chosen on validation slices only, and the test slices were scored once at the end. Mean IoU is over three classes: solid, pore and outside the catalyst layer.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="eyebrow">MillNet-SA2, 3 seeds</span><span class="v">0.935</span><span class="s">mean test mIoU, ± 0.001</span></div>
+    <div class="kpi"><span class="eyebrow">nnU-Net 2D</span><span class="v">0.919</span><span class="s">same training budget</span></div>
+    <div class="kpi"><span class="eyebrow">uncomp / pristine</span><span class="v pos">+2.4 / +2.7</span><span class="s">points over nnU-Net, CI excludes 0</span></div>
+    <div class="kpi"><span class="eyebrow">Parameters</span><span class="v">2.6 M</span><span class="s">vs 24–26 M for pretrained baselines</span></div>
+  </div>
+
+  <section>
+    <h2>Comparison on the real test set</h2>
+    <div class="card scroll">
+      <table aria-label="Mean test mIoU by model">
+        <thead><tr><th>Model</th><th class="n">comp</th><th class="n">uncomp</th><th class="n">pristine</th><th class="n">Mean</th><th class="barcell">Mean (bars start at 0.85)</th></tr></thead>
+        <tbody id="mainRows"></tbody>
+      </table>
+      <div class="axis" aria-hidden="true" style="margin-left:auto;width:38%;min-width:160px"><span>0.85</span><span>0.90</span><span>0.95</span></div>
+    </div>
+    <p class="note">"Same budget" means 7,500 training steps, batch 6, 512 px crops, as for nnU-Net 2D. Standard budget: 3,000 steps, batch 8, 256 px. nnU-Net 3D stopped at epoch 25 of 30 after a power loss. Means ± standard deviation over 3 seeds where given.</p>
+  </section>
+
+  <section>
+    <h2>Is the difference to nnU-Net real?</h2>
+    <p>Paired bootstrap over test slices (2,000 resamples). Each cell shows MillNet-SA2 minus nnU-Net 2D, with its 95 % confidence interval.</p>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th>Seed</th><th class="n">comp</th><th class="n">uncomp</th><th class="n">pristine</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td class="n flat">−0.000 [−0.001, +0.002]</td><td class="n pos">+0.025 [+0.024, +0.027]</td><td class="n pos">+0.026 [+0.023, +0.028]</td></tr>
+          <tr><td>1</td><td class="n flat">−0.000 [−0.002, +0.001]</td><td class="n pos">+0.025 [+0.022, +0.027]</td><td class="n pos">+0.025 [+0.022, +0.027]</td></tr>
+          <tr><td>2</td><td class="n neg">−0.006 [−0.007, −0.004]</td><td class="n pos">+0.021 [+0.018, +0.024]</td><td class="n pos">+0.029 [+0.027, +0.031]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">uncomp and pristine: significantly better for every seed. comp: a tie for two seeds, slightly worse for one.</p>
+  </section>
+
+  <section>
+    <h2>The model</h2>
+    <figure class="card">
+      <img src="samples/millnet_sa2_architecture.svg" alt="MillNet-SA2: seven slices feed a fixed slide bank, a learned slide field and frame statistics; a five-level residual U-Net with axial attention and a factorised head outputs solid, pore or outside for the centre slice." loading="lazy">
+      <figcaption>MillNet-SA2. The ablations below show that ③ frame statistics carries the gain; the other inputs are kept because they cost little.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>What makes it work</h2>
+    <p>Each row removes or changes one part (standard budget). Seed-to-seed spread is about ±0.4 points, so smaller changes are noise.</p>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th>Variant</th><th class="n">Mean mIoU</th><th class="n">Change</th></tr></thead>
+        <tbody>
+          <tr class="ours"><td>MillNet, 3 seeds (reference)</td><td class="n">0.915 ± 0.004</td><td class="n flat">–</td></tr>
+          <tr><td>+ learned slide field (MillNet-SA2, 3 seeds)</td><td class="n">0.916 ± 0.002</td><td class="n flat">+0.1</td></tr>
+          <tr><td>Raw slices, no slide bank or milling features (3 seeds)</td><td class="n">0.917 ± 0.001</td><td class="n flat">+0.2</td></tr>
+          <tr><td>Plain 3-class head instead of factorised head</td><td class="n">0.916</td><td class="n flat">+0.1</td></tr>
+          <tr><td>No axial attention</td><td class="n">0.920</td><td class="n flat">+0.1</td></tr>
+          <tr><td>1 slice instead of 7</td><td class="n">0.914</td><td class="n flat">−0.1</td></tr>
+          <tr><td>3 slices instead of 7</td><td class="n">0.917</td><td class="n flat">+0.2</td></tr>
+          <tr><td><b>No frame statistics</b></td><td class="n">0.898</td><td class="n neg">−1.7</td></tr>
+          <tr><td>Everything removed (plain residual U-Net)</td><td class="n">0.882</td><td class="n neg">−3.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Frame-level contrast conditioning is what matters; without it uncomp loses 3–5 points. The slide modules, milling features and multi-slice input are on par with simpler versions on this data. At the full training budget, MillNet with and without the learned slide field score 0.937 and 0.935.</p>
+  </section>
+
+  <section class="grid2">
+    <div class="card scroll">
+      <h3>A stack the model has never seen</h3>
+      <p class="note" style="margin-top:6px">Trained on two stacks, tested on the third.</p>
+      <table>
+        <thead><tr><th>Unseen</th><th class="n">MillNet-SA2</th><th class="n">U-Net R34</th></tr></thead>
+        <tbody>
+          <tr><td>comp</td><td class="n">0.843</td><td class="n">0.863</td></tr>
+          <tr><td>uncomp</td><td class="n pos">0.888</td><td class="n">0.833</td></tr>
+          <tr><td>pristine</td><td class="n neg">0.656</td><td class="n">0.837</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Label-free fixes (histogram matching, AdaBN) do not rescue pristine.</p>
+    </div>
+    <div class="card scroll">
+      <h3>Label a few slices of the new stack</h3>
+      <p class="note" style="margin-top:6px">Cross-stack model fine-tuned on N labelled pristine slices.</p>
+      <table>
+        <thead><tr><th>Slices</th><th class="n">MillNet-SA2</th><th class="n">U-Net R34</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td class="n">0.656</td><td class="n">0.837</td></tr>
+          <tr><td>2</td><td class="n">0.913</td><td class="n">0.915</td></tr>
+          <tr><td>5</td><td class="n pos">0.937</td><td class="n">0.910</td></tr>
+          <tr><td>10</td><td class="n">0.934</td><td class="n">0.914</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Two labelled slices close most of the gap. Single seeds.</p>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card scroll">
+      <h3>Physical properties of the test block</h3>
+      <table>
+        <thead><tr><th></th><th class="n">Labels</th><th class="n">MillNet-SA2</th><th class="n">nnU-Net</th></tr></thead>
+        <tbody>
+          <tr><td>Specific surface, comp (1/µm)</td><td class="n">16.19</td><td class="n pos">16.96</td><td class="n">17.68</td></tr>
+          <tr><td>Specific surface, uncomp</td><td class="n">12.43</td><td class="n pos">12.65</td><td class="n">14.11</td></tr>
+          <tr><td>Specific surface, pristine</td><td class="n">13.29</td><td class="n pos">13.39</td><td class="n">16.38</td></tr>
+          <tr><td>Connected pores, comp</td><td class="n">0.941</td><td class="n pos">0.957</td><td class="n">0.731</td></tr>
+          <tr><td>Porosity, comp / uncomp / pristine</td><td class="n">0.42 / 0.51 / 0.50</td><td class="n">0.43 / 0.52 / 0.48</td><td class="n">0.42 / 0.53 / 0.50</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card scroll">
+      <h3>Public benchmark</h3>
+      <p class="note" style="margin-top:6px">External porous-polymer FIB-SEM stacks.</p>
+      <table>
+        <thead><tr><th>Method</th><th class="n">Test mIoU</th></tr></thead>
+        <tbody>
+          <tr class="ours"><td>MillNet-SA2 (3 seeds)</td><td class="n">0.797 ± 0.002</td></tr>
+          <tr><td>Skärberg et al. 2021, CNN</td><td class="n">0.798</td></tr>
+          <tr><td>Röding et al. 2021, random forest</td><td class="n">0.762</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Ties the published CNN without any tuning for this data.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Digital twin with exact truth</h2>
+    <p>Real stacks have no exact truth. The twin builds 3D structures with SliceGAN, trained on each acquisition's hand masks. It places shine-through along the measured slide, and a conditional GAN learns the microscope's appearance from our paired masks and images. Every twin image comes with its exact phase.</p>
+    <figure class="card">
+      <img src="samples/results_twin_panel.png" alt="Held-out slices of comp, uncomp and pristine: real image, GAN twin, old physics twin and mask, side by side." loading="lazy">
+      <figcaption>Held-out slices. Columns: real, GAN twin, old physics twin, mask. Rows: comp, uncomp, pristine.</figcaption>
+    </figure>
+    <div class="grid2">
+      <div class="card scroll">
+        <h3>How close to real?</h3>
+        <p class="note" style="margin-top:6px">A real-trained model, scored on twin and real images of the same structure (test mIoU).</p>
+        <table>
+          <thead><tr><th></th><th class="n">Real</th><th class="n">GAN twin</th><th class="n">Physics twin</th></tr></thead>
+          <tbody>
+            <tr><td>comp</td><td class="n">0.915</td><td class="n pos">0.913</td><td class="n">0.779</td></tr>
+            <tr><td>uncomp</td><td class="n">0.949</td><td class="n">0.927</td><td class="n">0.860</td></tr>
+            <tr><td>pristine</td><td class="n">0.949</td><td class="n">0.895</td><td class="n">0.829</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card scroll">
+        <h3>Against exact truth</h3>
+        <p class="note" style="margin-top:6px">Pore IoU on the GAN twin, crops pasted into real frames.</p>
+        <table>
+          <thead><tr><th></th><th class="n">comp</th><th class="n">uncomp</th><th class="n">pristine</th></tr></thead>
+          <tbody>
+            <tr class="ours"><td>MillNet-SA2</td><td class="n">0.898</td><td class="n">0.799</td><td class="n">0.756</td></tr>
+            <tr><td>U-Net ResNet-34</td><td class="n">0.890</td><td class="n">0.819</td><td class="n">0.793</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="callout">On exact truth, MillNet-SA2 is on par with a pretrained U-Net (mean 0.818 vs 0.834), not ahead as it is on the hand-annotated test set. Part of its lead may come from matching how the labels were made, with each frame judged on its own contrast. The twin is still imperfect for pristine, so this is indicative. Pretraining on the twin did not improve real-data accuracy (0.920 vs 0.919).</p>
+  </section>
+
+  <footer>Éponge · pFIB-SEM catalyst-layer segmentation · numbers from runs/final_models/report/results.json</footer>
+</div>
+<script>
+const MAIN = [
+  ["MillNet-SA2, same budget (3 seeds)", .913, .946, .948, .935, true],
+  ["MillNet, same budget", .912, .948, .950, .937, false],
+  ["nnU-Net 2D", .915, .922, .921, .919, false],
+  ["MillNet-SA2, standard budget (3 seeds)", .898, .924, .927, .916, false],
+  ["U-Net ResNet-34, same budget", .900, .893, .933, .909, false],
+  ["UNet++ ResNet-34", .893, .874, .929, .899, false],
+  ["U-Net ResNet-34, standard (3 seeds)", .893, .858, .922, .891, false],
+  ["SegFormer MiT-B2", .889, .835, .910, .878, false],
+  ["ResUNet 2.5D (3 seeds)", .879, .840, .900, .873, false],
+  ["ZAF-UNet", .880, .845, .880, .868, false],
+  ["MillTrace", .880, .828, .878, .862, false],
+  ["Otsu, given true boundary", .883, .851, .840, .858, false],
+  ["nnU-Net 3D (25/30 epochs)", .885, .885, .796, .855, false],
+];
+const lo = .85, hi = .95;
+document.getElementById("mainRows").innerHTML = MAIN.map(([n, a, b, c, m, ours]) => {
+  const w = Math.max(0, Math.min(1, (m - lo) / (hi - lo))) * 100;
+  return `<tr class="${ours ? "ours" : ""}"><td>${n}</td><td class="n">${a.toFixed(3)}</td><td class="n">${b.toFixed(3)}</td>` +
+         `<td class="n">${c.toFixed(3)}</td><td class="n">${m.toFixed(3)}</td><td class="barcell"><div class="bar"><i style="width:${w.toFixed(1)}%"></i></div></td></tr>`;
+}).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+ "R\u00f6ding 2021 random forest (published, Table 3)": {
+  "test_mIoU": 0.7616
+ },
+ "Sk\u00e4rberg 2021 CNN (released segmentation)": {
+  "test_mIoU": 0.7979562687840297
+ },
+ "millnet_sa_7slice": {
+  "test_mIoU": 0.7977308937951612,
+  "val_mIoU": 0.7923922443359295,
+  "params_M": 2.570243,
+  "porosity_test_manual": 0.3062856038411458,
+  "porosity_test_pred": 0.3122825622558594,
+  "train_squares": 180,
+  "k": 3,
+  "per_sample": {
+   "HPC22": 0.76805289709537,
+   "HPC30": 0.827099865602456,
+   "HPC45": 0.7765010030667904
+  }
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "comp": {
+  "real": {
+   "mean_iou": 0.916854274723592,
+   "pore_iou": 0.8793490433043196,
+   "porosity_mae": 0.011551137336829442,
+   "pred_porosity_mean": 0.4373536369443472,
+   "gt_porosity_mean": 0.42642945786559916
+  },
+  "gan_twin": {
+   "mean_iou": 0.9135343940407928,
+   "pore_iou": 0.8727133270674018,
+   "porosity_mae": 0.015555204505251583,
+   "pred_porosity_mean": 0.44198466237085077,
+   "gt_porosity_mean": 0.42642945786559916
+  },
+  "physics_twin": {
+   "mean_iou": 0.7103579338448275,
+   "pore_iou": 0.5290466879234363,
+   "porosity_mae": 0.055951971418675334,
+   "pred_porosity_mean": 0.3704774864469238,
+   "gt_porosity_mean": 0.42642945786559916
+  },
+  "noise": 0.0
+ },
+ "uncomp": {
+  "real": {
+   "mean_iou": 0.9519393569315074,
+   "pore_iou": 0.9291551783865071,
+   "porosity_mae": 0.005412006316957929,
+   "pred_porosity_mean": 0.5161161038623582,
+   "gt_porosity_mean": 0.5139941322207
+  },
+  "gan_twin": {
+   "mean_iou": 0.9317839467149387,
+   "pore_iou": 0.8966855091442874,
+   "porosity_mae": 0.0077426600583148045,
+   "pred_porosity_mean": 0.5075821469184733,
+   "gt_porosity_mean": 0.5139941322207
+  },
+  "physics_twin": {
+   "mean_iou": 0.8484927941427851,
+   "pore_iou": 0.7647065685780076,
+   "porosity_mae": 0.06737287900450945,
+   "pred_porosity_mean": 0.44662125321619056,
+   "gt_porosity_mean": 0.5139941322207
+  },
+  "noise": 0.0
+ },
+ "pristine": {
+  "real": {
+   "mean_iou": 0.9533644895742389,
+   "pore_iou": 0.9358287129020785,
+   "porosity_mae": 0.004232050212224629,
+   "pred_porosity_mean": 0.4976298180841493,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "gan_twin": {
+   "mean_iou": 0.9161487222871734,
+   "pore_iou": 0.883852241953958,
+   "porosity_mae": 0.023496424590539945,
+   "pred_porosity_mean": 0.5248987698811929,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "physics_twin": {
+   "mean_iou": 0.8019083465845745,
+   "pore_iou": 0.6825530509872653,
+   "porosity_mae": 0.10829202067970935,
+   "pred_porosity_mean": 0.39311032461094353,
+   "gt_porosity_mean": 0.501402345290653
+  },
+  "noise": 0.0
+ }
+}

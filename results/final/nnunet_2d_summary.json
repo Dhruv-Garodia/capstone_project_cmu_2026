@@ -1,0 +1,36 @@
+{
+ "args": {
+  "arch": "nnunet_2d",
+  "train_stacks": "comp,uncomp,pristine",
+  "test_stacks": "comp,uncomp,pristine"
+ },
+ "test": {
+  "comp": {
+   "mean_iou": 0.9147965990897399,
+   "pore_iou": 0.871196248239182,
+   "roi_iou": 0.9621889749713486,
+   "pore_f1_tol1": 0.9667881097793777,
+   "porosity_mae": 0.0058486349527167485,
+   "pred_porosity_mean": 0.4188353791511256,
+   "gt_porosity_mean": 0.41637602565569365
+  },
+  "uncomp": {
+   "mean_iou": 0.9222674297806325,
+   "pore_iou": 0.8858191203639195,
+   "roi_iou": 0.9745888209600916,
+   "pore_f1_tol1": 0.9792703198735936,
+   "porosity_mae": 0.020287648237060824,
+   "pred_porosity_mean": 0.5341847716264719,
+   "gt_porosity_mean": 0.5138971233894113
+  },
+  "pristine": {
+   "mean_iou": 0.9212607681707033,
+   "pore_iou": 0.8921440804891783,
+   "roi_iou": 0.9738890199620811,
+   "pore_f1_tol1": 0.981292712645777,
+   "porosity_mae": 0.0035921297044298308,
+   "pred_porosity_mean": 0.5034601262890567,
+   "gt_porosity_mean": 0.49988871819741676
+  }
+ }
+}

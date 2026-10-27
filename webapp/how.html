@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How pFIB-SEM Works</title>
+<meta name="description" content="Animated demo: a plasma ion beam mills a porous catalyst layer slice by slice, the electron beam images each face (with shine-through through pores), and the slices are reconstructed in 3D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #f6f8fa; --ink: #14202b; --muted: #576573; --line: #d6dde4;
+  --accent: #2b55c8; --ion: #00a3b8; --electron: #e0531c; --shine: #c98a00; --pore: #1f6feb;
+  --shadow: 0 1px 2px rgba(20,32,43,.06), 0 4px 18px rgba(20,32,43,.06);
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace; --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0; --line: #283541;
+  --accent: #7aa2ff; --ion: #38d6e8; --electron: #ff7a45; --shine: #e8b13a; --pore: #58a6ff; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0;
+  --line: #283541; --accent: #7aa2ff; --ion: #38d6e8; --electron: #ff7a45; --shine: #e8b13a; --pore: #58a6ff; color-scheme: dark; }
+* { box-sizing: border-box; } [hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px 48px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; } p { margin: 0; } a { color: var(--accent); }
+.eyebrow { font: 500 .72rem/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 12px; } .brand h1 { font-size: 1.9rem; font-weight: 700; }
+.brand .tag { font: .8rem var(--font-mono); color: var(--muted); }
+nav { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+nav a { text-decoration: none; color: var(--muted); font: 500 .86rem var(--font-body); padding: 6px 14px; border-radius: 999px; }
+nav a[aria-current="page"] { background: var(--accent); color: #fff; }
+.lede { max-width: 80ch; color: var(--muted); margin-bottom: 16px; }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; align-items: start; }
+.view { position: relative; background: radial-gradient(ellipse at 50% 35%, #1c2733, #0a0f14 75%); border-radius: var(--r); overflow: hidden;
+  aspect-ratio: 16 / 10; box-shadow: var(--shadow); }
+#gl { width: 100%; height: 100%; display: block; }
+.caption { position: absolute; left: 14px; right: 14px; bottom: 12px; max-width: 760px; color: #e5ecf2; font-size: .92rem; background: rgba(8,12,16,.72);
+  border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 10px 14px; backdrop-filter: blur(4px); }
+.caption b { font-family: var(--font-display); font-size: 1.05rem; display: block; margin-bottom: 2px; }
+.hud { position: absolute; top: 12px; left: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font: 500 .74rem var(--font-mono); color: #e5ecf2; background: rgba(8,12,16,.65); border: 1px solid rgba(255,255,255,.1);
+  padding: 4px 9px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; }
+.pill i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.side { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px; }
+.chapters { display: grid; gap: 6px; }
+.chapters button { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 10px; cursor: pointer;
+  color: var(--ink); font: 500 .9rem var(--font-body); display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: start; }
+.chapters button span { font: 600 .8rem var(--font-mono); color: var(--muted); }
+.chapters button[aria-current="step"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.chapters button[aria-current="step"] span { color: var(--accent); }
+.ctl { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ctl button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 7px 12px; cursor: pointer; color: var(--ink); font: 500 .88rem var(--font-body); }
+.ctl button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.ctl label { font-size: .84rem; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+input[type=range] { accent-color: var(--accent); }
+.leftcol { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.leftcol > * { min-width: 0; }
+.side { min-width: 0; }
+.film { max-width: 100%; }
+.tlgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.tlgrid div { border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; font-size: .82rem; color: var(--muted); }
+.tlgrid div b { display: block; color: var(--ink); font-family: var(--font-display); font-size: .95rem; margin-bottom: 2px; }
+.tlgrid div.on { border-color: var(--accent); }
+.tlgrid div.here { box-shadow: inset 0 0 0 1px var(--electron); border-color: var(--electron); }
+.tlgrid div .tag { display: inline-block; font: 600 .68rem var(--font-mono); color: var(--electron); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
+@media (max-width: 760px) { .tlgrid { grid-template-columns: 1fr 1fr; } }
+.film { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 4px; min-height: 66px; }
+.film canvas { height: 58px; width: auto; border-radius: 4px; image-rendering: pixelated; flex: none; border: 1px solid var(--line); }
+.film canvas.new { outline: 2px solid var(--electron); }
+#porChart { width: 100%; height: 120px; display: block; margin-top: 6px; }
+.stacks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.stacks button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 6px; cursor: pointer; color: var(--ink);
+  font: 600 .9rem var(--font-display); text-align: left; }
+.stacks button small { display: block; font: 400 .68rem/1.25 var(--font-body); color: var(--muted); margin-top: 2px; }
+.stacks button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.acqrow img { width: 100%; border-radius: 6px; display: block; }
+table.acq { width: 100%; border-collapse: collapse; font-size: .8rem; }
+table.acq td { padding: 3px 0; border-bottom: 1px solid var(--line); } table.acq td:first-child { color: var(--muted); }
+#sem { width: 100%; image-rendering: pixelated; border-radius: 6px; background: #000; display: block; margin-top: 8px; }
+.semcap { display: flex; justify-content: space-between; font: .76rem var(--font-mono); color: var(--muted); margin-top: 6px; }
+.key { display: grid; gap: 6px; font-size: .84rem; margin-top: 8px; }
+.key div { display: flex; gap: 8px; align-items: center; }
+.key i { width: 14px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+.arch { margin-top: 18px; }
+.arch figure { margin: 0; }
+.acqcols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+.acqcols img { width: 100%; border-radius: 6px; display: block; margin: 6px 0; }
+@media (max-width: 760px) { .acqcols { grid-template-columns: 1fr; } }
+.explain { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.explain h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.explain p { font-size: .88rem; color: var(--muted); }
+@media (max-width: 960px) { .stage { grid-template-columns: 1fr; } .explain { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>Éponge</h1><span class="tag">pFIB-SEM porosity lab · IrO₂ catalyst layers</span></div>
+    <nav aria-label="Pages"><a href="index.html">Lab</a><a href="how.html" aria-current="page">How it works</a><a href="dataset.html">Dataset</a><a href="results.html">Results</a></nav>
+  </header>
+  <p class="lede">How a 3D pore network is measured with a plasma focused-ion-beam scanning electron microscope, and why it is hard. An ion beam shaves the sample one slice at a time; an electron beam images every fresh face. Through each pore the electrons reach material <em>behind</em> the face (shine-through), so pores do not look black. This is exactly what our digital twin simulates and what MillNet is built to undo. Drag to rotate.</p>
+
+  <div class="stage">
+    <div class="leftcol">
+    <div class="view">
+      <canvas id="gl" aria-label="Animated 3D demo of serial sectioning"></canvas>
+      <div class="hud">
+        <span class="pill"><i style="background:var(--ion)"></i>Ga/Xe plasma ion beam</span>
+        <span class="pill"><i style="background:var(--electron)"></i>electron beam</span>
+        <span class="pill"><i style="background:var(--shine)"></i>shine-through</span>
+        <span class="pill" id="sliceHud">slice 0</span>
+      </div>
+      <div class="caption" id="caption"><b>–</b><span></span></div>
+    </div>
+
+    <section class="card" aria-labelledby="histh">
+      <span class="eyebrow">Sample history</span>
+      <h3 id="histh" style="margin:4px 0 2px">How the layer was made, and when each sample was taken</h3>
+      <p class="muted" style="font-size:.84rem;margin-bottom:6px">All three come from the same kind of catalyst layer (Ferner et al. 2024). The difference is how far along this timeline it got before it was milled and imaged.</p>
+      <svg id="timeline" viewBox="0 0 900 150" role="img" aria-label="Timeline: catalyst ink, blade-coated onto a decal, hot-pressed onto the membrane (pristine is imaged here), clamped in an electrolyser cell with a titanium PTL at 40 in-lb, operated, taken apart; comp and uncomp are imaged after this." style="width:100%;height:auto;color:var(--ink)">
+        <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12" fill="currentColor" text-anchor="middle">
+          <line x1="60" y1="50" x2="840" y2="50" stroke="currentColor" stroke-opacity=".35" stroke-width="2"/>
+          <g id="tlsteps"></g>
+        </g>
+      </svg>
+      <div class="tlgrid" id="tlgrid"></div>
+    </section>
+
+    <section class="card" aria-labelledby="filmh">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <div><span class="eyebrow">Slices recorded so far</span><h3 id="filmh" style="margin:4px 0 2px">The stack builds up one detector image at a time</h3></div>
+        <span class="mono muted" id="filmCount" style="font-size:.8rem">0 slices</span>
+      </div>
+      <div class="film" id="film" aria-label="Detector images recorded so far"></div>
+      <div class="eyebrow" style="margin-top:12px">Porosity per slice: truth vs. a simple brightness threshold</div>
+      <canvas id="porChart" height="120" aria-label="True porosity versus thresholded porosity per slice"></canvas>
+      <p class="muted" style="font-size:.82rem;margin-top:4px"><span style="color:var(--pore)">●</span> true porosity of the cut face &nbsp; <span style="color:var(--shine)">●</span> what thresholding the detector image measures. The gap is shine-through: pores that show material behind them look grey and get counted as solid.</p>
+    </section>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <span class="eyebrow">Sample</span>
+        <div class="stacks" id="stacks" role="group" aria-label="Acquisition" style="margin-top:8px"></div>
+        <div id="acqInfo" style="font-size:.84rem;margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Chapters</span>
+        <div class="chapters" id="chapters" style="margin-top:8px"></div>
+        <div class="ctl" style="margin-top:12px">
+          <button class="primary" id="play" type="button">❚❚ Pause</button>
+          <button id="restart" type="button">↺ Restart</button>
+          <label>Speed <input type="range" id="speed" min="25" max="300" value="100" style="width:90px"></label>
+        </div>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Detector image of the current face</span>
+        <canvas id="sem" width="240" height="168" aria-label="Simulated SEM image of the current slice"></canvas>
+        <div class="semcap"><span id="semLbl">slice 0</span><span id="semPor">porosity –</span></div>
+        <div class="key">
+          <div><i style="background:#e8e8e8"></i>solid cut by the beam: bright</div>
+          <div><i style="background:linear-gradient(90deg,#9a9a9a,#555)"></i>pore, solid seen behind it: grey, darker the deeper</div>
+          <div><i style="background:#141414"></i>pore with nothing within reach: black</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
+
+  <section class="card arch" aria-labelledby="acqh">
+    <span class="eyebrow">Three samples, three acquisitions</span>
+    <h2 id="acqh" style="margin:4px 0 10px">Where comp, uncomp and pristine come from</h2>
+    <figure>
+      <svg viewBox="0 0 1100 250" role="img" aria-label="Cross-section of an electrolyser anode: the catalyst layer sits on the membrane, PTL titanium fibres press on top. comp is cut from under a fibre, uncomp from under a gap between fibres, pristine from a layer never assembled with a PTL." style="width:100%;height:auto;color:var(--ink)">
+        <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12" fill="currentColor">
+          <text x="20" y="22" font-weight="600">Tested cell: clamped (40 in-lb) and operated</text>
+          <!-- PTL fibres -->
+          <g fill="#9aa5b1" fill-opacity=".55" stroke="currentColor" stroke-opacity=".5">
+            <circle cx="150" cy="95" r="38"/><circle cx="330" cy="95" r="38"/><circle cx="510" cy="95" r="38"/>
+          </g>
+          <text x="610" y="66" font-size="11">PTL titanium fibres</text>
+          <!-- catalyst layer: thinner (compressed) under fibres -->
+          <path d="M60,128 L112,128 Q150,138 188,128 L292,128 Q330,138 368,128 L472,128 Q510,138 548,128 L600,128 L600,152 L60,152 Z"
+                fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)"/>
+          <text x="610" y="144" font-size="11">catalyst layer (IrO₂)</text>
+          <rect x="60" y="152" width="540" height="22" fill="#6f8a5a" fill-opacity=".35" stroke="currentColor" stroke-opacity=".4"/>
+          <text x="610" y="168" font-size="11">membrane</text>
+          <!-- sample markers -->
+          <rect x="315" y="126" width="30" height="28" fill="none" stroke="var(--electron)" stroke-width="2.2"/>
+          <line x1="330" y1="208" x2="330" y2="158" stroke="var(--electron)" marker-end="url(#ah2)"/>
+          <text x="330" y="224" text-anchor="middle" font-weight="600" fill="var(--electron)">comp</text>
+          <text x="330" y="240" text-anchor="middle" font-size="11">under a fibre: pressed</text>
+          <rect x="405" y="126" width="30" height="28" fill="none" stroke="var(--shine)" stroke-width="2.2"/>
+          <line x1="420" y1="208" x2="420" y2="158" stroke="var(--shine)" marker-end="url(#ah2)"/>
+          <text x="440" y="224" text-anchor="middle" font-weight="600" fill="var(--shine)">uncomp</text>
+          <text x="470" y="240" text-anchor="middle" font-size="11">under a gap: not pressed</text>
+          <!-- pristine -->
+          <text x="800" y="22" font-weight="600">Pristine: same layer, never put in a cell</text>
+          <rect x="790" y="128" width="250" height="24" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)"/>
+          <rect x="790" y="152" width="250" height="22" fill="#6f8a5a" fill-opacity=".35" stroke="currentColor" stroke-opacity=".4"/>
+          <text x="915" y="100" text-anchor="middle" font-size="11">no PTL, no compression</text>
+          <rect x="900" y="126" width="30" height="28" fill="none" stroke="var(--ion)" stroke-width="2.2"/>
+          <line x1="915" y1="208" x2="915" y2="158" stroke="var(--ion)" marker-end="url(#ah2)"/>
+          <text x="915" y="224" text-anchor="middle" font-weight="600" fill="var(--ion)">pristine</text>
+          <text x="915" y="240" text-anchor="middle" font-size="11">reference layer</text>
+        </g>
+      </svg>
+    </figure>
+    <div class="acqcols">
+      <div><b>comp_full</b><img src="samples/dataset/comp/raw_0060.jpg" alt="comp_full slice 60" loading="lazy"><table class="acq">
+        <tr><td>sample</td><td>under a PTL fibre</td></tr><tr><td>shine-through slide</td><td class="mono">1.20 px/slice</td></tr>
+        <tr><td>contrast (cut / background)</td><td class="mono">212 / 185</td></tr><tr><td>porosity</td><td class="mono">0.401</td></tr></table></div>
+      <div><b>uncomp_full</b><img src="samples/dataset/uncomp/raw_0060.jpg" alt="uncomp_full slice 60" loading="lazy"><table class="acq">
+        <tr><td>sample</td><td>under a PTL gap</td></tr><tr><td>shine-through slide</td><td class="mono">1.15 px/slice</td></tr>
+        <tr><td>contrast (cut / background)</td><td class="mono">212 / 185</td></tr><tr><td>porosity</td><td class="mono">0.512</td></tr></table></div>
+      <div><b>pristine_full</b><img src="samples/dataset/pristine/raw_0060.jpg" alt="pristine_full slice 60" loading="lazy"><table class="acq">
+        <tr><td>sample</td><td>never assembled</td></tr><tr><td>shine-through slide</td><td class="mono">≈ 0 px/slice</td></tr>
+        <tr><td>contrast (cut / background)</td><td class="mono">180 / 160</td></tr><tr><td>porosity</td><td class="mono">0.500</td></tr></table></div>
+    </div>
+    <p class="muted" style="font-size:.86rem;margin-top:10px">Compression under a fibre squeezes the layer and closes pores (0.40 vs ~0.50). Pristine was imaged with different microscope settings: lower contrast, and material behind pores does not slide between slices. A model has to cope with both the different structure and the different imaging; the animation above switches between them.</p>
+  </section>
+  <section class="card arch" aria-labelledby="archh">
+    <span class="eyebrow">Model architecture</span>
+    <h2 id="archh" style="margin:4px 0 10px">From MillNet to ZAF-UNet: where the slices meet</h2>
+    <figure>
+      <svg viewBox="0 0 1100 470" role="img" aria-label="MillNet stacks the 7 slices as input channels into one network trained from scratch. ZAF-UNet encodes each slice separately with a shared ImageNet-pretrained encoder and fuses the slices with z-attention at four scales before a U-Net decoder." style="width:100%;height:auto;color:var(--ink)">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12" fill="currentColor">
+          <!-- MillNet (before) -->
+          <text x="20" y="26" font-size="13" font-weight="600">BEFORE · MillNet (2.5 M, from scratch)</text>
+          <g fill="none" stroke="currentColor" stroke-opacity=".55">
+            <rect x="20" y="48" width="70" height="80" rx="4"/><rect x="26" y="54" width="70" height="80" rx="4"/><rect x="32" y="60" width="70" height="80" rx="4"/>
+          </g>
+          <text x="67" y="160" text-anchor="middle">7 slices</text>
+          <line x1="108" y1="100" x2="158" y2="100" stroke="currentColor" marker-end="url(#ah)"/>
+          <text x="134" y="84" text-anchor="middle" font-size="11">as 7 channels</text>
+          <rect x="160" y="66" width="150" height="68" rx="6" fill="none" stroke="currentColor"/>
+          <text x="235" y="96" text-anchor="middle">shift / difference</text><text x="235" y="113" text-anchor="middle">features (±1 px)</text>
+          <line x1="310" y1="100" x2="358" y2="100" stroke="currentColor" marker-end="url(#ah)"/>
+          <rect x="360" y="66" width="230" height="68" rx="6" fill="none" stroke="currentColor"/>
+          <text x="475" y="96" text-anchor="middle">one U-Net, slices already</text><text x="475" y="113" text-anchor="middle">mixed at the first layer</text>
+          <line x1="590" y1="100" x2="638" y2="100" stroke="currentColor" marker-end="url(#ah)"/>
+          <rect x="640" y="76" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+          <text x="705" y="105" text-anchor="middle">pore / solid / out</text>
+          <line x1="20" y1="190" x2="1080" y2="190" stroke="currentColor" stroke-opacity=".25" stroke-dasharray="4 4"/>
+          <!-- ZAF-UNet (after) -->
+          <text x="20" y="222" font-size="13" font-weight="600">AFTER · ZAF-UNet (25.9 M, ImageNet-pretrained encoder)</text>
+          <g fill="none" stroke="currentColor" stroke-opacity=".55">
+            <rect x="20" y="246" width="56" height="34" rx="3"/><rect x="20" y="288" width="56" height="34" rx="3"/><rect x="20" y="330" width="56" height="34" rx="3"/>
+            <rect x="20" y="372" width="56" height="34" rx="3"/>
+          </g>
+          <text x="48" y="268" text-anchor="middle" font-size="11">z−3</text><text x="48" y="310" text-anchor="middle" font-size="11">…</text>
+          <text x="48" y="352" text-anchor="middle" font-size="11" font-weight="600">z (centre)</text><text x="48" y="394" text-anchor="middle" font-size="11">z+3</text>
+          <g stroke="currentColor"><line x1="76" y1="263" x2="128" y2="263" marker-end="url(#ah)"/><line x1="76" y1="305" x2="128" y2="305" marker-end="url(#ah)"/><line x1="76" y1="347" x2="128" y2="347" marker-end="url(#ah)"/><line x1="76" y1="389" x2="128" y2="389" marker-end="url(#ah)"/></g>
+          <text x="102" y="430" text-anchor="middle" font-size="11">each slice alone</text>
+          <rect x="130" y="246" width="200" height="160" rx="6" fill="none" stroke="currentColor"/>
+          <text x="230" y="300" text-anchor="middle">shared ResNet-34 encoder</text><text x="230" y="317" text-anchor="middle">(same weights per slice,</text><text x="230" y="334" text-anchor="middle">ImageNet-pretrained)</text>
+          <text x="230" y="362" text-anchor="middle" font-size="11">→ features at 1/2, 1/4, 1/8, 1/16, 1/32</text>
+          <g stroke="currentColor"><line x1="330" y1="270" x2="408" y2="270" marker-end="url(#ah)"/><line x1="330" y1="310" x2="408" y2="310" marker-end="url(#ah)"/><line x1="330" y1="350" x2="408" y2="350" marker-end="url(#ah)"/><line x1="330" y1="390" x2="408" y2="390" marker-end="url(#ah)"/></g>
+          <text x="369" y="262" text-anchor="middle" font-size="11">7 × feats</text>
+          <g fill="var(--accent)" fill-opacity=".14" stroke="var(--accent)"><rect x="410" y="252" width="220" height="34" rx="5"/><rect x="410" y="292" width="220" height="34" rx="5"/><rect x="410" y="332" width="220" height="34" rx="5"/><rect x="410" y="372" width="220" height="34" rx="5"/></g>
+          <g fill="var(--accent)" font-weight="600" text-anchor="middle"><text x="520" y="273">z-attention · scale 1/32</text><text x="520" y="313">z-attention · scale 1/16</text><text x="520" y="353">z-attention · scale 1/8</text><text x="520" y="393">z-attention · 1/4 &amp; 1/2</text></g>
+          <text x="520" y="432" text-anchor="middle" font-size="11">centre pixel queries all 7 slices (3×3 window, slice-position embedding)</text>
+          <g stroke="currentColor"><line x1="630" y1="269" x2="708" y2="269" marker-end="url(#ah)"/><line x1="630" y1="309" x2="708" y2="309" marker-end="url(#ah)"/><line x1="630" y1="349" x2="708" y2="349" marker-end="url(#ah)"/><line x1="630" y1="389" x2="708" y2="389" marker-end="url(#ah)"/></g>
+          <text x="669" y="262" text-anchor="middle" font-size="11">fused skips</text>
+          <rect x="710" y="246" width="190" height="160" rx="6" fill="none" stroke="currentColor"/>
+          <text x="805" y="318" text-anchor="middle">2D U-Net decoder</text><text x="805" y="335" text-anchor="middle">(upsample + skips)</text>
+          <line x1="900" y1="326" x2="948" y2="326" stroke="currentColor" marker-end="url(#ah)"/>
+          <rect x="950" y="302" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+          <text x="1015" y="331" text-anchor="middle">pore / solid / out</text>
+        </g>
+      </svg>
+      <figcaption class="muted" style="font-size:.86rem;margin-top:8px">The change is <b>where the slices meet</b>. MillNet mixes the 7 slices in its first layer, so everything after sees one blended image and must be learned from scratch. ZAF-UNet keeps the slices apart through a pretrained encoder and only combines them with <span style="color:var(--accent)">z-attention</span> at every scale: each pixel of the centre slice looks across the neighbouring slices and decides which of them show the real cut face and which show material behind a pore.</figcaption>
+    </figure>
+  </section>
+  <div class="explain">
+    <div class="card"><h3>Why thresholding fails</h3><p>A pore pixel shows whatever the electrons hit behind the face. If that material is close, the pixel is almost as bright as solid. A grey-level threshold then calls the pore solid, and porosity comes out too low (−0.10 on our digital twin).</p></div>
+    <div class="card"><h3>What gives it away</h3><p>A real cut face stays put from slice to slice. Material seen through a pore gets brighter as milling approaches it and, on comp and uncomp, slides about 1 px per slice. Neighbouring slices tell the two apart.</p></div>
+    <div class="card"><h3>What MillNet does</h3><p>It reads 7 slices at once, learns the slide rate of each acquisition (about 1.2 px/slice on comp, 0 on pristine) and re-aligns the neighbours before comparing them. It then labels pore, solid and the layer boundary, and the slices are stacked into the 3D pore network.</p></div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+/* ---------------------------------------------------------------- sample: a porous block (voxels) */
+const NX = 40, NY = 26, NZ = 36;                      // x in-plane, y through the layer (up), z milling direction
+const idx = (x, y, z) => x + NX * (y + NY * z);
+function rand(seed) { return () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296; }
+/* The three acquisitions (Ferner et al. 2024 samples). Porosity: final four-annotator labels. Imaging: the
+   calibrated digital twin of each stack (slide rate px/slice, cut-face / background / floor grey levels,
+   shine-through depth decay), scaled to this demo's voxel size. */
+const STACKS = {
+  comp:     { name: "comp_full", where: "under a PTL fibre, compressed", porosity: 0.401, ferner: 0.417, slide: 1.20, lambda: 4.5,
+              cut: 212, back: 185, floor: 90, fibre: "press", seed: 11, ptl: "A titanium PTL fibre presses on the catalyst layer: the layer is squeezed, so it is the least porous of the three." },
+  uncomp:   { name: "uncomp_full", where: "under a PTL pore, uncompressed", porosity: 0.512, ferner: 0.558, slide: 1.15, lambda: 2.5,
+              cut: 212, back: 185, floor: 90, fibre: "gap", seed: 23, ptl: "The same cell, but in the gap between PTL fibres: nothing presses here, so the layer keeps its open structure." },
+  pristine: { name: "pristine_full", where: "reference: never clamped or run", porosity: 0.500, ferner: 0.515, slide: 0.03, lambda: 3.5,
+              cut: 180, back: 160, floor: 70, fibre: "none", seed: 37, ptl: "The reference sample: the same catalyst layer, made the same way and hot-pressed onto the membrane, but never clamped into an electrolyser and never run. No PTL fibres have touched it, so it shows the structure before assembly. It was also imaged with different microscope settings: lower contrast and no shine-through slide." },
+};
+let ST = STACKS[new URLSearchParams(location.search).get("stack")] ? new URLSearchParams(location.search).get("stack") : "comp";
+let solid = new Uint8Array(NX * NY * NZ);
+function buildSolid(st) {
+  const R = rand(STACKS[st].seed), field = new Float32Array(NX * NY * NZ);
+  for (let b = 0; b < 140; b++) {                      // sum of random Gaussian blobs -> smooth field
+    const cx = R() * NX, cy = R() * NY, cz = R() * NZ, s = (st === "comp" ? 1.3 : 1.7) + R() * 2.4, w = R() < .5 ? 1 : -1;
+    for (let z = 0; z < NZ; z++) for (let y = 0; y < NY; y++) for (let x = 0; x < NX; x++) {
+      const d2 = ((x - cx) ** 2 + (y - cy) ** 2 + (z - cz) ** 2) / (s * s);
+      if (d2 < 9) field[idx(x, y, z)] += w * Math.exp(-d2);
+    }
+  }
+  const sorted = Array.from(field).sort((a, b) => a - b);
+  const thr = sorted[Math.floor(sorted.length * STACKS[st].porosity)];
+  solid = new Uint8Array(NX * NY * NZ);
+  for (let i = 0; i < solid.length; i++) solid[i] = field[i] > thr ? 1 : 0;
+}
+buildSolid(ST);
+
+/* ---------------------------------------------------------------- three.js scene */
+const canvas = document.getElementById("gl");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1.6, 0.1, 500);
+camera.position.set(74, 46, -84);
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, -7, -8); controls.enableDamping = true; controls.maxDistance = 160; controls.minDistance = 30;
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a1f26, 1.1));
+const sun = new THREE.DirectionalLight(0xffffff, 1.4); sun.position.set(30, 60, -40); scene.add(sun);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = { ion: new THREE.Color(css("--ion")), e: new THREE.Color(css("--electron")), shine: new THREE.Color(css("--shine")), pore: new THREE.Color(css("--pore")) };
+const W = (x, y, z) => new THREE.Vector3(x - NX / 2 + .5, y - NY / 2 + .5, z - NZ / 2 + .5);   // voxel -> world
+
+// solid voxels as one instanced mesh; per-instance colour marks the fresh cut face
+const box = new THREE.BoxGeometry(0.96, 0.96, 0.96);
+const mat = new THREE.MeshStandardMaterial({ roughness: .55, metalness: .1, transparent: true });
+let mesh, pos, poreMesh, ppos;
+const M = new THREE.Matrix4(), base = new THREE.Color(0x8d99a6), face = new THREE.Color(0xf2f2ee), ghost = new THREE.Color(0x3a4652);
+function layoutSolid(cut, recon) {      // cut: first remaining slice index; recon: show reconstruction instead
+  for (let k = 0; k < pos.length; k++) {
+    const [x, y, z] = pos[k], v = W(x, y, z);
+    const keep = recon ? z < recon : z >= cut;
+    M.makeScale(keep ? 1 : 0, keep ? 1 : 0, keep ? 1 : 0).setPosition(v); mesh.setMatrixAt(k, M);
+    mesh.setColorAt(k, recon ? ghost : (z === cut ? face : base));
+  }
+  mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor.needsUpdate = true;
+  mat.opacity = recon ? 0.16 : 1; mat.depthWrite = !recon;
+}
+// reconstructed pore network (instanced, blue)
+const poreMat = new THREE.MeshStandardMaterial({ color: C.pore, roughness: .35, metalness: .05, emissive: C.pore, emissiveIntensity: .25 });
+const poreBox = new THREE.BoxGeometry(0.9, 0.9, 0.9);
+const xyz = i => [i % NX, Math.floor(i / NX) % NY, Math.floor(i / (NX * NY))];
+function buildMeshes() {
+  for (const m of [mesh, poreMesh]) if (m) { scene.remove(m); m.dispose(); }
+  const sIds = [], pIds = [];
+  for (let i = 0; i < solid.length; i++) (solid[i] ? sIds : pIds).push(i);
+  mesh = new THREE.InstancedMesh(box, mat, sIds.length); scene.add(mesh); pos = sIds.map(xyz);
+  poreMesh = new THREE.InstancedMesh(poreBox, poreMat, pIds.length); scene.add(poreMesh); ppos = pIds.map(xyz);
+}
+buildMeshes();
+function layoutPores(upTo) {
+  for (let k = 0; k < ppos.length; k++) { const [x, y, z] = ppos[k]; const s = z < upTo ? 1 : 0; M.makeScale(s, s, s).setPosition(W(x, y, z)); poreMesh.setMatrixAt(k, M); }
+  poreMesh.instanceMatrix.needsUpdate = true;
+}
+// outline of the original block
+const outline = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(NX, NY, NZ)), new THREE.LineBasicMaterial({ color: 0x5b6672, transparent: true, opacity: .6 }));
+scene.add(outline);
+// cell context: membrane under the layer; PTL titanium fibres (running along the milling direction) above it
+const ctx3d = new THREE.Group(); scene.add(ctx3d);
+const fibreMat = new THREE.MeshStandardMaterial({ color: 0xb8c2cc, roughness: .35, metalness: .7, transparent: true, opacity: .55 });
+const membMat = new THREE.MeshStandardMaterial({ color: 0x6f8a5a, roughness: .9, transparent: true, opacity: .45 });
+function buildContext(st) {
+  while (ctx3d.children.length) ctx3d.remove(ctx3d.children[0]);
+  const memb = new THREE.Mesh(new THREE.BoxGeometry(NX + 24, 3, NZ + 4), membMat); memb.position.set(0, -NY / 2 - 1.6, 0); ctx3d.add(memb);
+  const r = 9, mk = (x, y) => { const f = new THREE.Mesh(new THREE.CylinderGeometry(r, r, NZ + 4, 40), fibreMat); f.rotation.x = Math.PI / 2; f.position.set(x, y, 0); ctx3d.add(f); };
+  if (STACKS[st].fibre === "press") mk(0, NY / 2 + r - 1.2);                 // fibre pressing into the top of the layer
+  if (STACKS[st].fibre === "gap") { mk(-NX / 2 - r + 1, NY / 2 + r + .3); mk(NX / 2 + r - 1, NY / 2 + r + .3); }   // sample sits under the gap
+}
+buildContext(ST);
+
+/* beams */
+const ionGun = new THREE.Vector3(0, NY / 2 + 34, -NZ / 2 - 6);           // ion column above, milling straight down the face
+const eGun = new THREE.Vector3(0, NY / 2 + 26, -NZ / 2 - 30);            // electron column tilted 52 deg to the face
+const ionBeam = new THREE.Mesh(new THREE.CylinderGeometry(.35, .35, 1, 12, 1, true),
+  new THREE.MeshBasicMaterial({ color: C.ion, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(ionBeam);
+const ionGlow = new THREE.Mesh(new THREE.SphereGeometry(1.1, 16, 12), new THREE.MeshBasicMaterial({ color: C.ion, transparent: true, opacity: .6, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(ionGlow);
+const gunMarkers = [[ionGun, C.ion, "FIB"], [eGun, C.e, "SEM"]].map(([p, c]) => {
+  const m = new THREE.Mesh(new THREE.ConeGeometry(2.2, 5, 20), new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: .35 }));
+  m.position.copy(p); m.lookAt(0, 0, 0); m.rotateX(Math.PI / 2); scene.add(m); return m; });
+// debris particles
+const NP = 260, dGeo = new THREE.BufferGeometry(), dPos = new Float32Array(NP * 3), dVel = new Float32Array(NP * 3), dLife = new Float32Array(NP);
+dGeo.setAttribute("position", new THREE.BufferAttribute(dPos, 3));
+const debris = new THREE.Points(dGeo, new THREE.PointsMaterial({ color: C.ion, size: .5, transparent: true, opacity: .9, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(debris);
+// electron rays
+const MAXR = 120, rGeo = new THREE.BufferGeometry(), rPos = new Float32Array(MAXR * 6), rCol = new Float32Array(MAXR * 6);
+rGeo.setAttribute("position", new THREE.BufferAttribute(rPos, 3)); rGeo.setAttribute("color", new THREE.BufferAttribute(rCol, 3));
+const rays = new THREE.LineSegments(rGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .9, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(rays);
+const hitGeo = new THREE.BufferGeometry(), hitPos = new Float32Array(MAXR * 3), hitCol = new Float32Array(MAXR * 3);
+hitGeo.setAttribute("position", new THREE.BufferAttribute(hitPos, 3)); hitGeo.setAttribute("color", new THREE.BufferAttribute(hitCol, 3));
+const hits = new THREE.Points(hitGeo, new THREE.PointsMaterial({ size: 1.3, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(hits);
+// stacked slice images (chapter 4)
+const stackGroup = new THREE.Group(); scene.add(stackGroup);
+
+/* ---------------------------------------------------------------- imaging physics (same first-hit model as the digital twin) */
+// electrons travel into the sample along the milling direction (+z) and down the layer (-y) at the 52 deg tilt:
+// a pore pixel shows the first solid voxel along that ray, dimmer with depth: exactly how shine-through slides ~1 px/slice
+const maxDepth = 12;
+let tiltY = -0.65 * STACKS[ST].slide, lambda = STACKS[ST].lambda;
+function firstHit(x, y, cut) {
+  if (solid[idx(x, y, cut)]) return { t: 0, x, y, z: cut };
+  for (let t = 1; t <= maxDepth; t++) {
+    const z = cut + t, yy = Math.round(y + tiltY * t);
+    if (z >= NZ || yy < 0 || yy >= NY) return null;
+    if (solid[idx(x, yy, z)]) return { t, x, y: yy, z };
+  }
+  return null;
+}
+const sem = document.getElementById("sem"), sctx = sem.getContext("2d"), SC = 6;
+sem.width = NX * SC; sem.height = NY * SC;
+const images = [];          // ImageData per slice
+function renderSEM(cut) {
+  const img = sctx.createImageData(NX, NY); let pore = 0; const nr = rand(1000 + cut);
+  for (let y = 0; y < NY; y++) for (let x = 0; x < NX; x++) {
+    const h = firstHit(x, y, cut); let v;
+    const I = STACKS[ST];
+    if (h && h.t === 0) v = I.cut + 22 * (nr() - .3); else { pore++; v = h ? I.floor * .35 + (I.back - I.floor * .35) * Math.exp(-(h.t - 1) / lambda) : I.floor * .25; v += 14 * (nr() - .5); }
+    const o = 4 * (x + NX * (NY - 1 - y)); img.data[o] = img.data[o + 1] = img.data[o + 2] = Math.max(0, Math.min(255, v)); img.data[o + 3] = 255;
+  }
+  return { img, por: pore / (NX * NY) };
+}
+function showSEM(cut) {
+  if (!images[cut]) images[cut] = renderSEM(cut);
+  const t = document.createElement("canvas"); t.width = NX; t.height = NY; t.getContext("2d").putImageData(images[cut].img, 0, 0);
+  sctx.imageSmoothingEnabled = false; sctx.drawImage(t, 0, 0, sem.width, sem.height);
+  document.getElementById("semLbl").textContent = `slice ${cut}`;
+  document.getElementById("semPor").textContent = `true porosity ${images[cut].por.toFixed(2)}`;
+  return t;
+}
+function setRays(cut, frac) {           // frac: 0..1 how many rays are drawn
+  let n = 0; const step = 4;
+  for (let y = 1; y < NY; y += step) for (let x = 1; x < NX; x += step) {
+    if (n >= MAXR || n / ((NX / step) * (NY / step)) > frac) break;
+    const h = firstHit(x, y, cut), entry = W(x, y, cut).add(new THREE.Vector3(0, 0, -.5));
+    const end = h ? W(h.x, h.y, h.z).add(new THREE.Vector3(0, 0, -.5)) : W(x, Math.max(0, Math.round(y + tiltY * maxDepth)), Math.min(NZ - 1, cut + maxDepth));
+    const col = !h ? new THREE.Color(0x333333) : h.t === 0 ? C.e : C.shine;
+    rPos.set([eGun.x, eGun.y, eGun.z, entry.x, entry.y, entry.z], n * 6);
+    rCol.set([C.e.r * .35, C.e.g * .35, C.e.b * .35, C.e.r, C.e.g, C.e.b], n * 6);
+    hitPos.set([end.x, end.y, end.z], n * 3); hitCol.set([col.r, col.g, col.b], n * 3);
+    if (h && h.t > 0) { // extra segment from the face into the pore: the shine-through path
+      if (n + 1 < MAXR) { n++; rPos.set([entry.x, entry.y, entry.z, end.x, end.y, end.z], n * 6); rCol.set([C.shine.r, C.shine.g, C.shine.b, C.shine.r * .6, C.shine.g * .6, C.shine.b * .6], n * 6); hitPos.set([end.x, end.y, end.z], n * 3); hitCol.set([col.r, col.g, col.b], n * 3); }
+    }
+    n++;
+  }
+  rGeo.setDrawRange(0, n * 2); hitGeo.setDrawRange(0, n);
+  rGeo.attributes.position.needsUpdate = rGeo.attributes.color.needsUpdate = true;
+  hitGeo.attributes.position.needsUpdate = hitGeo.attributes.color.needsUpdate = true;
+}
+function addStackPlane(cut, tex) {
+  const t = new THREE.CanvasTexture(tex); t.magFilter = THREE.NearestFilter; t.colorSpace = THREE.SRGBColorSpace;
+  const p = new THREE.Mesh(new THREE.PlaneGeometry(NX, NY), new THREE.MeshBasicMaterial({ map: t, transparent: true, opacity: .9, side: THREE.DoubleSide, depthWrite: false }));
+  p.position.set(0, 0, cut - NZ / 2 + .5); p.rotation.y = Math.PI; p.userData.cut = cut; stackGroup.add(p);
+}
+
+/* ---------------------------------------------------------------- timeline */
+const CH = [
+  { t: "The sample", d: "A porous IrO₂ catalyst layer: grey = solid catalyst, empty = pore. About half of it is pore. Its 3D pore network decides how well water and oxygen move." },
+  { t: "Milling a slice", d: "The plasma ion beam sweeps across the front face and sputters away one thin slice (≈ 10–20 nm), exposing a fresh cut face (bright voxels)." },
+  { t: "Imaging and shine-through", d: "The electron beam scans the fresh face at 52°. On solid it hits the cut face (orange). In a pore it carries on and hits material behind the face (amber): that pixel looks grey, not black. Deeper hits look darker." },
+  { t: "Slice after slice", d: "Mill, image, repeat. Each detector image is one slice of the stack. Because the beam is tilted, material seen through a pore moves down ~1 px per slice, while real cut faces stay put." },
+  { t: "3D reconstruction", d: "A 7-slice network (MillNet) labels pore vs solid in every image, using the neighbouring slices to undo shine-through. The labelled slices stack into the 3D pore network (blue), from which porosity, pore size and tortuosity are measured." },
+];
+const chapEl = document.getElementById("chapters");
+CH.forEach((c, i) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `<span>${i + 1}</span>${c.t}`; b.onclick = () => go(i); chapEl.appendChild(b); });
+const cap = document.getElementById("caption");
+let chapter = 0, tChap = 0, cut = 0, phase = 0, playing = !matchMedia("(prefers-reduced-motion: reduce)").matches, speed = 1, reconUpTo = 0;
+const SLICES_SHOWN = 14;
+function setChapter(i) {
+  chapter = i; tChap = 0;
+  [...chapEl.children].forEach((b, j) => b.setAttribute("aria-current", j === i ? "step" : "false"));
+  cap.querySelector("b").textContent = `${i + 1} · ${CH[i].t}`; cap.querySelector("span").textContent = CH[i].d;
+}
+function resetAll() {
+  cut = 0; phase = 0; reconUpTo = 0; while (stackGroup.children.length) stackGroup.remove(stackGroup.children[0]);
+  layoutSolid(0, 0); layoutPores(0); rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0); ionBeam.visible = ionGlow.visible = false;
+  dLife.fill(0); outline.material.opacity = .6; showSEM(0); resetFilm(); document.getElementById("sliceHud").textContent = "slice 0";
+}
+const TL = [
+  { t: "Catalyst ink", d: "IrO₂ + ionomer",
+    x: "Iridium-oxide catalyst particles are mixed with an ionomer binder (the proton-conducting polymer) and solvents into a liquid ink." },
+  { t: "Blade-coated", d: "onto a decal",
+    x: "A doctor blade spreads the ink into a thin, even film on a temporary carrier sheet (the decal). The solvent dries off and leaves the porous catalyst layer: particles held together by ionomer, with pores in between." },
+  { t: "Pressed onto membrane", d: "like a transfer tattoo",
+    x: "The sheet is pressed onto the membrane (a thin plastic film that lets charge through) with a hot press. The catalyst layer sticks to the membrane, like a temporary tattoo, and the sheet is peeled away. This coated membrane is what goes inside the device." },
+  { t: "Built into device", d: "titanium wires on top",
+    x: "The coated membrane is put into a water-splitting device (an electrolyser). On top of the catalyst layer goes a mat of thin titanium wires (the PTL), and everything is screwed tightly together. Where a wire sits on the layer it squashes it; in the gaps between wires the layer is left alone." },
+  { t: "Used", d: "splits water",
+    x: "The device is switched on and used: electricity splits water into hydrogen and oxygen, and our catalyst layer is where the oxygen is made. The squashed spots under the wires stay squashed." },
+  { t: "Taken apart", d: "spots sliced and imaged",
+    x: "The device is unscrewed and the coated membrane taken out. Two spots are picked: one that was under a wire (comp, squashed) and one that was under a gap (uncomp, not squashed). Each spot is sliced and photographed in the microscope, one thin slice at a time." },
+];
+function drawTimeline(st) {
+  const g = document.getElementById("tlsteps"); g.innerHTML = "";
+  const xs = TL.map((_, i) => 60 + i * 156), ns = "http://www.w3.org/2000/svg";
+  const el = (n, a, txt) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); if (txt) e.textContent = txt; g.appendChild(e); return e; };
+  const stop = st === "pristine" ? 2 : 5;                       // last step this sample went through
+  el("line", { x1: 60, y1: 50, x2: xs[stop], y2: 50, stroke: "var(--accent)", "stroke-width": 4 });
+  TL.forEach((s, i) => {
+    const on = i <= stop;
+    el("circle", { cx: xs[i], cy: 50, r: 9, fill: on ? "var(--accent)" : "var(--surface)", stroke: on ? "var(--accent)" : "currentColor", "stroke-opacity": on ? 1 : .4 });
+    el("text", { x: xs[i], y: 26, "font-weight": 600, "fill-opacity": on ? 1 : .45 }, s.t);
+    el("text", { x: xs[i], y: 80, "font-size": 11, "fill-opacity": on ? .75 : .35 }, s.d);
+  });
+  document.getElementById("tlgrid").innerHTML = TL.map((s, i) => {
+    const here = i === stop, on = i <= stop;
+    const tag = here ? `<span class="tag">${st === "pristine" ? "pristine imaged after this step" : st + " imaged after this step"}</span>` : "";
+    return `<div class="${on ? "on" : ""} ${here ? "here" : ""}" style="opacity:${on ? 1 : .55}"><b>${i + 1} · ${s.t}</b>${s.x}${tag}</div>`;
+  }).join("");
+  const lab = st === "pristine" ? "pristine is imaged here: on the membrane, never put in a device" : `${st} is imaged here: after being built in and used`;
+  el("path", { d: `M${xs[stop]},104 L${xs[stop] - 7},118 L${xs[stop] + 7},118 Z`, fill: "var(--electron)" });
+  el("text", { x: Math.min(Math.max(xs[stop], 220), 680), y: 138, fill: "var(--electron)", "font-weight": 600 }, lab);
+}
+const film = document.getElementById("film"), porTrue = [], porThr = [];
+function resetFilm() { film.innerHTML = ""; porTrue.length = porThr.length = 0; document.getElementById("filmCount").textContent = "0 slices"; drawPorChart(); }
+function addFilm(cutIdx, tex) {
+  const c = document.createElement("canvas"); c.width = NX; c.height = NY; c.getContext("2d").drawImage(tex, 0, 0);
+  c.title = `slice ${cutIdx}`; for (const o of film.children) o.classList.remove("new"); c.classList.add("new"); film.appendChild(c);
+  film.scrollLeft = film.scrollWidth;
+  const d = images[cutIdx].img.data; let dark = 0;
+  const I = STACKS[ST], thr = (I.cut + I.floor * .35) / 2 + 20;            // a mid-grey threshold, as a naive user would pick
+  for (let i = 0; i < d.length; i += 4) if (d[i] < thr) dark++;
+  porTrue.push(images[cutIdx].por); porThr.push(dark / (NX * NY));
+  document.getElementById("filmCount").textContent = `${porTrue.length} slices`;
+  drawPorChart();
+}
+function drawPorChart() {
+  const c = document.getElementById("porChart"), dpr = devicePixelRatio || 1, w = c.clientWidth, h = c.clientHeight;
+  if (!w) return;
+  c.width = w * dpr; c.height = h * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+  const n = Math.max(porTrue.length, 2), X = i => 36 + (w - 46) * i / (Math.max(n, 14) - 1), Y = v => 8 + (h - 26) * (1 - v);
+  g.font = "11px " + css("--font-mono"); g.fillStyle = css("--muted"); g.strokeStyle = css("--line");
+  for (const v of [0, .5, 1]) { g.beginPath(); g.moveTo(36, Y(v)); g.lineTo(w - 10, Y(v)); g.stroke(); g.fillText(v.toFixed(1), 4, Y(v) + 4); }
+  g.fillText("slice →", w - 58, h - 4);
+  for (const [arr, col] of [[porTrue, css("--pore")], [porThr, css("--shine")]]) {
+    g.strokeStyle = col; g.fillStyle = col; g.lineWidth = 2; g.beginPath();
+    arr.forEach((v, i) => (i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v)))); g.stroke();
+    arr.forEach((v, i) => { g.beginPath(); g.arc(X(i), Y(v), 3, 0, 7); g.fill(); });
+  }
+}
+addEventListener("resize", drawPorChart);
+function setStack(st) {
+  ST = st; buildSolid(st); buildMeshes(); buildContext(st);
+  tiltY = -0.65 * STACKS[st].slide; lambda = STACKS[st].lambda; images.length = 0;
+  for (const b of document.querySelectorAll("#stacks button")) b.setAttribute("aria-pressed", b.dataset.s === st);
+  const I = STACKS[st];
+  document.getElementById("acqInfo").innerHTML =
+    `<div class="acqrow"><img src="samples/dataset/${st}/raw_0060.jpg" alt="Real ${I.name} slice 60" loading="lazy"></div>
+     <p style="margin:8px 0">${I.ptl}</p>
+     <table class="acq"><tr><td>where</td><td>${I.where}</td></tr>
+     <tr><td>shine-through slide</td><td class="mono">${I.slide.toFixed(2)} px/slice</td></tr>
+     <tr><td>cut face / background grey</td><td class="mono">${I.cut} / ${I.back}</td></tr>
+     <tr><td>porosity (ours / Ferner)</td><td class="mono">${I.porosity.toFixed(3)} / ${I.ferner.toFixed(3)}</td></tr></table>`;
+  drawTimeline(st);
+  CH[3].d = st === "pristine"
+    ? "Mill, image, repeat. Pristine was imaged without the sub-surface slide: material behind a pore stays in place from slice to slice, so it only gives itself away by being softer and getting brighter as milling approaches it."
+    : `Mill, image, repeat. Each detector image is one slice of the stack. On ${I.name}, material seen through a pore slides down ${I.slide.toFixed(2)} px per slice, while real cut faces stay put.`;
+  go(chapter);
+}
+function go(i) {
+  resetAll();
+  if (i >= 3) { for (let k = 0; k < 6; k++) { const t = showSEM(k); addStackPlane(k, t); addFilm(k, t); } cut = 6; layoutSolid(cut, 0); }
+  if (i === 4) { cut = SLICES_SHOWN; for (let k = 6; k < SLICES_SHOWN; k++) { const t = showSEM(k); addStackPlane(k, t); addFilm(k, t); } }
+  setChapter(i); document.getElementById("sliceHud").textContent = `slice ${cut}`;
+}
+function spawnDebris(x, cutZ) {
+  for (let k = 0; k < NP; k++) if (dLife[k] <= 0 && Math.random() < .12) {
+    const v = W(x, NY - 1, cutZ); dPos.set([v.x + (Math.random() - .5) * 2, v.y + 1, v.z - .5], k * 3);
+    dVel.set([(Math.random() - .5) * 12, 6 + Math.random() * 10, -4 - Math.random() * 8], k * 3); dLife[k] = 1;
+  }
+}
+function stepDebris(dt) {
+  for (let k = 0; k < NP; k++) { if (dLife[k] <= 0) { dPos[k * 3 + 1] = -999; continue; }
+    dLife[k] -= dt * 1.2; dVel[k * 3 + 1] -= 18 * dt; for (let a = 0; a < 3; a++) dPos[k * 3 + a] += dVel[k * 3 + a] * dt; }
+  dGeo.attributes.position.needsUpdate = true;
+}
+function placeIon(x, cutZ) {
+  const tip = W(x, NY - 1, cutZ).add(new THREE.Vector3(0, .6, -.5)); const d = tip.distanceTo(ionGun);
+  ionBeam.position.copy(ionGun).lerp(tip, .5); ionBeam.scale.set(1, d, 1); ionBeam.lookAt(tip); ionBeam.rotateX(Math.PI / 2);
+  ionGlow.position.copy(tip); ionBeam.visible = ionGlow.visible = true;
+}
+// per-slice cycle: 0 mill (sweep) -> 1 image (rays) -> 2 store
+function tick(dt) {
+  tChap += dt;
+  if (chapter === 0) { controls.autoRotate = true; if (tChap > 4.5) go(1); return; }
+  controls.autoRotate = false;
+  if (chapter === 1 || chapter === 2 || chapter === 3) {
+    const dur = chapter === 3 ? [0.55, 0.45, 0.1] : [1.6, 2.2, 0.4];
+    phase += dt;
+    if (phase < dur[0]) {                                                  // milling sweep
+      const x = Math.min(NX - 1, Math.floor(phase / dur[0] * NX)); placeIon(x, cut); spawnDebris(x, cut);
+      rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
+    } else if (phase < dur[0] + dur[1]) {
+      if (ionBeam.visible) { ionBeam.visible = ionGlow.visible = false; cut++; layoutSolid(cut, 0); document.getElementById("sliceHud").textContent = `slice ${cut}`; }
+      if (chapter >= 2) setRays(cut, (phase - dur[0]) / dur[1] * 1.05);
+    } else {
+      const tex = showSEM(cut); if (chapter >= 2) addStackPlane(cut, tex); addFilm(cut, tex);
+      phase = 0; rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
+      if (chapter === 1 && cut >= 2) go(2);
+      else if (chapter === 2 && cut >= 4) setChapter(3);
+      else if (chapter === 3 && cut >= SLICES_SHOWN) setChapter(4);
+    }
+    // stacked planes trail out in front of the block so the stack is visible
+    stackGroup.children.forEach(p => { p.position.z = THREE.MathUtils.lerp(p.position.z, -NZ / 2 - 8 - (cut - p.userData.cut) * 1.3, .08); });
+  }
+  if (chapter === 4) {
+    ionBeam.visible = ionGlow.visible = false; rGeo.setDrawRange(0, 0); hitGeo.setDrawRange(0, 0);
+    const r = Math.min(NZ, Math.floor(tChap * 7));
+    if (r !== reconUpTo) { reconUpTo = r; layoutPores(r); layoutSolid(cut, Math.max(1, r)); }
+    stackGroup.children.forEach(p => { p.material.opacity = Math.max(0, .9 - tChap * .3); p.visible = p.material.opacity > .01; });
+    outline.material.opacity = .35; controls.autoRotate = true;
+    if (tChap > 12) go(0);
+  }
+}
+document.getElementById("play").onclick = e => { playing = !playing; e.target.textContent = playing ? "❚❚ Pause" : "▶ Play"; };
+document.getElementById("restart").onclick = () => go(0);
+document.getElementById("speed").oninput = e => speed = e.target.value / 100;
+if (!playing) document.getElementById("play").textContent = "▶ Play";
+
+function resize() { const r = canvas.parentElement.getBoundingClientRect(); renderer.setSize(r.width, r.height, false); camera.aspect = r.width / r.height; camera.updateProjectionMatrix(); }
+addEventListener("resize", resize); resize();
+const clock = new THREE.Clock();
+{ const box = document.getElementById("stacks");
+  for (const [k, v] of Object.entries(STACKS)) { const b = document.createElement("button"); b.type = "button"; b.dataset.s = k;
+    b.innerHTML = `${k}<small>${v.where}</small>`; b.onclick = () => setStack(k); box.appendChild(b); }
+  setStack(ST); }
+const Q = new URLSearchParams(location.search);
+go(Math.max(0, Math.min(4, (+Q.get("ch") || 1) - 1)));
+for (let i = 0, n = Math.round((+Q.get("ff") || 0) * 30); i < n; i++) { tick(1 / 30); stepDebris(1 / 30); }   // ?ff=s: fast-forward (testing / deep links)
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), .05);
+  if (playing) { tick(dt * speed); stepDebris(dt * speed); }
+  controls.autoRotateSpeed = .6; controls.update(); renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
