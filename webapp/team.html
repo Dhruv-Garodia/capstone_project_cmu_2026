@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Éponge Team Findings</title>
+<meta name="description" content="The four lines of work on the pFIB-SEM catalyst-layer dataset side by side: best architecture, unseen acquisitions, porosity calibration and synthetic data with exact truth, and where their findings agree.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: overview table first, then one section per question with each person's evidence side by side, then the combined story. */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #f6f8fa; --ink: #14202b; --muted: #576573; --line: #d6dde4;
+  --accent: #2b55c8; --good: #1a7f4b; --bad: #b42318; --warn: #a15c00;
+  --p-a: #2b55c8; --p-d: #0f7f7a; --p-y: #a15c00; --p-h: #8a3ffc;
+  --shadow: 0 1px 2px rgba(20,32,43,.06), 0 4px 18px rgba(20,32,43,.06);
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace; --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0; --line: #283541;
+  --accent: #7aa2ff; --good: #4cc38a; --bad: #ff7b72; --warn: #e8b13a;
+  --p-a: #7aa2ff; --p-d: #4cc2b9; --p-y: #e8b13a; --p-h: #be95ff; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0e141a; --surface: #151d25; --surface-2: #1b252f; --ink: #e5ecf2; --muted: #93a2b0;
+  --line: #283541; --accent: #7aa2ff; --good: #4cc38a; --bad: #ff7b72; --warn: #e8b13a;
+  --p-a: #7aa2ff; --p-d: #4cc2b9; --p-y: #e8b13a; --p-h: #be95ff; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h2 { font-size: 1.45rem; font-weight: 600; } h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; } a { color: var(--accent); }
+.eyebrow { font: 500 .72rem/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 12px; } .brand h1 { font-size: 1.9rem; font-weight: 700; }
+.brand .tag { font: .8rem var(--font-mono); color: var(--muted); }
+nav { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; flex-wrap: wrap; }
+nav a { text-decoration: none; color: var(--muted); font: 500 .86rem var(--font-body); padding: 6px 14px; border-radius: 999px; }
+nav a[aria-current="page"] { background: var(--accent); color: #fff; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lede { max-width: 76ch; color: var(--muted); margin-bottom: 20px; }
+section { display: grid; gap: 12px; margin-top: 32px; }
+section > p { max-width: 78ch; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 500 .7rem var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); white-space: nowrap; }
+td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.who { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; white-space: nowrap; }
+.who i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.a i { background: var(--p-a); } .d i { background: var(--p-d); } .y i { background: var(--p-y); } .h i { background: var(--p-h); }
+.verdict { font: 600 .72rem var(--font-mono); letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+.agree { color: var(--good); } .mixed { color: var(--warn); } .open { color: var(--bad); }
+.qhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ev { display: grid; gap: 10px; }
+.ev > div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: .92rem; }
+.take { border-left: 3px solid var(--accent); background: var(--surface-2); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: .92rem; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+figure { margin: 0; } figure img { width: 100%; height: auto; border-radius: 8px; display: block; background: #fff; }
+figcaption { font-size: .84rem; color: var(--muted); margin-top: 8px; }
+ol.next { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 80ch; }
+.note { font-size: .84rem; color: var(--muted); max-width: 80ch; }
+footer { margin-top: 32px; font-size: .8rem; color: var(--muted); }
+@media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } .ev > div { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>Éponge</h1><span class="tag">team findings</span></div>
+    <nav aria-label="Pages"><a href="index.html">Lab</a><a href="how.html">How it works</a><a href="dataset.html">Dataset</a><a href="results.html">Results</a><a href="team.html" aria-current="page">Team</a></nav>
+  </header>
+  <p class="lede">Four lines of work on the same four-annotator dataset and the same split (train 0–83, validation 87–97, test 101–117). Each asks a different question. This page sets them side by side, shows where they agree, and turns them into one story.</p>
+
+  <section>
+    <h2>Who asked what</h2>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th>Who</th><th>Question</th><th>Approach</th><th>Headline</th><th>Metric</th></tr></thead>
+        <tbody>
+          <tr><td><span class="who a"><i></i>Aaditya</span></td><td>Which architecture segments our stacks best?</td><td>MillNet-SA2 against nnU-Net and pretrained U-Nets; ablations; learned-appearance digital twin</td><td>0.935 vs 0.919 mIoU (nnU-Net), 3 seeds, significant on uncomp and pristine</td><td>3-class mIoU</td></tr>
+          <tr><td><span class="who d"><i></i>Dhruv</span></td><td>Does a model survive an acquisition it never saw?</td><td>Leave-one-stack-out; input choices, AdaBN, mean-teacher, DINO-2.5D, masked-slice pretraining</td><td>Mean-teacher on unlabelled slices: unseen mean 0.817 → 0.839 (3 seeds)</td><td>Pore IoU in the true layer, layer IoU, porosity error</td></tr>
+          <tr><td><span class="who y"><i></i>Yunzhi</span></td><td>Can porosity bias drop without losing accuracy?</td><td>Validation-calibrated decoder on MillNet; matched continued vs frozen BatchNorm</td><td>Porosity MAE 1.50 → 0.84 pp (separate models); 2.44 → 1.98 pp (joint, 3 seeds)</td><td>mIoU, porosity MAE and bias</td></tr>
+          <tr><td><span class="who h"><i></i>Hou Kin</span></td><td>What do we learn when the answer is known exactly?</td><td>Physics-built synthetic stacks (v1–v5) in the team's package format, with truth masks</td><td>A threshold rule tuned to our start masks is off by −6.3 to +4.1 pp from truth; 9-slice context finds shallow shine-through</td><td>Porosity error, pore IoU, recall by depth, all vs truth</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The metrics differ, so absolute numbers are comparable only where the metric matches. Aaditya's report also contains pore IoU in the true layer, the same definition as Dhruv's; it is used below where the two are compared.</p>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>1 · Frame statistics: helps known stacks, hurts new ones</h2><span class="verdict agree">all agree</span></div>
+    <div class="card ev">
+      <div><span class="who a"><i></i>Aaditya</span><span>Removing frame-statistics conditioning (FiLM) costs 1.7 mIoU and 3–5 points on uncomp. It is the part of MillNet that matters most. But MillNet trained without pristine scores 0.656 on it.</span></div>
+      <div><span class="who d"><i></i>Dhruv</span><span>FiLM adds +0.007 pore IoU on a plain U-Net (3 seeds), so the effect is not MillNet-specific. On unseen pristine FiLM <b>loses the layer itself</b> (layer IoU 0.65) and porosity flips to −10 points.</span></div>
+      <div><span class="who y"><i></i>Yunzhi</span><span>Works on MillNet with FiLM throughout; on the first unseen fold (comp) the porosity error is 8.3 pp before calibration.</span></div>
+    </div>
+    <p class="take">Conditioning on a frame histogram is a strong prior when the histogram looks familiar and an extrapolation when it does not. Dhruv's layer-IoU result is the mechanism behind MillNet's 0.656 on unseen pristine.</p>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>2 · Slice context helps the shine-through pores</h2><span class="verdict agree">agree, once measured the same way</span></div>
+    <div class="card ev">
+      <div><span class="who d"><i></i>Dhruv</span><span>1 → 7 slices: +0.017 pore IoU (0.851 → 0.868, 3 seeds, spread ≤ 0.001). ±1 slice gives most of it; ±5 is slightly worse.</span></div>
+      <div><span class="who h"><i></i>Hou Kin</span><span>On synthetic truth the gain sits in the hardest pores (solid one slice below the cut): recall 0.59 → 0.84 on comp and 0.36 → 0.61 on pristine with 9 slices. In v5, 9 slices find 0.73 of them against 0.53 for a single slice, but over-call solid as pore unless corrected.</span></div>
+      <div><span class="who a"><i></i>Aaditya</span><span>In 3-class mIoU, 1, 3 and 7 slices look the same (0.914 / 0.917 / 0.915 ± 0.004). In pore IoU in the true layer, the same runs give 0.890 (1 slice), 0.900 (3) and 0.898 ± 0.002 (7, 3 seeds): <b>+0.008 from slice context</b>.</span></div>
+    </div>
+    <p class="take">Slice context matters for a small set of pixels: pore rims with material just below the cut face. Three-class mIoU is dominated by large solid and outside regions and hides it; pore IoU and Hou's depth-resolved recall show it. The paper should say multi-slice input helps pore detection, measured by pore IoU.</p>
+    <figure class="card">
+      <img src="samples/team_hou_shine_by_depth.png" alt="Hou Kin: recall of true pore pixels by how far below the cut face their floor is, for the label rule and for 1-slice and 9-slice models." loading="lazy">
+      <figcaption>Hou Kin, v5 synthetic stacks: recall of true pores by depth of their floor. The threshold rule misses most pores whose floor is 1–3 slices down; slice context recovers them.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>3 · AdaBN rescues pristine and hurts everything else</h2><span class="verdict agree">all agree</span></div>
+    <div class="card ev">
+      <div><span class="who d"><i></i>Dhruv</span><span>Over 36 leave-one-out models, AdaBN helps unseen pristine in 10 of 12 and hurts comp and uncomp in 24 of 24. A label-free switch on feature-statistics distance does not separate the stacks.</span></div>
+      <div><span class="who h"><i></i>Hou Kin</span><span>The same split for models trained only on synthetic data: real pristine porosity 0.39 → 0.54, comp and uncomp worse. For v3-trained models, whose training images are already closer, it reverses.</span></div>
+      <div><span class="who a"><i></i>Aaditya</span><span>On MillNet's cross-stack models AdaBN leaves unseen pristine at 0.656 mIoU and lowers comp and uncomp. Histogram matching helps comp (+4) but hurts pristine.</span></div>
+      <div><span class="who y"><i></i>Yunzhi</span><span>Frozen BatchNorm statistics during fine-tuning is chosen on validation for pristine only; continued BN for uncomp; neither for comp.</span></div>
+    </div>
+    <p class="take">Re-normalisation fixes a feature-statistics shift, and only pristine has a large one. Nobody found a label-free rule for when to apply it, so it should not be a default.</p>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>4 · Unseen pristine is the hard case</h2><span class="verdict mixed">partly solved</span></div>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th>Approach</th><th>Who</th><th class="n">Unseen pristine</th><th>Uses from pristine</th></tr></thead>
+        <tbody>
+          <tr><td>MillNet-SA2, no adaptation</td><td><span class="who a"><i></i>Aaditya</span></td><td class="n">0.656 mIoU</td><td>nothing</td></tr>
+          <tr><td>U-Net ResNet-34, no adaptation</td><td><span class="who a"><i></i>Aaditya</span></td><td class="n">0.837 mIoU</td><td>nothing</td></tr>
+          <tr><td>Raw + stretch U-Net</td><td><span class="who d"><i></i>Dhruv</span></td><td class="n">0.781 ± 0.018 pore IoU</td><td>nothing</td></tr>
+          <tr><td>Mean-teacher on unlabelled slices</td><td><span class="who d"><i></i>Dhruv</span></td><td class="n">0.845 ± 0.024 pore IoU</td><td>unlabelled slices</td></tr>
+          <tr><td>Raw + stretch U-Net + AdaBN</td><td><span class="who d"><i></i>Dhruv</span></td><td class="n">0.870 pore IoU, porosity +0.011</td><td>unlabelled slices</td></tr>
+          <tr><td>Fine-tune on 2 labelled slices</td><td><span class="who a"><i></i>Aaditya</span></td><td class="n">0.913 mIoU</td><td>2 labelled slices</td></tr>
+          <tr><td>Fine-tune on 5 labelled slices</td><td><span class="who a"><i></i>Aaditya</span></td><td class="n">0.937 mIoU</td><td>5 labelled slices</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="take">Without any pristine labels, Dhruv's mean-teacher is the most reliable route (3 seeds), though pristine stays seed-sensitive (porosity swings from +13 to −7 points between seeds). With labels, 2–5 slices close the gap. Everyone also sees the same pristine porosity bias on known stacks: −0.02 to −0.04 (Dhruv), −1.4 to −2.2 pp (Yunzhi), about −3 pp for single-slice models (Hou Kin).</p>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>5 · Porosity: calibration helps, and the target itself carries error</h2><span class="verdict mixed">complementary</span></div>
+    <div class="grid2">
+      <div class="card ev">
+        <div><span class="who y"><i></i>Yunzhi</span><span>A decoder threshold chosen on validation, per acquisition, cuts MillNet's porosity MAE 1.50 → 0.84 pp with mIoU 0.930 → 0.932, without retraining. Shared across stacks (joint model, 3 seeds): 2.44 → 1.98 pp, better on comp and uncomp, worse on pristine.</span></div>
+        <div><span class="who h"><i></i>Hou Kin</span><span>On 13 synthetic stacks a threshold rule tuned to reproduce our start masks is off from truth by −6.3 to +4.1 pp, depending on the material. On see-through rendering it misses up to 18 pp on fibre mats. Its misses line the rim of every pore.</span></div>
+        <div><span class="who a"><i></i>Aaditya</span><span>MillNet-SA2 porosity error on the test block: 0.004–0.024 at the full budget; specific surface and pore connectivity closest to the labels of all models.</span></div>
+      </div>
+      <figure class="card">
+        <img src="samples/team_yunzhi_porosity_calibration.svg" alt="Yunzhi: per-slice porosity bias and MAE before and after decoder calibration on comp, uncomp and pristine." loading="lazy">
+        <figcaption>Yunzhi: porosity bias and MAE per acquisition, before and after calibration.</figcaption>
+      </figure>
+    </div>
+    <p class="take">Yunzhi's calibration is the cheapest porosity fix and applies directly to MillNet-SA2. Hou Kin's result sets its limit: agreeing with the labels to 1 pp does not mean agreeing with true porosity to 1 pp. Porosity claims in the paper should quote both numbers.</p>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>6 · Synthetic data: two independent renderers</h2><span class="verdict open">needs a cross-check</span></div>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th></th><th><span class="who a"><i></i>Aaditya: learned appearance</span></th><th><span class="who h"><i></i>Hou Kin: physics renderer</span></th></tr></thead>
+        <tbody>
+          <tr><td>Structure</td><td>SliceGAN per acquisition, trained on the hand masks</td><td>Voronoi foam and catalyst / fibre / mudcrack / faceted materials (v5)</td></tr>
+          <tr><td>Appearance</td><td>Conditional GAN learned from paired masks and real images</td><td>Interaction-volume yield, edge brightening, escape, depth brightness, tone matched</td></tr>
+          <tr><td>Realism check</td><td>A real-trained model scores 0.913 / 0.927 / 0.895 on twin vs 0.915 / 0.949 / 0.949 on real (same structure)</td><td>Blind test: pristine at chance; comp and uncomp spotted 12–14 of 16. A patch classifier still separates all three</td></tr>
+          <tr><td>Scale</td><td>60 volumes of 40 × 256 × 256</td><td>Full-length stacks at the real sizes (354 / 410 / 665 slices)</td></tr>
+          <tr><td>Best model on its own synthetic data</td><td>MillNet-SA2, 0.930 pore IoU</td><td>9-slice U-Net v3: 2.9 pp, pore IoU 0.84; 1-slice v5: 3.0 pp, Dice 0.87</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="take">Hou Kin's cross-renderer test shows models do best on the renderer they were trained on: 2.9 pp on their own renderer against 15.6 pp for a model from an older renderer. So MillNet's 0.930 is a matched-renderer result. Scoring each side's models on the other side's data is the cleanest check of any synthetic claim, and the packages are already drop-in compatible.</p>
+    <figure class="card">
+      <img src="samples/team_hou_zoom_types.jpg" alt="Hou Kin: crops of the seven v5 synthetic material types next to their exact truth masks." loading="lazy">
+      <figcaption>Hou Kin, v5: crops of the seven synthetic materials (three calibrated to our stacks, four held out), each next to its truth mask.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="qhead"><h2>7 · One check that confirms another</h2><span class="verdict agree">replicated</span></div>
+    <div class="card ev">
+      <div><span class="who y"><i></i>Yunzhi</span><span>Independently trained a joint MillNet at the standard budget: 0.916 ± 0.002 mIoU over 3 seeds. Separate per-stack models: 0.930.</span></div>
+      <div><span class="who a"><i></i>Aaditya</span><span>Joint MillNet at the standard budget: 0.915 ± 0.004 over 3 seeds.</span></div>
+    </div>
+    <p class="take">Two people, separate code paths, the same number. The MillNet baseline is reproducible.</p>
+  </section>
+
+  <section>
+    <h2>The combined story</h2>
+    <div class="card">
+      <ol class="next">
+        <li><b>Model.</b> MillNet-SA2 beats nnU-Net on the hand-annotated test set (0.935 vs 0.919 mIoU; in-layer pore IoU 0.919 vs 0.896), mainly through frame-level contrast conditioning. Slice context adds to pore detection (+0.008–0.017 pore IoU; Aaditya, Dhruv) by recovering shallow shine-through (Hou Kin).</li>
+        <li><b>Porosity.</b> Add Yunzhi's validation-calibrated decoder: it costs nothing and roughly halves porosity MAE on known stacks.</li>
+        <li><b>New acquisitions.</b> Frame conditioning is the weak point (Dhruv, Aaditya). Without labels: mean-teacher on the new stack's unlabelled slices (Dhruv). With labels: 2–5 slices (Aaditya).</li>
+        <li><b>Truth.</b> Synthetic data with exact masks shows that both a threshold rule and models carry material-dependent porosity error of several points (Hou Kin). Two independent renderers exist; cross-scoring them is the next step.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Next joint experiments</h2>
+    <div class="card">
+      <ol class="next">
+        <li>Score MillNet-SA2 (real-trained and synthetic-trained) on Hou Kin's v5 packages, and Hou Kin's models on the GAN twin.</li>
+        <li>Apply Yunzhi's decoder calibration to the matched-budget MillNet-SA2 (3 seeds).</li>
+        <li>Add Dhruv's mean-teacher on unlabelled slices to MillNet training, then rerun the cross-stack test.</li>
+        <li>Report one shared metric set everywhere: 3-class mIoU, in-layer pore IoU, layer IoU and porosity error.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <figure class="card">
+      <img src="samples/team_dhruv_architecture.svg" alt="Dhruv: architectures of the 2.5D U-Net family, mean-teacher, DINO-2.5D and masked-slice pretraining." loading="lazy">
+      <figcaption>Dhruv: the model family tested for unseen acquisitions.</figcaption>
+    </figure>
+    <figure class="card">
+      <img src="samples/team_yunzhi_joint_loso.svg" alt="Yunzhi: joint training over three seeds and the first unseen-acquisition fold." loading="lazy">
+      <figcaption>Yunzhi: joint training (3 seeds) and the first unseen-comp fold.</figcaption>
+    </figure>
+  </section>
+
+  <footer>Éponge · sources: team_experiments (Aaditya), team_experiments_dhruv, team_experiments_yunzhi, team_experiments_houkin · numbers as reported by each author</footer>
+</div>
+</body>
+</html>

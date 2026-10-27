@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1010" viewBox="0 0 1200 1010" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1200" height="1010" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a5566"/>
+    </marker>
+    <style>
+      .t{font-size:13px;fill:#1b2430}
+      .s{font-size:11px;fill:#4a5566}
+      .h{font-size:17px;font-weight:700;fill:#1f4e79}
+      .b{fill:#eef3f8;stroke:#1f4e79;stroke-width:1.4}
+      .g{fill:#f3f6ee;stroke:#4f7a3a;stroke-width:1.4}
+      .o{fill:#fbf1e6;stroke:#b0612b;stroke-width:1.4}
+      .f{fill:#f4f4f4;stroke:#888;stroke-width:1.2;stroke-dasharray:4 3}
+      .l{stroke:#4a5566;stroke-width:1.4;fill:none;marker-end:url(#a)}
+    </style>
+  </defs>
+
+  <!-- Panel 1: 2.5D U-Net -->
+  <text x="30" y="36" class="h">1 · Base model: 2.5D U-Net (models A, A+, C)</text>
+  <rect x="30" y="55" width="150" height="150" rx="6" class="f"/>
+  <text x="105" y="78" text-anchor="middle" class="t">7 slices</text>
+  <text x="105" y="96" text-anchor="middle" class="s">z−3 … z+3 as 7</text>
+  <text x="105" y="111" text-anchor="middle" class="s">input channels</text>
+  <g fill="#c9d6e3" stroke="#1f4e79">
+    <rect x="62" y="125" width="70" height="40"/><rect x="70" y="133" width="70" height="40"/><rect x="78" y="141" width="70" height="40"/>
+  </g>
+  <rect x="215" y="75" width="150" height="110" rx="6" class="o"/>
+  <text x="290" y="102" text-anchor="middle" class="t">Input normalisation</text>
+  <text x="290" y="122" text-anchor="middle" class="s">raw images, per-frame</text>
+  <text x="290" y="137" text-anchor="middle" class="s">1–99 % stretch of the</text>
+  <text x="290" y="152" text-anchor="middle" class="s">centre frame, same map</text>
+  <text x="290" y="167" text-anchor="middle" class="s">for all 7 slices</text>
+  <line x1="180" y1="130" x2="213" y2="130" class="l"/>
+
+  <!-- encoder -->
+  <rect x="400" y="60" width="90" height="34" rx="4" class="b"/><text x="445" y="82" text-anchor="middle" class="s">conv 32</text>
+  <rect x="420" y="104" width="90" height="34" rx="4" class="b"/><text x="465" y="126" text-anchor="middle" class="s">conv 64</text>
+  <rect x="440" y="148" width="90" height="34" rx="4" class="b"/><text x="485" y="170" text-anchor="middle" class="s">conv 128</text>
+  <rect x="460" y="192" width="90" height="34" rx="4" class="b"/><text x="505" y="214" text-anchor="middle" class="s">conv 256</text>
+  <rect x="520" y="236" width="110" height="34" rx="4" class="b"/><text x="575" y="258" text-anchor="middle" class="s">bottleneck 512</text>
+  <!-- decoder -->
+  <rect x="660" y="192" width="90" height="34" rx="4" class="b"/><text x="705" y="214" text-anchor="middle" class="s">up 256</text>
+  <rect x="680" y="148" width="90" height="34" rx="4" class="b"/><text x="725" y="170" text-anchor="middle" class="s">up 128</text>
+  <rect x="700" y="104" width="90" height="34" rx="4" class="b"/><text x="745" y="126" text-anchor="middle" class="s">up 64</text>
+  <rect x="720" y="60" width="90" height="34" rx="4" class="b"/><text x="765" y="82" text-anchor="middle" class="s">up 32</text>
+  <line x1="365" y1="110" x2="398" y2="80" class="l"/>
+  <line x1="490" y1="77" x2="718" y2="77" stroke="#9aa5b4" stroke-dasharray="3 3"/>
+  <line x1="510" y1="121" x2="698" y2="121" stroke="#9aa5b4" stroke-dasharray="3 3"/>
+  <line x1="530" y1="165" x2="678" y2="165" stroke="#9aa5b4" stroke-dasharray="3 3"/>
+  <line x1="550" y1="209" x2="658" y2="209" stroke="#9aa5b4" stroke-dasharray="3 3"/>
+  <line x1="630" y1="253" x2="705" y2="228" class="l"/>
+  <text x="604" y="294" text-anchor="middle" class="s">skip connections (dashed) keep thin pore walls</text>
+
+  <rect x="850" y="55" width="150" height="58" rx="6" class="g"/>
+  <text x="925" y="78" text-anchor="middle" class="t">3-class head</text>
+  <text x="925" y="97" text-anchor="middle" class="s">solid · pore · outside</text>
+  <line x1="810" y1="77" x2="848" y2="80" class="l"/>
+  <rect x="850" y="133" width="320" height="120" rx="6" class="f"/>
+  <text x="865" y="155" class="t">Training</text>
+  <text x="865" y="175" class="s">cross-entropy + pore Dice inside the layer</text>
+  <text x="865" y="192" class="s">256 px crops, batch 16, 4,000 steps, AdamW</text>
+  <text x="865" y="209" class="s">left-right flips only (52° geometry)</text>
+  <text x="865" y="226" class="s">strong appearance aug: contrast, gamma,</text>
+  <text x="865" y="241" class="s">blur, noise</text>
+  <rect x="30" y="230" width="330" height="62" rx="6" class="o"/>
+  <text x="45" y="252" class="t">Optional FiLM (section 3.2)</text>
+  <text x="45" y="270" class="s">16 whole-frame grey quantiles → MLP → scale and</text>
+  <text x="45" y="285" class="s">shift at the first layer and the bottleneck</text>
+
+  <!-- Panel 2: DINO-2.5D -->
+  <line x1="30" y1="320" x2="1170" y2="320" stroke="#d5dbe3"/>
+  <text x="30" y="352" class="h">2 · Model B: DINO-2.5D (frozen foundation features + attention along z)</text>
+  <rect x="30" y="375" width="130" height="200" rx="6" class="f"/>
+  <text x="95" y="400" text-anchor="middle" class="t">7 slices</text>
+  <text x="95" y="418" text-anchor="middle" class="s">each slice alone</text>
+  <g fill="#c9d6e3" stroke="#1f4e79">
+    <rect x="55" y="432" width="80" height="22"/><rect x="55" y="458" width="80" height="22"/><rect x="55" y="484" width="80" height="22"/>
+    <rect x="55" y="510" width="80" height="22"/><rect x="55" y="536" width="80" height="22"/>
+  </g>
+  <rect x="195" y="395" width="200" height="90" rx="6" class="g"/>
+  <text x="295" y="422" text-anchor="middle" class="t">DINOv2 ViT-S/14</text>
+  <text x="295" y="441" text-anchor="middle" class="s">self-supervised on 142 M images</text>
+  <text x="295" y="458" text-anchor="middle" class="s">FROZEN · 1 token per 14×14 px</text>
+  <text x="295" y="475" text-anchor="middle" class="s">384-d features per slice</text>
+  <line x1="160" y1="440" x2="193" y2="440" class="l"/>
+  <rect x="430" y="395" width="230" height="90" rx="6" class="o"/>
+  <text x="545" y="422" text-anchor="middle" class="t">Attention along z</text>
+  <text x="545" y="441" text-anchor="middle" class="s">at every location: the 7 slice tokens</text>
+  <text x="545" y="458" text-anchor="middle" class="s">+ slice-position embedding →</text>
+  <text x="545" y="475" text-anchor="middle" class="s">2 transformer layers → centre token</text>
+  <line x1="395" y1="440" x2="428" y2="440" class="l"/>
+  <rect x="195" y="515" width="465" height="60" rx="6" class="b"/>
+  <text x="427" y="540" text-anchor="middle" class="t">High-resolution 2.5D U-Net branch (base 24)</text>
+  <text x="427" y="559" text-anchor="middle" class="s">reads the same 7 slices at full resolution: thin walls the 14 px tokens cannot resolve</text>
+  <line x1="160" y1="545" x2="193" y2="545" class="l"/>
+  <line x1="545" y1="485" x2="545" y2="513" class="l"/>
+  <text x="555" y="503" class="s">fused map injected at bottleneck + first decoder stage</text>
+  <rect x="700" y="515" width="150" height="60" rx="6" class="g"/>
+  <text x="775" y="540" text-anchor="middle" class="t">3-class head</text>
+  <text x="775" y="559" text-anchor="middle" class="s">solid · pore · outside</text>
+  <line x1="660" y1="545" x2="698" y2="545" class="l"/>
+  <rect x="880" y="395" width="290" height="180" rx="6" class="f"/>
+  <text x="895" y="418" class="t">Why this shape</text>
+  <text x="895" y="440" class="s">• frozen pretrained features do not re-learn</text>
+  <text x="895" y="455" class="s">  stack-specific contrast</text>
+  <text x="895" y="475" class="s">• the ViT sees one slice at a time; z-mixing is</text>
+  <text x="895" y="490" class="s">  explicit and learned (where shine-through is)</text>
+  <text x="895" y="510" class="s">• the U-Net branch supplies pixel accuracy</text>
+  <text x="895" y="530" class="s">• ~5 M trainable parameters; crops 224 px</text>
+  <text x="895" y="545" class="s">  (multiple of 14 and 16)</text>
+
+  <!-- Panel 3: Pretraining + A+ + AdaBN -->
+  <line x1="30" y1="605" x2="1170" y2="605" stroke="#d5dbe3"/>
+  <text x="30" y="637" class="h">3 · Using the ~1,045 unlabelled slices (z ≥ 125, never labelled or tested)</text>
+
+  <text x="30" y="667" class="t" font-weight="700">Model C: milling-prediction pretraining → fine-tune</text>
+  <rect x="30" y="680" width="200" height="110" rx="6" class="f"/>
+  <text x="130" y="703" text-anchor="middle" class="t">7 slices</text>
+  <text x="130" y="722" text-anchor="middle" class="s">centre slice: 60 % of 16×16</text>
+  <text x="130" y="737" text-anchor="middle" class="s">patches hidden (30 % of the</text>
+  <text x="130" y="752" text-anchor="middle" class="s">time the whole slice)</text>
+  <rect x="265" y="700" width="170" height="70" rx="6" class="b"/>
+  <text x="350" y="728" text-anchor="middle" class="t">same 2.5D U-Net</text>
+  <text x="350" y="747" text-anchor="middle" class="s">1-channel regression head</text>
+  <line x1="230" y1="735" x2="263" y2="735" class="l"/>
+  <rect x="470" y="700" width="210" height="70" rx="6" class="o"/>
+  <text x="575" y="726" text-anchor="middle" class="t">reconstruct hidden pixels</text>
+  <text x="575" y="745" text-anchor="middle" class="s">L1 on hidden pixels, 12,000 steps</text>
+  <line x1="435" y1="735" x2="468" y2="735" class="l"/>
+  <rect x="715" y="700" width="170" height="70" rx="6" class="g"/>
+  <text x="800" y="726" text-anchor="middle" class="t">fine-tune as model A</text>
+  <text x="800" y="745" text-anchor="middle" class="s">all weights except head</text>
+  <line x1="680" y1="735" x2="713" y2="735" class="l"/>
+  <rect x="910" y="680" width="260" height="110" rx="6" class="f"/>
+  <text x="925" y="703" class="t">Why</text>
+  <text x="925" y="723" class="s">predicting a slice from its neighbours forces</text>
+  <text x="925" y="738" class="s">the network to model how material behind a</text>
+  <text x="925" y="753" class="s">pore slides and brightens as the mill nears it</text>
+  <text x="925" y="773" class="s">= shine-through, learned, not hard-coded</text>
+
+  <text x="30" y="830" class="t" font-weight="700">Model A+: mean-teacher consistency</text>
+  <rect x="30" y="843" width="560" height="70" rx="6" class="b"/>
+  <text x="45" y="865" class="s">EMA teacher labels a weakly augmented unlabelled crop → student must reproduce the confident (p ≥ 0.9)</text>
+  <text x="45" y="882" class="s">labels on a strongly augmented copy. In leave-one-out the pool includes the new acquisition's</text>
+  <text x="45" y="899" class="s">unlabelled slices, so the model adapts to its look without labels. The teacher is evaluated.</text>
+
+  <text x="620" y="830" class="t" font-weight="700">All models: AdaBN at test time</text>
+  <rect x="620" y="843" width="550" height="70" rx="6" class="o"/>
+  <text x="635" y="865" class="s">Before testing on a stack, re-estimate every BatchNorm mean/variance on that stack's unlabelled slices.</text>
+  <text x="635" y="882" class="s">No labels, no training, a few seconds. Every result is reported both without ("test")</text>
+  <text x="635" y="899" class="s">and with ("test_adabn") this adaptation.</text>
+
+  <text x="600" y="960" text-anchor="middle" class="s">All four models are trained on the team split (train 0–83 · val 87–97 · test 101–117) and in three leave-one-stack-out settings.</text>
+  <text x="600" y="980" text-anchor="middle" class="s">Round 1: histogram-equalised input + strong augmentation (rejected). Round 2: raw images + per-frame stretch.</text>
+</svg>
