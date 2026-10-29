@@ -167,6 +167,17 @@ On the real stacks, the 9-slice synthetic model gives porosity 0.382 / 0.479 / 0
 
 Reproduce with `experiments/score_millnet.py` (needs the team repo at `eponge-v2` and the checkpoints; see its docstring), then `experiments/plot_millnet.py`. Results are in `experiments/millnet_on_synth_v7d.json`.
 
+### Does calibrating the decoder to labels move porosity toward the truth?
+
+The team kept MillNet-SA2's argmax decoder and reports Yunzhi's shared, validation-selected decoder as an optional ablation: on the real test split it lowered label-based porosity MAE from 1.614 to 1.492 pp and made pristine worse. `experiments/decoder_on_truth.py` repeats her selection on these packages, where the truth is known. It uses her decoder (inside if P(inside) > layer threshold, pore if P(pore | inside) > pore threshold), her grid (pore 0.35–0.65 by 0.01, layer 0.3–0.7 by 0.1) and her guard (mIoU and pore IoU within 0.002 of argmax on every source). One shared setting per seed is chosen by porosity MAE against the threshold-rule labels on 8 validation frames per material, then everything is scored on the 16 test frames above. Her final-SA2 thresholds were not in the shared files and the four-annotator labels are not used, so this reproduces her procedure, not her numbers.
+
+| porosity MAE, pp (3 seeds) | argmax | label-calibrated | best shared setting chosen with truth |
+|---|---|---|---|
+| against the truth, mean of 7 | 11.48 ± 0.18 | 11.45 ± 0.17 | 11.39 ± 0.08 |
+| against the rule's labels, mean of 7 | 5.64 ± 0.35 | 5.55 ± 0.31 | 5.30 ± 0.26 |
+
+Two seeds chose pore threshold 0.55; seed 1 kept argmax. Calibration helps comp-like, pristine-like, mudcrack and faceted against the truth by 0.08–0.31 pp, and hurts uncomp-like and both fibre mats by 0.15–0.27 pp. It hardly matters, because the true error is not a threshold problem: MillNet's bias against the truth runs from −13 pp (fibres) to +35 pp (faceted, where the rule itself is +28 pp), so even the setting picked with the truth leaves 11.4 pp. In the team's four metrics against the truth (3 seeds, mean of 7 materials), MillNet-SA2 with argmax scores 3-class mIoU 0.708 ± 0.002, true-layer pore IoU 0.575 ± 0.001, layer IoU 0.947 ± 0.001 and porosity MAE 11.5 ± 0.2 pp. Its argmax mIoU matches `score_millnet.py` to three decimals for every material. This supports the team's choice to keep argmax. All of it is on this renderer only. Results are in `experiments/decoder_on_truth_summary.json`, and `experiments/tabulate_decoder.py` prints the full per-material table.
+
 ## Training on it
 
 `pfibsynth/shine_data.py` builds training volumes with randomised style, porosity and ±25% jittered settings. `pfibsynth/train_shine.py` trains the team's U-Net on them (`--config zwin_random_v7` for 9-slice input, `2d_random_v7` for 1 slice). It needs `torch`; the team U-Net it trains is vendored as `pfibsynth/team_unet.py`. The two checkpoints used above are in `pfibsynth/checkpoints/`.
@@ -192,7 +203,7 @@ tools/
   demo_media.py          gallery.png, all_materials.gif, reslice PNG
   passgif_t.py, forward.py   real-vs-synthetic GIFs and coming-forward coherence (need a real stack)
 docs/                    GitHub Pages: index.html (gallery), viewer/, studio/ (served by studio.py), showcase/, media/
-experiments/             MillNet-SA2 on exact truth: driver, real-frame control, results, plot
+experiments/             MillNet-SA2 on exact truth: driver, real-frame control, decoder calibration test, results, plot
 examples/                config files and a porosity sweep
 ```
 
@@ -211,8 +222,7 @@ The Éponge team compares four lines of work on the same dataset and split:
 * Yunzhi: porosity calibration.
 * Hou Kin: this generator, the experiments where the answer is known.
 
-The team's findings call for scoring MillNet-SA2 on these packages, and the experiment above does that. Still open from that list:
+The team's findings call for scoring MillNet-SA2 on these packages and testing Yunzhi's decoder calibration against truth. The two experiments above do that. Still open, and listed as future work in the team's freeze:
 
 * Score models trained on Aaditya's learned-appearance digital twin on these packages, and ours on the twin.
 * Train MillNet-SA2 on synthetic data and repeat this test.
-* Check whether Yunzhi's validation-calibrated decoder, which fits the labels, moves porosity toward or away from the truth.
