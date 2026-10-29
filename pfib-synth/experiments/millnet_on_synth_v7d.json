@@ -1,0 +1,744 @@
+{
+  "comp_like": {
+    "rule (start masks)": {
+      "recall_1": 0.18755449882033784,
+      "recall_2-3": 0.3211187825922606,
+      "recall_4-8": 0.583954235290301,
+      "recall_none<=8": 0.9079445500673609,
+      "solid_correct": 0.8129429355873226,
+      "pore_iou_in_layer": 0.5253910228809284,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.3876029448974428,
+      "porosity_error_pp": -3.841364871813707,
+      "miou_3class": 0.7253750496523077,
+      "iou_solid_pore_outside": [
+        0.6477861630534029,
+        0.5283389859035202,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": -3.5637408364793455
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.3422565195645855,
+      "recall_2-3": 0.550137313467029,
+      "recall_4-8": 0.8102716468590832,
+      "recall_none<=8": 0.9636860858945142,
+      "solid_correct": 0.8955447901087451,
+      "pore_iou_in_layer": 0.6985932530901573,
+      "pore_iou_vs_rule": 0.5920697139698918,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.3994524229290629,
+      "porosity_error_pp": -2.6564170686516952
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.4712573548858438,
+      "recall_2-3": 0.7436820054925387,
+      "recall_4-8": 0.9058590074940793,
+      "recall_none<=8": 0.9634700275738766,
+      "solid_correct": 0.9460275821222798,
+      "pore_iou_in_layer": 0.8076496573815615,
+      "pore_iou_vs_rule": 0.5599662720218419,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.4000718267668977,
+      "porosity_error_pp": -2.594476684868219
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.26472090057582176,
+      "recall_2-3": 0.40113287189899227,
+      "recall_4-8": 0.6257664399338185,
+      "recall_none<=8": 0.889789607544414,
+      "solid_correct": 0.7380213864010532,
+      "pore_iou_in_layer": 0.5031321987911607,
+      "pore_iou_vs_rule": 0.7641860110212876,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.4403707240627831,
+      "porosity_error_pp": 1.435413044720324,
+      "miou_3class": 0.6850622545198447,
+      "iou_solid_pore_outside": [
+        0.5916702673314211,
+        0.49480004762740043,
+        0.9687164486007126
+      ],
+      "layer_iou": 0.9756199725237721,
+      "porosity_own_layer_error_pp": 1.0769678935724836
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.2585829913927869,
+      "recall_2-3": 0.39774943370723453,
+      "recall_4-8": 0.6255880094730354,
+      "recall_none<=8": 0.8849839467156869,
+      "solid_correct": 0.7400921963703767,
+      "pore_iou_in_layer": 0.5016093339595894,
+      "pore_iou_vs_rule": 0.7675275196622081,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.43770813438135114,
+      "porosity_error_pp": 1.169154076577128,
+      "miou_3class": 0.6847821013325371,
+      "iou_solid_pore_outside": [
+        0.5928819167028574,
+        0.4929147070391117,
+        0.968549680255642
+      ],
+      "layer_iou": 0.9754113694720382,
+      "porosity_own_layer_error_pp": 0.6105834347909234
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.2718407704856647,
+      "recall_2-3": 0.4133364451991833,
+      "recall_4-8": 0.6390288696880891,
+      "recall_none<=8": 0.8891318635659695,
+      "solid_correct": 0.7279894230492348,
+      "pore_iou_in_layer": 0.5024762418188854,
+      "pore_iou_vs_rule": 0.7605606998459254,
+      "porosity_true": 0.42601659361557986,
+      "porosity_pred": 0.44864416774814925,
+      "porosity_error_pp": 2.2627574132569386,
+      "miou_3class": 0.6833886135560494,
+      "iou_solid_pore_outside": [
+        0.5866482463829431,
+        0.4943599822957555,
+        0.9691576119894495
+      ],
+      "layer_iou": 0.975921622513215,
+      "porosity_own_layer_error_pp": 1.778141025217883
+    }
+  },
+  "uncomp_like": {
+    "rule (start masks)": {
+      "recall_1": 0.21178841208815996,
+      "recall_2-3": 0.35166983782827055,
+      "recall_4-8": 0.5743314683112284,
+      "recall_none<=8": 0.9436894012403912,
+      "solid_correct": 0.8659169160222283,
+      "pore_iou_in_layer": 0.7212136779115695,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.4900601149205914,
+      "porosity_error_pp": -3.8609650599348067,
+      "miou_3class": 0.8126934513040797,
+      "iou_solid_pore_outside": [
+        0.7127310324435188,
+        0.7253493214687202,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": -3.630313133281576
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.5059573636222375,
+      "recall_2-3": 0.703732383459811,
+      "recall_4-8": 0.9120440149501714,
+      "recall_none<=8": 0.9948215316467606,
+      "solid_correct": 0.9230800917110326,
+      "pore_iou_in_layer": 0.876011091038073,
+      "pore_iou_vs_rule": 0.7393406564152394,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.5311347568911876,
+      "porosity_error_pp": 0.24649913712481153
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.6725881073277828,
+      "recall_2-3": 0.847839553972433,
+      "recall_4-8": 0.9549309534751436,
+      "recall_none<=8": 0.9914135069915044,
+      "solid_correct": 0.9461169186129355,
+      "pore_iou_in_layer": 0.9155073138017995,
+      "pore_iou_vs_rule": 0.7200049451312226,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.5326486501403447,
+      "porosity_error_pp": 0.39788846204051875
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.1920291126360269,
+      "recall_2-3": 0.31975541494280846,
+      "recall_4-8": 0.5133320692746981,
+      "recall_none<=8": 0.845016248668194,
+      "solid_correct": 0.8577541159859584,
+      "pore_iou_in_layer": 0.6419686987621226,
+      "pore_iou_vs_rule": 0.7801493656125934,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.44947488125315876,
+      "porosity_error_pp": -7.919488426678073,
+      "miou_3class": 0.7372164672344154,
+      "iou_solid_pore_outside": [
+        0.6716076487866393,
+        0.6139945445021037,
+        0.9260472084145033
+      ],
+      "layer_iou": 0.9220764875347397,
+      "porosity_own_layer_error_pp": -6.977306768118957
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.19796391998035098,
+      "recall_2-3": 0.3319459501316401,
+      "recall_4-8": 0.530273133076451,
+      "recall_none<=8": 0.8488130080887345,
+      "solid_correct": 0.8541693545253177,
+      "pore_iou_in_layer": 0.6458925319319847,
+      "pore_iou_vs_rule": 0.7816666305860309,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.4545932764237441,
+      "porosity_error_pp": -7.407648909619541,
+      "miou_3class": 0.73375374598472,
+      "iou_solid_pore_outside": [
+        0.6707699897153482,
+        0.6126215643352071,
+        0.9178696839036051
+      ],
+      "layer_iou": 0.9138495112795734,
+      "porosity_own_layer_error_pp": -6.281110835718534
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.19588874241231874,
+      "recall_2-3": 0.32778656607447065,
+      "recall_4-8": 0.5214306144289079,
+      "recall_none<=8": 0.8428732807307069,
+      "solid_correct": 0.8547253202761694,
+      "pore_iou_in_layer": 0.6408372192698829,
+      "pore_iou_vs_rule": 0.7781868506810338,
+      "porosity_true": 0.5286697655199395,
+      "porosity_pred": 0.45114324094530533,
+      "porosity_error_pp": -7.752652457463416,
+      "miou_3class": 0.7363196299541603,
+      "iou_solid_pore_outside": [
+        0.6734386063987576,
+        0.6117005342161861,
+        0.9238197492475372
+      ],
+      "layer_iou": 0.9194103278913976,
+      "porosity_own_layer_error_pp": -6.607031226755355
+    }
+  },
+  "pristine_like": {
+    "rule (start masks)": {
+      "recall_1": 0.2972283233971342,
+      "recall_2-3": 0.42925415141218703,
+      "recall_4-8": 0.5902144123520002,
+      "recall_none<=8": 0.9324134449763221,
+      "solid_correct": 0.7771552153628846,
+      "pore_iou_in_layer": 0.6676938448438684,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5233391403696132,
+      "porosity_error_pp": 1.0930109395602683,
+      "miou_3class": 0.7708364931432562,
+      "iou_solid_pore_outside": [
+        0.6453979065623278,
+        0.6671115728674408,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": 1.3280998016342305
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.5618987852436237,
+      "recall_2-3": 0.706769495265627,
+      "recall_4-8": 0.8631026962226884,
+      "recall_none<=8": 0.9898879686668809,
+      "solid_correct": 0.8346820404247444,
+      "pore_iou_in_layer": 0.8012789221619517,
+      "pore_iou_vs_rule": 0.6972217276665734,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5557792262115406,
+      "porosity_error_pp": 4.337019523753016
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.7803367848551407,
+      "recall_2-3": 0.8983771346115409,
+      "recall_4-8": 0.947287889565723,
+      "recall_none<=8": 0.9852759199437895,
+      "solid_correct": 0.9032266169624958,
+      "pore_iou_in_layer": 0.8816619657485594,
+      "pore_iou_vs_rule": 0.6678699901412567,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5405593306541859,
+      "porosity_error_pp": 2.815029968017546
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.36150731393906793,
+      "recall_2-3": 0.5355277034350407,
+      "recall_4-8": 0.7330353177368628,
+      "recall_none<=8": 0.8912507153170306,
+      "solid_correct": 0.7067480246066657,
+      "pore_iou_in_layer": 0.6357681787185898,
+      "pore_iou_vs_rule": 0.7101961275496234,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5596669652442403,
+      "porosity_error_pp": 4.7257934270229836,
+      "miou_3class": 0.7189311484265172,
+      "iou_solid_pore_outside": [
+        0.6068294238722863,
+        0.6077557520500024,
+        0.9422082693572625
+      ],
+      "layer_iou": 0.9223573314796295,
+      "porosity_own_layer_error_pp": 6.659684957773349
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.38345660196930986,
+      "recall_2-3": 0.5555929300463281,
+      "recall_4-8": 0.7472413095835605,
+      "recall_none<=8": 0.8957660263799229,
+      "solid_correct": 0.6968774470770898,
+      "pore_iou_in_layer": 0.6374096513041896,
+      "pore_iou_vs_rule": 0.7081591693614651,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5686233123628968,
+      "porosity_error_pp": 5.6214281388886285,
+      "miou_3class": 0.718080155461911,
+      "iou_solid_pore_outside": [
+        0.602104788424057,
+        0.6095570931801207,
+        0.9425785847815551
+      ],
+      "layer_iou": 0.9229932360204448,
+      "porosity_own_layer_error_pp": 7.58725555346258
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.4141168736085586,
+      "recall_2-3": 0.5846410342659081,
+      "recall_4-8": 0.7656512350916975,
+      "recall_none<=8": 0.8833507264732204,
+      "solid_correct": 0.6686298320933612,
+      "pore_iou_in_layer": 0.6226392576126518,
+      "pore_iou_vs_rule": 0.6930174330254678,
+      "porosity_true": 0.5124090309740105,
+      "porosity_pred": 0.5812208357441809,
+      "porosity_error_pp": 6.881180477017046,
+      "miou_3class": 0.7055648299511189,
+      "iou_solid_pore_outside": [
+        0.5820086625216707,
+        0.5959984857238405,
+        0.9386873416078455
+      ],
+      "layer_iou": 0.917282342984143,
+      "porosity_own_layer_error_pp": 9.296711790236678
+    }
+  },
+  "mudcrack": {
+    "rule (start masks)": {
+      "recall_1": 0.08496236530026534,
+      "recall_2-3": 0.1847992916864264,
+      "recall_4-8": 0.4837886214574393,
+      "recall_none<=8": 0.8758183607819326,
+      "solid_correct": 0.9162809073203079,
+      "pore_iou_in_layer": 0.6043542792805305,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.33274463360167367,
+      "porosity_error_pp": -8.941069141884912,
+      "miou_3class": 0.7818742230252727,
+      "iou_solid_pore_outside": [
+        0.7386351840987418,
+        0.6069874849770762,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": -8.389289619390555
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.39809473030895026,
+      "recall_2-3": 0.6098014526034963,
+      "recall_4-8": 0.8557908677588671,
+      "recall_none<=8": 0.9704603576905177,
+      "solid_correct": 0.9378033855342272,
+      "pore_iou_in_layer": 0.8042151859488412,
+      "pore_iou_vs_rule": 0.63005476129399,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.4043471853672228,
+      "porosity_error_pp": -1.780813965329997
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.5218039663266284,
+      "recall_2-3": 0.793222429618347,
+      "recall_4-8": 0.941907856925855,
+      "recall_none<=8": 0.9636630039024721,
+      "solid_correct": 0.9685347038274854,
+      "pore_iou_in_layer": 0.8754959375173146,
+      "pore_iou_vs_rule": 0.6244670854943224,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.4036956401692972,
+      "porosity_error_pp": -1.8459684851225566
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.22622474184720354,
+      "recall_2-3": 0.38516653078197166,
+      "recall_4-8": 0.7020954520287074,
+      "recall_none<=8": 0.9110354033610046,
+      "solid_correct": 0.805542418888753,
+      "pore_iou_in_layer": 0.6077783394942148,
+      "pore_iou_vs_rule": 0.6991235904717864,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.437236929912928,
+      "porosity_error_pp": 1.5081604892405231,
+      "miou_3class": 0.7375680931023908,
+      "iou_solid_pore_outside": [
+        0.676928724322494,
+        0.5849649262228488,
+        0.9508106287618299
+      ],
+      "layer_iou": 0.9563001255755958,
+      "porosity_own_layer_error_pp": 1.686955880465535
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.23698405888258056,
+      "recall_2-3": 0.4011059223144473,
+      "recall_4-8": 0.7173750363314267,
+      "recall_none<=8": 0.9138775765366265,
+      "solid_correct": 0.7971917712296127,
+      "pore_iou_in_layer": 0.6079911064080713,
+      "pore_iou_vs_rule": 0.6931822977394922,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.4451098221800058,
+      "porosity_error_pp": 2.2954497159483003,
+      "miou_3class": 0.7394328088813594,
+      "iou_solid_pore_outside": [
+        0.6743261888033646,
+        0.5887745172875317,
+        0.9551977205531818
+      ],
+      "layer_iou": 0.9599480196791119,
+      "porosity_own_layer_error_pp": 1.993807702472855
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.24542322896143223,
+      "recall_2-3": 0.4102261604124665,
+      "recall_4-8": 0.7213021183358957,
+      "recall_none<=8": 0.9114525768532861,
+      "solid_correct": 0.7895852798794873,
+      "pore_iou_in_layer": 0.6036735049531923,
+      "pore_iou_vs_rule": 0.68230406636859,
+      "porosity_true": 0.4221553250205228,
+      "porosity_pred": 0.4498298761247242,
+      "porosity_error_pp": 2.7674551104201415,
+      "miou_3class": 0.7365303335287979,
+      "iou_solid_pore_outside": [
+        0.6690957689514472,
+        0.5861415031167528,
+        0.9543537285181937
+      ],
+      "layer_iou": 0.9590850136063968,
+      "porosity_own_layer_error_pp": 2.5286991913713583
+    }
+  },
+  "fibre_mat": {
+    "rule (start masks)": {
+      "recall_1": 0.1144709041393816,
+      "recall_2-3": 0.27440965369162756,
+      "recall_4-8": 0.5376795574321847,
+      "recall_none<=8": 0.9230074960325001,
+      "solid_correct": 0.9533415622001217,
+      "pore_iou_in_layer": 0.7743795110751748,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.5297540246388118,
+      "porosity_error_pp": -11.65312308417813,
+      "miou_3class": 0.821287085596706,
+      "iou_solid_pore_outside": [
+        0.6899938076391958,
+        0.7738674491509223,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": -11.427196305004195
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.7689214905398509,
+      "recall_2-3": 0.9109218169117751,
+      "recall_4-8": 0.9815085967540836,
+      "recall_none<=8": 0.9962588857502681,
+      "solid_correct": 0.8695543375476069,
+      "pore_iou_in_layer": 0.9143873419432132,
+      "pore_iou_vs_rule": 0.7536945579760527,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.6792859497454793,
+      "porosity_error_pp": 3.3000694264886166
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.8778121706117737,
+      "recall_2-3": 0.9630860684365726,
+      "recall_4-8": 0.9907484048070576,
+      "recall_none<=8": 0.9930664805273864,
+      "solid_correct": 0.9005289622406937,
+      "pore_iou_in_layer": 0.9354031996134163,
+      "pore_iou_vs_rule": 0.7506293694384685,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.6726332433551945,
+      "porosity_error_pp": 2.6347987874601353
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.11055043902532086,
+      "recall_2-3": 0.3049173257323951,
+      "recall_4-8": 0.5554192030845636,
+      "recall_none<=8": 0.8866127881182524,
+      "solid_correct": 0.9473654589818972,
+      "pore_iou_in_layer": 0.7495131031659712,
+      "pore_iou_vs_rule": 0.83805479876803,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.5169710256596838,
+      "porosity_error_pp": -12.931422982090934,
+      "miou_3class": 0.7770979154371913,
+      "iou_solid_pore_outside": [
+        0.6632201882672051,
+        0.7217258616869572,
+        0.9463476963574117
+      ],
+      "layer_iou": 0.9519478499335233,
+      "porosity_own_layer_error_pp": -12.991255759046116
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.10585255807963981,
+      "recall_2-3": 0.30782627855625927,
+      "recall_4-8": 0.5596363798287983,
+      "recall_none<=8": 0.885979644620604,
+      "solid_correct": 0.9494369839867779,
+      "pore_iou_in_layer": 0.7504625839166257,
+      "pore_iou_vs_rule": 0.8419227599176023,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.5163197235446896,
+      "porosity_error_pp": -12.996553193590355,
+      "miou_3class": 0.7785616793596031,
+      "iou_solid_pore_outside": [
+        0.666744422076132,
+        0.7233135723693848,
+        0.9456270436332924
+      ],
+      "layer_iou": 0.9510414028622008,
+      "porosity_own_layer_error_pp": -13.163720381289213
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.11572526219898983,
+      "recall_2-3": 0.3214779636861425,
+      "recall_4-8": 0.5734875789738378,
+      "recall_none<=8": 0.8932410091092601,
+      "solid_correct": 0.9438278093726411,
+      "pore_iou_in_layer": 0.7566744261745963,
+      "pore_iou_vs_rule": 0.8412029195106425,
+      "porosity_true": 0.6462852554805931,
+      "porosity_pred": 0.5239307696555522,
+      "porosity_error_pp": -12.235448582504095,
+      "miou_3class": 0.774574646771986,
+      "iou_solid_pore_outside": [
+        0.6681497143598737,
+        0.7190511622179195,
+        0.9365230637381643
+      ],
+      "layer_iou": 0.943564283861541,
+      "porosity_own_layer_error_pp": -11.890536570052346
+    }
+  },
+  "fibre_coated": {
+    "rule (start masks)": {
+      "recall_1": 0.3283080528471453,
+      "recall_2-3": 0.518631033663016,
+      "recall_4-8": 0.7709933998356914,
+      "recall_none<=8": 0.9581203572501402,
+      "solid_correct": 0.8749748359741797,
+      "pore_iou_in_layer": 0.7597207971702514,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.5638403056446541,
+      "porosity_error_pp": -7.32240851244792,
+      "miou_3class": 0.8068063320801239,
+      "iou_solid_pore_outside": [
+        0.6596147839484787,
+        0.7608042122918929,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": -7.213580771928829
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.6893606957419133,
+      "recall_2-3": 0.830232307428641,
+      "recall_4-8": 0.9469223650805131,
+      "recall_none<=8": 0.9877451162453497,
+      "solid_correct": 0.8035295701454621,
+      "pore_iou_in_layer": 0.8409326159315502,
+      "pore_iou_vs_rule": 0.7596544989866645,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.666997977750734,
+      "porosity_error_pp": 2.9933586981600646
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.6663728325252894,
+      "recall_2-3": 0.8474660135669307,
+      "recall_4-8": 0.9562773886419313,
+      "recall_none<=8": 0.9803921859925594,
+      "solid_correct": 0.8802254696713501,
+      "pore_iou_in_layer": 0.8731882299680707,
+      "pore_iou_vs_rule": 0.7607544123959779,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.6377054483104945,
+      "porosity_error_pp": 0.0641057541361123
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.2429635681498124,
+      "recall_2-3": 0.41079079615880054,
+      "recall_4-8": 0.6615899738330098,
+      "recall_none<=8": 0.8968551493241763,
+      "solid_correct": 0.8876465979795235,
+      "pore_iou_in_layer": 0.6911420052292336,
+      "pore_iou_vs_rule": 0.8097631643448513,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.5092617432964925,
+      "porosity_error_pp": -12.78026474726408,
+      "miou_3class": 0.7425928758735506,
+      "iou_solid_pore_outside": [
+        0.6004889433249716,
+        0.6710027432113268,
+        0.9562869410843532
+      ],
+      "layer_iou": 0.9607612339302799,
+      "porosity_own_layer_error_pp": -12.886706487559119
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.22983563204798813,
+      "recall_2-3": 0.4034752129853329,
+      "recall_4-8": 0.6571725556303537,
+      "recall_none<=8": 0.8933024363879574,
+      "solid_correct": 0.8966613959848498,
+      "pore_iou_in_layer": 0.6897794578477079,
+      "pore_iou_vs_rule": 0.8173615025374059,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.5028095466451925,
+      "porosity_error_pp": -13.425484412394084,
+      "miou_3class": 0.7438439819965503,
+      "iou_solid_pore_outside": [
+        0.6033461451679869,
+        0.6697696158927934,
+        0.9584161849288705
+      ],
+      "layer_iou": 0.9624627964882255,
+      "porosity_own_layer_error_pp": -13.869375348817965
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.25525515195166787,
+      "recall_2-3": 0.4306256599642859,
+      "recall_4-8": 0.6811104373095661,
+      "recall_none<=8": 0.9008446346963109,
+      "solid_correct": 0.8811151699031395,
+      "pore_iou_in_layer": 0.6978031451954703,
+      "pore_iou_vs_rule": 0.8197062436542815,
+      "porosity_true": 0.6370643907691333,
+      "porosity_pred": 0.5178015617012228,
+      "porosity_error_pp": -11.926282906791052,
+      "miou_3class": 0.7462790767000517,
+      "iou_solid_pore_outside": [
+        0.6050848659845084,
+        0.6770923424110274,
+        0.9566600217046193
+      ],
+      "layer_iou": 0.9609113029174635,
+      "porosity_own_layer_error_pp": -12.083105053431375
+    }
+  },
+  "faceted": {
+    "rule (start masks)": {
+      "recall_1": 0.5868771353725484,
+      "recall_2-3": 0.7099876109036165,
+      "recall_4-8": 0.7938409721583205,
+      "recall_none<=8": 0.9320420670745453,
+      "solid_correct": 0.5783454936333003,
+      "pore_iou_in_layer": 0.3116745298464273,
+      "pore_iou_vs_rule": 1.0,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.49997262654574104,
+      "porosity_error_pp": 28.00012861178509,
+      "miou_3class": 0.6183302035767855,
+      "iou_solid_pore_outside": [
+        0.5434172057873329,
+        0.31157340494302344,
+        1.0
+      ],
+      "layer_iou": 1.0,
+      "porosity_own_layer_error_pp": 28.123105956100623
+    },
+    "2d_random_v7_s0": {
+      "recall_1": 0.5270899703633699,
+      "recall_2-3": 0.6373781158274493,
+      "recall_4-8": 0.7424824804627087,
+      "recall_none<=8": 0.928437740834526,
+      "solid_correct": 0.8703223288872558,
+      "pore_iou_in_layer": 0.5021017928525512,
+      "pore_iou_vs_rule": 0.4054997362366046,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.26238905554788816,
+      "porosity_error_pp": 4.241771511999801
+    },
+    "zwin_random_v7_s0": {
+      "recall_1": 0.6450594365773938,
+      "recall_2-3": 0.7448648861505653,
+      "recall_4-8": 0.7786446236278995,
+      "recall_none<=8": 0.9164530284204401,
+      "solid_correct": 0.9493532224735833,
+      "pore_iou_in_layer": 0.6666385550678819,
+      "pore_iou_vs_rule": 0.3335745123334002,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.2124834959400783,
+      "porosity_error_pp": -0.7487844487811868
+    },
+    "MillNet-SA2 s0": {
+      "recall_1": 0.5946096609752433,
+      "recall_2-3": 0.7254240009208521,
+      "recall_4-8": 0.8004286064304268,
+      "recall_none<=8": 0.9043031723313568,
+      "solid_correct": 0.4952115179196007,
+      "pore_iou_in_layer": 0.2785520383192354,
+      "pore_iou_vs_rule": 0.7250759885033549,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.5647026693818394,
+      "porosity_error_pp": 34.47313289539493,
+      "miou_3class": 0.5632813032430818,
+      "iou_solid_pore_outside": [
+        0.44746304905321865,
+        0.27309907728564414,
+        0.9692817833903827
+      ],
+      "layer_iou": 0.9513505286623634,
+      "porosity_own_layer_error_pp": 34.76809829326291
+    },
+    "MillNet-SA2 s1": {
+      "recall_1": 0.5921468374166265,
+      "recall_2-3": 0.7205910416837055,
+      "recall_4-8": 0.7977013125379022,
+      "recall_none<=8": 0.9007525833189161,
+      "solid_correct": 0.5008363044125781,
+      "pore_iou_in_layer": 0.2793272426509054,
+      "pore_iou_vs_rule": 0.7215684210661433,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.5595653869662384,
+      "porosity_error_pp": 33.959404653834824,
+      "miou_3class": 0.5633943482854997,
+      "iou_solid_pore_outside": [
+        0.4496948532506604,
+        0.2738023051650175,
+        0.9666858864408213
+      ],
+      "layer_iou": 0.947084522494342,
+      "porosity_own_layer_error_pp": 34.31040162659564
+    },
+    "MillNet-SA2 s2": {
+      "recall_1": 0.6129469175509387,
+      "recall_2-3": 0.7403393824838169,
+      "recall_4-8": 0.814127160632067,
+      "recall_none<=8": 0.9081748740451812,
+      "solid_correct": 0.47932816524382665,
+      "pore_iou_in_layer": 0.27727690253941095,
+      "pore_iou_vs_rule": 0.7155175811477659,
+      "porosity_true": 0.21997134042789016,
+      "porosity_pred": 0.5797448762463118,
+      "porosity_error_pp": 35.977353581842166,
+      "miou_3class": 0.5566959242501692,
+      "iou_solid_pore_outside": [
+        0.4323042876789683,
+        0.2713597316617396,
+        0.9664237534097998
+      ],
+      "layer_iou": 0.9468920316406835,
+      "porosity_own_layer_error_pp": 36.36131900529862
+    }
+  }
+}

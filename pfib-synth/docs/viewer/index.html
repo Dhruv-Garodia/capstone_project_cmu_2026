@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pfib-synth viewer</title>
+<style>
+:root{--bg:#121418;--panel:#1b1e24;--line:#2c313a;--fg:#e6e8eb;--dim:#9aa3ad;--acc:#5ac8fa;--pore:#ff5a3c;--warn:#ffb020}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+header h1{font-size:15px;margin:0;font-weight:600;letter-spacing:.02em}
+header .stats{color:var(--dim);font-variant-numeric:tabular-nums}
+header .sp{flex:1}
+select,button,input[type=file]{background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 9px;font:inherit}
+button{cursor:pointer}button:hover{border-color:var(--acc)}button.on{border-color:var(--acc);color:var(--acc)}
+main{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;padding:12px 16px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.card h2{font-size:12px;font-weight:600;margin:0 0 8px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;display:flex;gap:8px;align-items:center}
+.card h2 .r{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:400}
+#gl{width:100%;aspect-ratio:4/3;display:block;border-radius:6px;background:#0b0c0f;cursor:grab;touch-action:none}
+#gl:active{cursor:grabbing}
+.views{display:grid;gap:10px}
+.cv{width:100%;image-rendering:pixelated;display:block;border-radius:4px;background:#000;cursor:crosshair}
+.row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:8px}
+.row label{color:var(--dim);display:flex;gap:6px;align-items:center}
+input[type=range]{accent-color:var(--acc)}
+#slice{flex:1;min-width:160px}
+.legend{display:flex;gap:12px;color:var(--dim);font-size:12px;flex-wrap:wrap}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+#drop{position:fixed;inset:0;background:rgba(18,20,24,.92);display:none;align-items:center;justify-content:center;font-size:18px;color:var(--acc);border:3px dashed var(--acc);z-index:9}
+#msg{color:var(--warn)}
+.help{color:var(--dim);font-size:12px;margin-top:6px}
+kbd{background:#0b0c0f;border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:11px}
+</style>
+</head>
+<body>
+<header>
+  <h1>pfib-synth viewer</h1>
+  <select id="sample" title="bundled samples"></select>
+  <input type="file" id="file" accept=".pfibv">
+  <span class="stats" id="stats">no stack loaded</span>
+  <span class="sp"></span>
+  <span id="msg"></span>
+</header>
+<main>
+  <section class="card">
+    <h2>3-D block <span class="r">drag to rotate · wheel to zoom · <kbd>space</kbd> mill</span></h2>
+    <canvas id="gl"></canvas>
+    <div class="row">
+      <label>show <select id="mode">
+        <option value="0">milled block (image on every face)</option>
+        <option value="1" selected>solid phase (truth surface)</option>
+        <option value="2">pore space (truth surface)</option>
+        <option value="3">x-ray: solid translucent</option>
+      </select></label>
+      <button id="cut" class="on" title="cut a corner away at the crosshair to see inside">corner cut</button>
+      <button id="follow" class="on" title="the 3-D block is milled to the current slice">mill with slice</button>
+      <button id="spin">auto-rotate</button>
+      <button id="reset">reset view</button>
+    </div>
+    <div class="row">
+      <label>z stretch <input type="range" id="zs" min="0.3" max="2.5" step="0.05" value="1"></label>
+      <label>brightness <input type="range" id="gain" min="0.5" max="2" step="0.05" value="1"></label>
+    </div>
+    <div class="help">The volume is the material in its own coordinates: the ~1.1 px/slice frame drift is removed, so slice <i>z</i> is the face left after milling <i>z</i> slices. Labels are exact.</div>
+  </section>
+  <section class="views">
+    <div class="card">
+      <h2>cut face (x-y), slice <span id="zl">0</span> <span class="r">click to move the crosshair</span></h2>
+      <canvas id="xy" class="cv"></canvas>
+      <div class="row">
+        <button id="play">▶ play</button>
+        <input type="range" id="slice" min="0" max="0" value="0">
+        <label>fps <input type="range" id="fps" min="2" max="40" value="12" style="width:70px"></label>
+      </div>
+      <div class="row">
+        <label>overlay <select id="ov">
+          <option value="img">image only</option>
+          <option value="outline" selected>pore outlines</option>
+          <option value="tint">pores tinted</option>
+          <option value="truth">truth only</option>
+          <option value="split">swipe image / truth</option>
+        </select></label>
+        <label>opacity <input type="range" id="op" min="0" max="1" step="0.05" value="0.55" style="width:80px"></label>
+        <span class="legend"><span><span class="sw" style="background:var(--pore)"></span>pore</span><span><span class="sw" style="background:#3b6fd8"></span>outside layer</span></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>x-z cut at the crosshair row <span class="r">depth runs down</span></h2>
+      <canvas id="xz" class="cv"></canvas>
+    </div>
+    <div class="card">
+      <h2>y-z cut at the crosshair column</h2>
+      <canvas id="yz" class="cv"></canvas>
+    </div>
+  </section>
+</main>
+<div id="drop">drop a .pfibv file</div>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+let V = null;               // {hdr, img, lab, nz, ny, nx}
+let z = 0, cx = 0, cy = 0;  // current slice and crosshair
+let playing = false, spin = false;
+const msg = t => { $("msg").textContent = t || ""; };
+
+// ------------------------------------------------------------------ loading
+async function parse(buf) {
+  let u8 = new Uint8Array(buf);
+  if (u8[0] === 0x1f && u8[1] === 0x8b) {
+    const ds = new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"));
+    u8 = new Uint8Array(await new Response(ds).arrayBuffer());
+  }
+  const hl = new DataView(u8.buffer, u8.byteOffset, 4).getUint32(0, true);
+  const hdr = JSON.parse(new TextDecoder().decode(u8.subarray(4, 4 + hl)));
+  const n = hdr.nz * hdr.ny * hdr.nx, o = 4 + hl;
+  return { hdr, nz: hdr.nz, ny: hdr.ny, nx: hdr.nx, img: u8.subarray(o, o + n), lab: u8.subarray(o + n, o + 2 * n) };
+}
+async function loadURL(url) {
+  msg("loading " + url.split("/").pop() + " …");
+  try { const r = await fetch(url); if (!r.ok) throw new Error(r.status); use(await parse(await r.arrayBuffer())); msg(""); }
+  catch (e) { msg("could not load " + url + " (" + e.message + ")"); }
+}
+async function loadFile(f) { msg("reading " + f.name + " …"); use(await parse(await f.arrayBuffer())); msg(""); }
+function use(v) {
+  V = v; const h = v.hdr;
+  let pore = 0, lay = 0; for (let i = 0; i < v.lab.length; i += 7) { const l = v.lab[i]; if (l !== 2) { lay++; if (l === 0) pore++; } }
+  $("stats").textContent = `${h.name} · ${h.nz} slices × ${h.ny} × ${h.nx} px · ${h.family || ""} in ${h.style || ""} optics · porosity ${(pore / lay).toFixed(3)} (rule: ${h.start_porosity != null ? h.start_porosity.toFixed(3) : "–"})`;
+  $("slice").max = v.nz - 1; z = Math.min(z, v.nz - 1); $("slice").value = z;
+  cx = v.nx >> 1; cy = v.ny >> 1;
+  for (const id of ["xy", "xz", "yz"]) { const c = $(id); }
+  $("xy").width = v.nx; $("xy").height = v.ny;
+  $("xz").width = v.nx; $("xz").height = v.nz;
+  $("yz").width = v.ny; $("yz").height = v.nz;
+  upload(); draw2d(); dirty = true;
+}
+
+// ------------------------------------------------------------------ 2-D views
+const PORE = [255, 90, 60], OUT = [59, 111, 216];
+function paint(cv, w, h, get) {   // get(i,j) -> [imgval, label]
+  const ctx = cv.getContext("2d"), id = ctx.createImageData(w, h), d = id.data;
+  const mode = $("ov").value, a = +$("op").value, g = +$("gain").value;
+  const lab = new Uint8Array(w * h), im = new Uint8Array(w * h);
+  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) { const [p, l] = get(i, j); im[j * w + i] = Math.min(255, p * g); lab[j * w + i] = l; }
+  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
+    const k = j * w + i, p = im[k], l = lab[k]; let r = p, gg = p, b = p;
+    const tv = l === 0 ? 0 : l === 1 ? 255 : 110;
+    if (mode === "truth" || (mode === "split" && i > w * splitX)) { r = gg = b = tv; if (l === 2) { r = 40; gg = 60; b = 110; } }
+    else if (mode === "tint" || mode === "outline") {
+      let on = mode === "tint" ? l === 0 : (l === 0 && ((i > 0 && lab[k - 1] !== 0) || (i < w - 1 && lab[k + 1] !== 0) || (j > 0 && lab[k - w] !== 0) || (j < h - 1 && lab[k + w] !== 0)));
+      if (on) { const aa = mode === "tint" ? a : Math.min(1, a + 0.35); r = r * (1 - aa) + PORE[0] * aa; gg = gg * (1 - aa) + PORE[1] * aa; b = b * (1 - aa) + PORE[2] * aa; }
+      else if (l === 2) { const aa = a * 0.5; r = r * (1 - aa) + OUT[0] * aa; gg = gg * (1 - aa) + OUT[1] * aa; b = b * (1 - aa) + OUT[2] * aa; }
+    }
+    d[4 * k] = r; d[4 * k + 1] = gg; d[4 * k + 2] = b; d[4 * k + 3] = 255;
+  }
+  ctx.putImageData(id, 0, 0);
+  return ctx;
+}
+let splitX = 0.5;
+function cross(ctx, x, y, w, h) {
+  ctx.strokeStyle = "rgba(90,200,250,.8)"; ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+  ctx.beginPath(); if (x != null) { ctx.moveTo(x + .5, 0); ctx.lineTo(x + .5, h); } if (y != null) { ctx.moveTo(0, y + .5); ctx.lineTo(w, y + .5); } ctx.stroke(); ctx.setLineDash([]);
+}
+function draw2d() {
+  if (!V) return;
+  const { nx, ny, nz, img, lab } = V, s = nx * ny;
+  $("zl").textContent = `${z + 1} / ${nz}`;
+  let c = paint($("xy"), nx, ny, (i, j) => [img[z * s + j * nx + i], lab[z * s + j * nx + i]]);
+  cross(c, cx, cy, nx, ny);
+  if ($("ov").value === "split") { c.strokeStyle = "#ffb020"; c.beginPath(); c.moveTo(nx * splitX, 0); c.lineTo(nx * splitX, ny); c.stroke(); }
+  c = paint($("xz"), nx, nz, (i, k) => [img[k * s + cy * nx + i], lab[k * s + cy * nx + i]]); cross(c, cx, z, nx, nz);
+  c = paint($("yz"), ny, nz, (j, k) => [img[k * s + j * nx + cx], lab[k * s + j * nx + cx]]); cross(c, cy, z, ny, nz);
+}
+function pick(cv, e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * cv.width | 0, (e.clientY - r.top) / r.height * cv.height | 0]; }
+$("xy").addEventListener("pointerdown", e => { if (!V) return; const [x, y] = pick($("xy"), e); if ($("ov").value === "split" && e.shiftKey) { splitX = x / V.nx; } else { cx = x; cy = y; } draw2d(); dirty = true; });
+$("xy").addEventListener("pointermove", e => { if (!V || $("ov").value !== "split" || e.buttons) return; splitX = pick($("xy"), e)[0] / V.nx; draw2d(); });
+$("xz").addEventListener("pointerdown", e => { if (!V) return; const [x, k] = pick($("xz"), e); cx = x; setZ(k); });
+$("yz").addEventListener("pointerdown", e => { if (!V) return; const [y, k] = pick($("yz"), e); cy = y; setZ(k); });
+function setZ(k) { z = Math.max(0, Math.min(V.nz - 1, k)); $("slice").value = z; draw2d(); dirty = true; }
+$("slice").oninput = e => setZ(+e.target.value);
+for (const id of ["ov", "op", "gain"]) $(id).oninput = () => { draw2d(); dirty = true; };
+$("play").onclick = () => { playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play"; };
+let last = 0;
+function tick(t) {
+  if (playing && V && t - last > 1000 / +$("fps").value) { last = t; setZ((z + 1) % V.nz); }
+  if (spin) { yaw += 0.006; dirty = true; }
+  if (dirty) render();
+  requestAnimationFrame(tick);
+}
+
+// ------------------------------------------------------------------ 3-D
+const gl = $("gl").getContext("webgl2", { antialias: false, preserveDrawingBuffer: true });
+let dirty = true, yaw = 2.45, pitch = 0.42, dist = 2.6, texI = null, texL = null, prog = null;
+const VS = `#version 300 es
+in vec2 p; out vec2 uv; void main(){ uv = p; gl_Position = vec4(p, 0., 1.); }`;
+const FS = `#version 300 es
+precision highp float; precision highp sampler3D;
+in vec2 uv; out vec4 o;
+uniform sampler3D I, L; uniform vec3 E;            // box half-extents (world)
+uniform vec3 C; uniform mat3 R; uniform float aspect, zcut, gain; uniform int mode, cut; uniform vec2 cc; // crosshair (u, v)
+uniform vec3 N;                                     // voxels
+vec3 tex(vec3 p){ return vec3(p.x / (2.*E.x) + .5, .5 - p.y / (2.*E.y), p.z / (2.*E.z) + .5); }
+bool keep(vec3 t){
+  if (any(lessThan(t, vec3(0.))) || any(greaterThan(t, vec3(1.)))) return false;
+  if (t.z < zcut) return false;
+  if (cut == 1 && t.x > cc.x && t.y < cc.y) return false;
+  return true;
+}
+float solid(vec3 t){ return texture(L, t).r; }
+float pore(vec3 t){ vec2 s = texture(L, t).rg; return 1. - s.r - s.g; }
+float field(vec3 t){ return mode == 2 ? pore(t) : solid(t); }
+vec3 grad(vec3 t){ vec3 h = 1. / N; return vec3(field(t + vec3(h.x,0,0)) - field(t - vec3(h.x,0,0)), field(t + vec3(0,h.y,0)) - field(t - vec3(0,h.y,0)), field(t + vec3(0,0,h.z)) - field(t - vec3(0,0,h.z))); }
+vec3 bg(){ return mix(vec3(.04,.045,.055), vec3(.09,.10,.12), uv.y * .5 + .5); }
+void main(){
+  vec3 ro = C, rd = normalize(R * vec3(uv.x * aspect, uv.y, -1.8));
+  vec3 inv = 1. / rd, t0 = (-E - ro) * inv, t1 = (E - ro) * inv;
+  vec3 tmin = min(t0, t1), tmax = max(t0, t1);
+  float a = max(max(tmin.x, tmin.y), tmin.z), b = min(min(tmax.x, tmax.y), tmax.z);
+  if (b <= max(a, 0.)) { o = vec4(bg(), 1.); return; }
+  a = max(a, 0.);
+  float dt = length(2. * E) / 700.;
+  vec3 acc = vec3(0.); float alpha = 0.; bool first = true; vec3 ld = normalize(vec3(.5, .8, .6));
+  for (int i = 0; i < 900; i++) {
+    float t = a + float(i) * dt; if (t > b) break;
+    vec3 p = ro + rd * t, q = tex(p);
+    if (!keep(q)) continue;
+    float im = texture(I, q).r * gain;
+    if (mode == 0) { o = vec4(vec3(im), 1.); return; }
+    if (mode == 3) {                                   // translucent solid, coloured by the image
+      float s = solid(q), out_ = texture(L, q).g;
+      float da = clamp(s * .03 + out_ * .006, 0., 1.);
+      vec3 col = mix(vec3(.85,.72,.55), vec3(1.), .3) * (.35 + .9 * im);
+      if (out_ > .5) col = vec3(.25,.35,.6);
+      acc += (1. - alpha) * da * col; alpha += (1. - alpha) * da;
+      if (alpha > .97) break; first = false; continue;
+    }
+    float f = field(q);
+    if (f > .5) {
+      if (first) {                                     // a cut face: show what the beam would image
+        float l = texture(L, q).g;
+        vec3 col = vec3(im); if (mode == 2) col = mix(vec3(im), vec3(1., .35, .24), .55);
+        if (l > .5 && mode == 1) col = mix(col, vec3(.23,.43,.85), .35);
+        o = vec4(col, 1.); return;
+      }
+      float lo = t - dt, hi = t;                       // refine the surface
+      for (int k = 0; k < 5; k++) { float m = .5 * (lo + hi); if (field(tex(ro + rd * m)) > .5) hi = m; else lo = m; }
+      q = tex(ro + rd * hi);
+      vec3 g = grad(q); vec3 n = normalize(vec3(-g.x / E.x, g.y / E.y, -g.z / E.z) + 1e-6);
+      float d = max(dot(n, ld), 0.), sp = pow(max(dot(reflect(-ld, n), -rd), 0.), 24.);
+      vec3 base = mode == 2 ? vec3(1., .42, .3) : vec3(.86, .74, .58);
+      if (mode == 1 && texture(L, q).g > .5) base = vec3(.35,.5,.85);
+      vec3 col = base * (.22 + .78 * d) + .25 * sp;
+      col *= 1. - .35 * (t - a) / (b - a);
+      o = vec4(col, 1.); return;
+    }
+    first = false;
+  }
+  o = vec4(mix(bg(), acc / max(alpha, 1e-3), alpha), 1.);
+}`;
+function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+function init() {
+  if (!gl) { msg("WebGL2 not available: the 3-D view is off, the slice views still work"); return; }
+  prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+}
+function upload() {
+  if (!gl || !prog) return;
+  const { nx, ny, nz, img, lab } = V;
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  if (texI) { gl.deleteTexture(texI); gl.deleteTexture(texL); }
+  texI = gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D, texI);
+  gl.texImage3D(gl.TEXTURE_3D, 0, gl.R8, nx, ny, nz, 0, gl.RED, gl.UNSIGNED_BYTE, img);
+  for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D, k, v);
+  const rg = new Uint8Array(nx * ny * nz * 2);
+  for (let i = 0; i < lab.length; i++) { rg[2 * i] = lab[i] === 1 ? 255 : 0; rg[2 * i + 1] = lab[i] === 2 ? 255 : 0; }
+  texL = gl.createTexture(); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_3D, texL);
+  gl.texImage3D(gl.TEXTURE_3D, 0, gl.RG8, nx, ny, nz, 0, gl.RG, gl.UNSIGNED_BYTE, rg);
+  for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D, k, v);
+}
+function render() {
+  dirty = false; const cv = $("gl");
+  const w = cv.clientWidth * devicePixelRatio | 0, h = cv.clientHeight * devicePixelRatio | 0;
+  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+  if (!gl || !prog || !V) { if (gl) { gl.clearColor(.05, .055, .065, 1); gl.clear(gl.COLOR_BUFFER_BIT); } return; }
+  gl.viewport(0, 0, w, h); gl.useProgram(prog);
+  // world box: x right, y up, z = milling depth; z stretched by slice thickness (zlen = slices per px)
+  const zs = +$("zs").value / (V.hdr.zlen || 1), m = Math.max(V.nx, V.ny, V.nz * zs);
+  const E = [V.nx / m, V.ny / m, V.nz * zs / m];
+  const cy_ = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+  const fwd = [-sy * cp, -sp, -cy_ * cp];                  // camera looks along fwd
+  const C = [-fwd[0] * dist, -fwd[1] * dist, -fwd[2] * dist];
+  const right = [cy_, 0, -sy], up = [right[1] * fwd[2] - right[2] * fwd[1], right[2] * fwd[0] - right[0] * fwd[2], right[0] * fwd[1] - right[1] * fwd[0]];
+  // R maps camera (x right, y up, -z forward) to world
+  const R = [right[0], right[1], right[2], up[0], up[1], up[2], -fwd[0], -fwd[1], -fwd[2]];
+  const U = n => gl.getUniformLocation(prog, n);
+  gl.uniform1i(U("I"), 0); gl.uniform1i(U("L"), 1);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D, texI); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_3D, texL);
+  gl.uniform3fv(U("E"), E); gl.uniform3fv(U("C"), C); gl.uniformMatrix3fv(U("R"), false, R);
+  gl.uniform1f(U("aspect"), w / h); gl.uniform1f(U("zcut"), $("follow").classList.contains("on") ? z / V.nz : 0);
+  gl.uniform1f(U("gain"), +$("gain").value); gl.uniform1i(U("mode"), +$("mode").value);
+  gl.uniform1i(U("cut"), $("cut").classList.contains("on") ? 1 : 0); gl.uniform2f(U("cc"), cx / V.nx, cy / V.ny);
+  gl.uniform3f(U("N"), V.nx, V.ny, V.nz);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+// orbit
+let drag = null;
+$("gl").addEventListener("pointerdown", e => { drag = [e.clientX, e.clientY, yaw, pitch]; $("gl").setPointerCapture(e.pointerId); });
+$("gl").addEventListener("pointermove", e => { if (!drag) return; yaw = drag[2] - (e.clientX - drag[0]) * 0.008; pitch = Math.max(-1.45, Math.min(1.45, drag[3] + (e.clientY - drag[1]) * 0.008)); dirty = true; });
+$("gl").addEventListener("pointerup", () => drag = null);
+$("gl").addEventListener("wheel", e => { e.preventDefault(); dist = Math.max(1.2, Math.min(7, dist * Math.exp(e.deltaY * 0.001))); dirty = true; }, { passive: false });
+for (const id of ["cut", "follow", "spin"]) $(id).onclick = () => { $(id).classList.toggle("on"); if (id === "spin") spin = $(id).classList.contains("on"); dirty = true; };
+$("reset").onclick = () => { yaw = 2.45; pitch = 0.42; dist = 2.6; dirty = true; };
+for (const id of ["mode", "zs"]) $(id).oninput = () => dirty = true;
+addEventListener("resize", () => dirty = true);
+addEventListener("keydown", e => {
+  if (!V || e.target.tagName === "SELECT") return;
+  if (e.code === "Space") { e.preventDefault(); $("play").click(); }
+  if (e.code === "ArrowRight" || e.code === "ArrowDown") setZ(z + 1);
+  if (e.code === "ArrowLeft" || e.code === "ArrowUp") setZ(z - 1);
+});
+// file / drop / samples
+$("file").onchange = e => e.target.files[0] && loadFile(e.target.files[0]);
+addEventListener("dragover", e => { e.preventDefault(); $("drop").style.display = "flex"; });
+addEventListener("dragleave", e => { if (e.target === $("drop")) $("drop").style.display = "none"; });
+addEventListener("drop", e => { e.preventDefault(); $("drop").style.display = "none"; const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+async function samples() {
+  const q = new URLSearchParams(location.search), sel = $("sample");
+  let list = [];
+  try { const r = await fetch("data/samples.json"); if (r.ok) list = await r.json(); } catch (e) {}
+  sel.innerHTML = '<option value="">bundled samples…</option>' + list.map(s => `<option value="${s.file}">${s.label}</option>`).join("");
+  sel.onchange = () => sel.value && loadURL("data/" + sel.value);
+  const want = q.get("data") || (location.hash.length > 1 ? "data/" + location.hash.slice(1) + ".pfibv" : null);
+  if (q.get("mode")) $("mode").value = q.get("mode");
+  if (q.get("ov")) $("ov").value = q.get("ov");
+  if (q.get("spin")) $("spin").click();
+  if (q.get("yaw")) yaw = +q.get("yaw"); if (q.get("pitch")) pitch = +q.get("pitch"); if (q.get("dist")) dist = +q.get("dist");
+  if (q.get("cut") === "0") $("cut").classList.remove("on");
+  const hit = want && list.find(s => want.endsWith(s.file)); if (hit) sel.value = hit.file;
+  if (want) await loadURL(want); else if (list.length) { sel.value = list[0].file; await loadURL("data/" + list[0].file); }
+  if (V && q.get("z")) setZ(+q.get("z"));
+  else msg("open or drop a .pfibv file (python tools/export_viewer.py PACKAGE)");
+}
+try { init(); } catch (e) { msg("3-D view failed: " + e.message); console.error(e); }
+samples(); requestAnimationFrame(tick);
+</script>
+</body>
+</html>

@@ -1,0 +1,801 @@
+{
+  "comp": {
+    "optics": {
+      "depth": 24,
+      "a1": 0.15384966828698615,
+      "lam": 80.0,
+      "drift": 1.103,
+      "parallax": 0.235,
+      "sigma0": 0.9,
+      "sigma_k": 0.2,
+      "edge_gain": 0.7,
+      "edge_width": 1.6,
+      "g_empty": 98.64582369586105,
+      "gain": 50.662824068128856,
+      "illum_amp": 10.139053720982044,
+      "illum_scale": 0.33,
+      "curtain_amp": 3.5,
+      "bright_frac": 0.0,
+      "bright_boost": 1.0,
+      "dose": 588.1894958247145,
+      "read_noise": 1.4961164832876364,
+      "weights": [
+        0.48451144409226754,
+        0.1933301821438974,
+        0.10922815354345518,
+        0.08446373094451279,
+        0.07670812491690558,
+        0.07383383104223742,
+        0.07236615921131372,
+        0.07130949338692939,
+        0.07037848539561174,
+        0.06949128344870677,
+        0.06862433966741929,
+        0.06777081172712084,
+        0.06692864471394169,
+        0.06609715650474088,
+        0.06527605944749691,
+        0.06446518005363729,
+        0.06366437867431572,
+        0.06287352647322644,
+        0.06209249881532563,
+        0.06132117335896162,
+        0.06055942949572444,
+        0.05980714817659152,
+        0.059064211848915235,
+        0.05833050442533127
+      ]
+    },
+    "standin": {
+      "family": "compressed",
+      "porosity": 0.417,
+      "corr_z": 4.275390625,
+      "corr_xy": 6.291015625,
+      "hetero_amp": 0.0,
+      "bright_frac": 0.0
+    },
+    "score": 1.2320252173821455,
+    "structure": {
+      "achieved": {
+        "mean_depth": 6.762537680755583,
+        "frac_d1": 0.059620844399670296,
+        "frac_deeper": 0.5217160015822507,
+        "pore_r50": 4.0,
+        "pore_r90": 8.0,
+        "corr_xy": 6.291015625,
+        "hetero_amp": 0.0
+      },
+      "target": {
+        "pore_depth_to_solid_frac": {
+          "1": 0.081,
+          "2": 0.0959,
+          "3": 0.0635,
+          "4": 0.058,
+          "5": 0.0597,
+          "6": 0.0432,
+          "7": 0.0372,
+          "8": 0.0399,
+          "9": 0.5217
+        },
+        "mean_depth": 6.527,
+        "frac_shallow_d1": 0.081,
+        "frac_deeper_than_8": 0.5217
+      }
+    },
+    "achieved": {
+      "pore_mean": 144.07,
+      "pore_std": 28.24,
+      "solid_mean": 221.88,
+      "solid_std": 24.4,
+      "contrast_mean_gap": 77.81,
+      "best_global_threshold": 185,
+      "best_global_balanced_acc": 0.9148,
+      "saturated_either_frac": 0.05946,
+      "local_background_spread_p5_p95": 30.5,
+      "hf_noise_solid": 10.31,
+      "p10": 123.0,
+      "p50": 199.0,
+      "p90": 247.0,
+      "frac_above_239": 0.16615,
+      "iqr": 81.0,
+      "depth_curve": {
+        "1": 190.83,
+        "2": 173.91,
+        "3": 165.85,
+        "4": 155.33,
+        "5": 152.52,
+        "6": 149.71,
+        "7": 146.75,
+        "8": 144.25,
+        "9": 128.39
+      }
+    },
+    "targets": {
+      "pore_mean": 143.24,
+      "pore_std": 36.26,
+      "solid_mean": 221.76,
+      "solid_std": 27.5,
+      "sat": 0.09308,
+      "bg": 31.3,
+      "baseline": 128.4,
+      "excess": {
+        "1": 48.78,
+        "2": 40.129999999999995,
+        "3": 31.769999999999982,
+        "4": 27.25,
+        "5": 24.97,
+        "6": 19.98999999999998,
+        "7": 17.169999999999987,
+        "8": 16.659999999999997
+      },
+      "drift": 1.103,
+      "parallax": 0.235,
+      "acc": 0.8918,
+      "hf": 10.31,
+      "p50": 196.0,
+      "p10": 120.0,
+      "p90": 253.0,
+      "iqr": 75.0,
+      "frac_bright": 0.20325490865523788
+    },
+    "material": {
+      "family": "catalyst",
+      "porosity": 0.417,
+      "corr": [
+        6.0,
+        4.0,
+        4.0
+      ],
+      "y_stretch": 1.4,
+      "rough": 0.5,
+      "tex_amp": 0.3,
+      "macro_amp": 0.45,
+      "macro_frac": 0.15,
+      "rim": 1.0,
+      "rough_sigma": 1.3,
+      "hetero": 0.4
+    },
+    "relevel_note": "g_empty/gain/edge_gain/dose refitted for the v2 catalyst structure (relevel.py); everything else as optics.json",
+    "see_through": {
+      "params": {
+        "family": "spheres",
+        "smooth": 5.74345706576633,
+        "cos_floor": 0.2,
+        "secant": 1.2731236153769214,
+        "escape": 2.4797734735384274,
+        "defocus": 0.00965601499525544,
+        "hole_len": 6.307866855709419,
+        "hole_floor_frac": 0.7331429760472878,
+        "depth": 80,
+        "face_smooth": 0.8304436696373971,
+        "sigma0": 1.174346282723361,
+        "hit_albedo": true,
+        "mat": {
+          "r_med": 0.7125627286800813,
+          "r_spread": 0.4816893401265199,
+          "cluster_sigma": [
+            30.325222942445237,
+            25.27101911870436,
+            20.216815294963492
+          ],
+          "per_cluster": 149.45789940571254,
+          "film": 2.076026860248773,
+          "film_cover": 0.37662106785172556,
+          "fill": 0.5346923059122616,
+          "macro_frac": 0.5000526398789805,
+          "rim": 0.5250815105852971
+        },
+        "shade_floor": 0.3
+      },
+      "tone": [
+        1.135149795515233,
+        -21.527665501103556
+      ],
+      "score": 0.7939186166442767,
+      "feature_gap": 0.5454567670822144,
+      "metric_gap": 0.4969236991241245,
+      "note": "deep refit (fit_see_through.refine with depth 80, defocus <= 0.05, shade floor): the 24-slice search left 13-30% of pore pixels with no hit, rendered as a featureless fade; real beams see deeper surfaces. Scorer caps each feature gap at 5 real sd."
+    },
+    "see_through_24": {
+      "params": {
+        "family": "spheres",
+        "smooth": 2.547393568518162,
+        "cos_floor": 0.2,
+        "secant": 0.6667371385808288,
+        "escape": 3.55536574473596,
+        "defocus": 0.0866451214608898,
+        "hole_len": 5.104127323292825,
+        "hole_floor_frac": 0.7444095248303776,
+        "depth": 24,
+        "face_smooth": 0.824643355533371,
+        "sigma0": 1.4197853574652055,
+        "hit_albedo": true,
+        "mat": {
+          "r_med": 2.528014448527055,
+          "r_spread": 0.2910045523637579,
+          "cluster_sigma": [
+            19.039522000192914,
+            15.866268333494096,
+            12.693014666795277
+          ],
+          "per_cluster": 224.97843702627594,
+          "film": 2.318342406460484,
+          "film_cover": 0.7930483309004305,
+          "fill": 0.9136667529317377,
+          "macro_frac": 0.3627174010565416,
+          "rim": 0.8888279378361874
+        }
+      },
+      "tone": [
+        1.1585508783611551,
+        -9.582526584888328
+      ],
+      "score": 0.6727564025666497,
+      "feature_gap": 0.4574991464614868,
+      "metric_gap": 0.43051451221032566,
+      "note": "random search + refinement against real ROI statistics (fit_see_through.py); renderer microscope.render_surface"
+    },
+    "v5": {
+      "depth": 80,
+      "smooth": 1.0,
+      "secant": 1.0,
+      "escape": 4.0,
+      "comp_amp": 0.18,
+      "comp_sig": 4.0,
+      "fun_lam": 3,
+      "edge": 0.8,
+      "esc": 2.5,
+      "lump_amp": 0.06,
+      "curtain_amp": 0.08,
+      "curtain_w": 10,
+      "hole_floor": 0.35,
+      "fun_mix": 0.3,
+      "fun_floor": 40,
+      "sigma_y": 1.2,
+      "sigma_x": 1.0,
+      "voro": {
+        "warp": 4.5,
+        "warp_sig": [
+          4,
+          6,
+          5
+        ],
+        "big": 40,
+        "small": 10,
+        "p_big": 0.3,
+        "patch": 0.8
+      },
+      "grain": 10.699155807495117,
+      "grain_ref": 200.0
+    },
+    "v5_note": "tuned by blind 4x4 tests on 140 px patches (blind_gen.py): pristine at chance (14/32), comp 14/16, uncomp 28/32 correct by the author"
+  },
+  "uncomp": {
+    "optics": {
+      "depth": 24,
+      "a1": 0.15305166627171168,
+      "lam": 80.0,
+      "drift": 1.093,
+      "parallax": 0.191,
+      "sigma0": 0.9,
+      "sigma_k": 0.45,
+      "edge_gain": 0.0,
+      "edge_width": 1.6,
+      "g_empty": 83.4679082445827,
+      "gain": 50.250034041286646,
+      "illum_amp": 17.669863584298277,
+      "illum_scale": 0.33,
+      "curtain_amp": 3.5,
+      "bright_frac": 0.0,
+      "bright_boost": 1.0,
+      "dose": 604.3950286671075,
+      "read_noise": 2.3296022191067816,
+      "weights": [
+        0.45409997181916834,
+        0.19635558942768885,
+        0.15979792769430853,
+        0.15319544998422624,
+        0.1506675235360492,
+        0.14871133020974392,
+        0.146852562917593,
+        0.14502678210584063,
+        0.14322502085352265,
+        0.1414458226997051,
+        0.13968875063129166,
+        0.1379535085825653,
+        0.1362398225060602,
+        0.13454742424069452,
+        0.13287604929245425,
+        0.13122543649838422,
+        0.12959532794590015,
+        0.12798546892709214,
+        0.12639560789819526,
+        0.12482549644018669,
+        0.12327488921995636,
+        0.12174354395197141,
+        0.1202312213604181,
+        0.11873768514181468
+      ]
+    },
+    "standin": {
+      "family": "agglomerate",
+      "porosity": 0.558,
+      "corr_z": 6.169921875,
+      "corr_xy": 3.419921875,
+      "hetero_amp": 0.0,
+      "bright_frac": 0.0
+    },
+    "score": 1.0475927472439643,
+    "structure": {
+      "achieved": {
+        "mean_depth": 7.656881112897753,
+        "frac_d1": 0.03287060940888371,
+        "frac_deeper": 0.6964506468791951,
+        "pore_r50": 5.0,
+        "pore_r90": 7.810249675906654,
+        "corr_xy": 3.419921875,
+        "hetero_amp": 0.0
+      },
+      "target": {
+        "pore_depth_to_solid_frac": {
+          "1": 0.0431,
+          "2": 0.0576,
+          "3": 0.0379,
+          "4": 0.0366,
+          "5": 0.034,
+          "6": 0.041,
+          "7": 0.0269,
+          "8": 0.0261,
+          "9": 0.6968
+        },
+        "mean_depth": 7.502,
+        "frac_shallow_d1": 0.0431,
+        "frac_deeper_than_8": 0.6968
+      }
+    },
+    "achieved": {
+      "pore_mean": 144.47,
+      "pore_std": 35.38,
+      "solid_mean": 228.42,
+      "solid_std": 28.12,
+      "contrast_mean_gap": 83.94,
+      "best_global_threshold": 187,
+      "best_global_balanced_acc": 0.8869,
+      "saturated_either_frac": 0.13758,
+      "local_background_spread_p5_p95": 35.4,
+      "hf_noise_solid": 9.92,
+      "p10": 111.0,
+      "p50": 180.0,
+      "p90": 255.0,
+      "frac_above_239": 0.21509,
+      "iqr": 96.0,
+      "depth_curve": {
+        "1": 201.42,
+        "2": 187.35,
+        "3": 179.79,
+        "4": 169.28,
+        "5": 163.46,
+        "6": 162.32,
+        "7": 157.18,
+        "8": 153.91,
+        "9": 132.3
+      }
+    },
+    "targets": {
+      "pore_mean": 143.86,
+      "pore_std": 41.47,
+      "solid_mean": 227.12,
+      "solid_std": 26.13,
+      "sat": 0.12083,
+      "bg": 36.2,
+      "baseline": 132.37,
+      "excess": {
+        "1": 54.09,
+        "2": 46.99000000000001,
+        "3": 39.69,
+        "4": 35.47,
+        "5": 31.50999999999999,
+        "6": 30.94999999999999,
+        "7": 25.349999999999994,
+        "8": 22.75
+      },
+      "drift": 1.093,
+      "parallax": 0.191,
+      "acc": 0.8904,
+      "hf": 9.52,
+      "p50": 190.0,
+      "p10": 105.0,
+      "p90": 255.0,
+      "iqr": 83.0,
+      "frac_bright": 0.2109632943903589
+    },
+    "material": {
+      "family": "catalyst",
+      "porosity": 0.558,
+      "corr": [
+        6.2,
+        3.4,
+        3.4
+      ],
+      "y_stretch": 1.2,
+      "rough": 0.5,
+      "tex_amp": 0.3,
+      "macro_amp": 0.9,
+      "macro_frac": 0.25,
+      "rim": 1.0,
+      "rough_sigma": 1.3,
+      "hetero": 0.4
+    },
+    "relevel_note": "g_empty/gain/edge_gain/dose refitted for the v2 catalyst structure (relevel.py); everything else as optics.json",
+    "see_through": {
+      "params": {
+        "family": "spheres",
+        "smooth": 1.4021904799309948,
+        "cos_floor": 0.2,
+        "secant": 0.48145629313651095,
+        "escape": 2.5417643482733934,
+        "defocus": 0.016522318047159666,
+        "hole_len": 3.5048934606666613,
+        "hole_floor_frac": 0.6005793346967359,
+        "depth": 80,
+        "face_smooth": 1.7991354906956507,
+        "sigma0": 1.0724682462691806,
+        "hit_albedo": true,
+        "mat": {
+          "r_med": 3.080796650996944,
+          "r_spread": 0.7489019234097987,
+          "cluster_sigma": [
+            11.017494966772912,
+            9.18124580564409,
+            7.344996644515275
+          ],
+          "per_cluster": 107.95737519988553,
+          "film": 2.941096865466091,
+          "film_cover": 0.98,
+          "fill": 0.34106535158495715,
+          "macro_frac": 0.051264853236315314,
+          "rim": 0.12626618584203303
+        },
+        "shade_floor": 0.43485460350505045
+      },
+      "tone": [
+        1.1654688665709745,
+        10.354348316677275
+      ],
+      "score": 0.9704027675538021,
+      "feature_gap": 0.5375971794128418,
+      "metric_gap": 0.8656111762819206,
+      "note": "deep refit (fit_see_through.refine with depth 80, defocus <= 0.05, shade floor): the 24-slice search left 13-30% of pore pixels with no hit, rendered as a featureless fade; real beams see deeper surfaces. Scorer caps each feature gap at 5 real sd."
+    },
+    "see_through_24": {
+      "params": {
+        "family": "spheres",
+        "smooth": 1.1892836629244328,
+        "cos_floor": 0.2,
+        "secant": 0.7797229453380522,
+        "escape": 3.298776606739504,
+        "defocus": 0.08943152822887182,
+        "hole_len": 3.850728171236763,
+        "hole_floor_frac": 0.75,
+        "depth": 24,
+        "face_smooth": 0.8277593673855028,
+        "sigma0": 0.7620815298477843,
+        "hit_albedo": true,
+        "mat": {
+          "r_med": 2.161666101106007,
+          "r_spread": 0.7502002697246063,
+          "cluster_sigma": [
+            11.834224700346912,
+            9.86185391695576,
+            7.889483133564609
+          ],
+          "per_cluster": 275.04819201153987,
+          "film": 1.7835205274253079,
+          "film_cover": 0.9134169624463535,
+          "fill": 0.40482048839161583,
+          "macro_frac": 0.051157227010181154,
+          "rim": 0.25656801843833643
+        }
+      },
+      "tone": [
+        0.8889171560202701,
+        48.21884721661853
+      ],
+      "score": 1.1092565854245007,
+      "feature_gap": 0.8533254265785217,
+      "metric_gap": 0.5118623176919577,
+      "note": "random search + refinement against real ROI statistics (fit_see_through.py); renderer microscope.render_surface; hole_floor_frac 0.29 -> 0.75 after full packages showed near-black pits (hist bin 16-31) absent from real"
+    },
+    "v5": {
+      "depth": 80,
+      "smooth": 1.0,
+      "secant": 1.0,
+      "escape": 4.0,
+      "comp_amp": 0.18,
+      "comp_sig": 4.0,
+      "fun_lam": 3,
+      "edge": 0.8,
+      "esc": 2.5,
+      "lump_amp": 0.06,
+      "curtain_amp": 0.08,
+      "curtain_w": 10,
+      "hole_floor": 0.3,
+      "fun_mix": 0.4,
+      "fun_floor": 35,
+      "sigma_y": 1.2,
+      "sigma_x": 1.0,
+      "voro": {
+        "warp": 4.5,
+        "warp_sig": [
+          4,
+          6,
+          5
+        ],
+        "big": 45,
+        "small": 12,
+        "p_big": 0.4,
+        "patch": 0.6
+      },
+      "grain": 10.16108226776123,
+      "grain_ref": 190.0
+    },
+    "v5_note": "tuned by blind 4x4 tests on 140 px patches (blind_gen.py): pristine at chance (14/32), comp 14/16, uncomp 28/32 correct by the author"
+  },
+  "pristine": {
+    "optics": {
+      "depth": 24,
+      "a1": 0.06768768992757776,
+      "lam": 80.0,
+      "drift": 0.103,
+      "parallax": 0.196,
+      "sigma0": 0.9,
+      "sigma_k": 0.0,
+      "edge_gain": 0.35,
+      "edge_width": 1.6,
+      "g_empty": 82.91999694726188,
+      "gain": 26.842649930272984,
+      "illum_amp": 5.469051342496894,
+      "illum_scale": 0.33,
+      "curtain_amp": 1.8,
+      "bright_frac": 0.45,
+      "bright_boost": 1.1712147393733685,
+      "dose": 128.84140188570674,
+      "read_noise": 4.78107185255904,
+      "weights": [
+        0.3373051575335087,
+        0.22603886715796326,
+        0.1617956206592019,
+        0.12453702291720761,
+        0.10276591387007947,
+        0.0898856970619316,
+        0.08211149193385252,
+        0.0772716502959473,
+        0.07412012229409538,
+        0.07194192402190074,
+        0.07032677320430912,
+        0.06903921188771751,
+        0.06794408888022681,
+        0.0669638050380216,
+        0.06605378259347691,
+        0.06518839058965369,
+        0.064352869541709,
+        0.06353869817537605,
+        0.06274093506904102,
+        0.06195669340361773,
+        0.061184265836998236,
+        0.06042262238980351,
+        0.05967112234774224,
+        0.058929348956828775
+      ]
+    },
+    "standin": {
+      "family": "agglomerate",
+      "porosity": 0.515,
+      "corr_z": 6.018359375,
+      "corr_xy": 4.896484375,
+      "hetero_amp": 0.0,
+      "bright_frac": 0.45
+    },
+    "score": 1.0074122243372676,
+    "structure": {
+      "achieved": {
+        "mean_depth": 7.628595745997849,
+        "frac_d1": 0.035930766076305874,
+        "frac_deeper": 0.6923949459545198,
+        "pore_r50": 5.385164807134504,
+        "pore_r90": 10.198039027185569,
+        "corr_xy": 4.896484375,
+        "hetero_amp": 0.0
+      },
+      "target": {
+        "pore_depth_to_solid_frac": {
+          "1": 0.0417,
+          "2": 0.0544,
+          "3": 0.037,
+          "4": 0.0372,
+          "5": 0.0359,
+          "6": 0.0439,
+          "7": 0.0292,
+          "8": 0.0287,
+          "9": 0.6919
+        },
+        "mean_depth": 7.515,
+        "frac_shallow_d1": 0.0417,
+        "frac_deeper_than_8": 0.6919
+      }
+    },
+    "achieved": {
+      "pore_mean": 98.26,
+      "pore_std": 23.23,
+      "solid_mean": 154.27,
+      "solid_std": 25.46,
+      "contrast_mean_gap": 56.01,
+      "best_global_threshold": 125,
+      "best_global_balanced_acc": 0.8678,
+      "saturated_either_frac": 0.0,
+      "local_background_spread_p5_p95": 15.8,
+      "hf_noise_solid": 17.72,
+      "p10": 77.0,
+      "p50": 122.0,
+      "p90": 175.0,
+      "frac_above_239": 5e-05,
+      "iqr": 61.0,
+      "depth_curve": {
+        "1": 138.85,
+        "2": 128.36,
+        "3": 123.85,
+        "4": 118.23,
+        "5": 113.84,
+        "6": 113.65,
+        "7": 110.14,
+        "8": 107.15,
+        "9": 89.49
+      }
+    },
+    "targets": {
+      "pore_mean": 97.77,
+      "pore_std": 31.5,
+      "solid_mean": 153.46,
+      "solid_std": 24.1,
+      "sat": 4e-05,
+      "bg": 18.1,
+      "baseline": 89.56,
+      "excess": {
+        "1": 37.56999999999999,
+        "2": 32.849999999999994,
+        "3": 29.0,
+        "4": 26.599999999999994,
+        "5": 23.879999999999995,
+        "6": 21.769999999999996,
+        "7": 19.349999999999994,
+        "8": 17.75999999999999
+      },
+      "drift": 0.103,
+      "parallax": 0.196,
+      "acc": 0.8427,
+      "hf": 17.86,
+      "p50": 128.0,
+      "p10": 71.0,
+      "p90": 175.0,
+      "iqr": 55.0,
+      "frac_bright": 0.0001018165700521208
+    },
+    "material": {
+      "family": "catalyst",
+      "porosity": 0.515,
+      "corr": [
+        6.0,
+        4.9,
+        4.9
+      ],
+      "y_stretch": 1.2,
+      "rough": 0.5,
+      "tex_amp": 0.3,
+      "macro_amp": 0.9,
+      "macro_frac": 0.25,
+      "rim": 1.0,
+      "rough_sigma": 1.3,
+      "hetero": 0.4
+    },
+    "relevel_note": "g_empty/gain/edge_gain/dose refitted for the v2 catalyst structure (relevel.py); everything else as optics.json; curtain_amp 3.5 -> 1.8 (column-profile sd in the cap: real 1.8, synthetic 3.6 at 3.5)",
+    "see_through": {
+      "params": {
+        "family": "catalyst",
+        "smooth": 3.2306078985652693,
+        "cos_floor": 0.2,
+        "secant": 1.3666254183072446,
+        "escape": 2.9602998811283006,
+        "defocus": 0.03491546683280207,
+        "hole_len": 2.95224000677447,
+        "hole_floor_frac": 0.4876287759249628,
+        "depth": 80,
+        "face_smooth": 0.3465169016912229,
+        "sigma0": 1.3141715711818656,
+        "hit_albedo": true,
+        "mat": {
+          "corr_scale": 2.0629501218972295,
+          "rough": 0.3855591466263815,
+          "rough_sigma": 0.41190047660076234,
+          "tex_amp": 0.067704307244167,
+          "rim": 0.7971552571469073,
+          "macro_frac": 0.03012617423592704,
+          "macro_amp": 0.2671984623922373
+        },
+        "shade_floor": 0.3
+      },
+      "tone": [
+        1.2235107188904673,
+        -34.244326271974984
+      ],
+      "score": 0.8409703013502738,
+      "feature_gap": 0.6599999666213989,
+      "metric_gap": 0.36194066945774983,
+      "note": "deep refit (fit_see_through.refine with depth 80, defocus <= 0.05, shade floor): the 24-slice search left 13-30% of pore pixels with no hit, rendered as a featureless fade; real beams see deeper surfaces. Scorer caps each feature gap at 5 real sd."
+    },
+    "see_through_24": {
+      "params": {
+        "family": "catalyst",
+        "smooth": 3.0686459387446416,
+        "cos_floor": 0.2,
+        "secant": 1.518086721276342,
+        "escape": 1.2505102626595956,
+        "defocus": 0.11337877803358778,
+        "hole_len": 2.6879303304708215,
+        "hole_floor_frac": 0.5261975873815478,
+        "depth": 32,
+        "face_smooth": 0.37263896167766486,
+        "sigma0": 1.4372331341886597,
+        "hit_albedo": true,
+        "mat": {
+          "corr_scale": 1.4136858698447703,
+          "rough": 0.22513605888800037,
+          "rough_sigma": 0.6320843186933977,
+          "tex_amp": 0.09141070408067622,
+          "rim": 0.35521944603619415,
+          "macro_frac": 0.029756100747011724,
+          "macro_amp": 0.2281005068134185
+        }
+      },
+      "tone": [
+        1.038650786583125,
+        -2.8367258796933257
+      ],
+      "score": 1.1492999778312898,
+      "feature_gap": 0.7396195530891418,
+      "metric_gap": 0.8193608494842957,
+      "note": "random search + refinement against real ROI statistics (fit_see_through.py); renderer microscope.render_surface; tone contrast x0.95 and dose x0.7 after full packages showed saturated pixels and too little fine noise vs real"
+    },
+    "v5": {
+      "depth": 80,
+      "smooth": 1.2,
+      "secant": 1.0,
+      "escape": 4.0,
+      "comp_amp": 0.15,
+      "comp_sig": 5.0,
+      "fun_lam": 4,
+      "edge": 0.6,
+      "esc": 3.0,
+      "lump_amp": 0.06,
+      "hole_floor": 0.35,
+      "fun_mix": 0.3,
+      "fun_floor": 40,
+      "sigma_y": 1.8,
+      "sigma_x": 1.6,
+      "voro": {
+        "warp": 4.0,
+        "warp_sig": [
+          4,
+          5,
+          4
+        ],
+        "big": 45,
+        "small": 11,
+        "p_big": 0.25,
+        "patch": 1.5
+      },
+      "grain": 14.618754386901855,
+      "grain_ref": 129.0
+    },
+    "v5_note": "tuned by blind 4x4 tests on 140 px patches (blind_gen.py): pristine at chance (14/32), comp 14/16, uncomp 28/32 correct by the author"
+  }
+}
