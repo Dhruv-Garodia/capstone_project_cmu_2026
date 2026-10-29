@@ -1,0 +1,8 @@
+# generation (tested with Python 3.11)
+numpy>=2.0
+scipy>=1.13
+tifffile>=2024.1
+Pillow>=10.0
+matplotlib>=3.8
+# only for training / scoring models (train_shine.py, experiments/)
+# torch>=2.1

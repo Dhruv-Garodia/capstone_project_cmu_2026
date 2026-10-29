@@ -1,0 +1,8 @@
+{
+ "_note": "comp optics, a coarser and more porous foam than the real comp stack, thicker slices",
+ "material": "comp_like",
+ "name": "coarse_foam",
+ "porosity": 0.5,
+ "frames": 80,
+ "override": {"zlen": 1.5, "macro_per_kpx": 10}
+}

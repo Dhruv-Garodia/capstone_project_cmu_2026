@@ -1,0 +1,26 @@
+{
+  "comp": {
+    "level": 182,
+    "adapt": 0.3,
+    "win": 251,
+    "real_start_porosity": 0.4034,
+    "labeller_porosity_on_real": 0.4017,
+    "pixel_agreement_with_real_start_masks": 0.8856
+  },
+  "uncomp": {
+    "level": 192,
+    "adapt": 0.3,
+    "win": 251,
+    "real_start_porosity": 0.5126,
+    "labeller_porosity_on_real": 0.5119,
+    "pixel_agreement_with_real_start_masks": 0.8897
+  },
+  "pristine": {
+    "level": 129,
+    "adapt": 0.3,
+    "win": 251,
+    "real_start_porosity": 0.5001,
+    "labeller_porosity_on_real": 0.5018,
+    "pixel_agreement_with_real_start_masks": 0.8451
+  }
+}

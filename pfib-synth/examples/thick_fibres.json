@@ -1,0 +1,9 @@
+{
+ "_note": "fibre mat with thicker, straighter fibres and more jitter",
+ "material": "fibre_mat",
+ "name": "thick_fibres",
+ "frames": 60,
+ "width": 800,
+ "mat_kw": {"r_med": 7.0, "bend": 0.01, "thick_frac": 0.2},
+ "override": {"jitter": [0.35, 0.3]}
+}

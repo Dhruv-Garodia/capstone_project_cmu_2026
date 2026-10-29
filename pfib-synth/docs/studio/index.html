@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pfib-synth studio</title>
+<style>
+:root{--bg:#121418;--panel:#1b1e24;--line:#2c313a;--fg:#e6e8eb;--dim:#9aa3ad;--acc:#5ac8fa;--ok:#4cd07d;--bad:#ff6b5a;--warn:#ffb020}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{display:flex;gap:16px;align-items:baseline;padding:12px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:16px;margin:0}
+header p{margin:0;color:var(--dim)}
+main{display:grid;grid-template-columns:minmax(320px,430px) minmax(0,1fr);gap:14px;padding:14px 18px}
+@media (max-width:980px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin:2px 0 10px;font-weight:600}
+h3{font-size:12px;color:var(--dim);margin:14px 0 6px;font-weight:600}
+label.f{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px;align-items:center;margin:6px 0}
+label.f span{color:var(--dim)}
+input,select,textarea,button{background:#0f1115;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font:inherit;min-width:0;width:100%}
+input[type=range]{padding:0;accent-color:var(--acc)}
+input[type=checkbox]{width:auto}
+button{cursor:pointer;width:auto}
+button.go{background:var(--acc);color:#081018;border:0;font-weight:600;padding:8px 16px}
+button:hover{border-color:var(--acc)}
+.doc{color:var(--dim);font-size:12px;margin:-2px 0 6px 128px}
+.knob{display:grid;grid-template-columns:118px minmax(0,1fr) 22px;gap:8px;align-items:center;margin:5px 0}
+.knob code{color:var(--fg);font-size:12px}
+.knob .d{grid-column:1/-1;color:var(--dim);font-size:11.5px;margin:-3px 0 2px}
+.err{color:var(--bad);min-height:1.2em}
+.jobs .j{border-top:1px solid var(--line);padding:8px 0}
+.jobs pre{background:#0b0c0f;border-radius:6px;padding:8px;max-height:150px;overflow:auto;font-size:11px;color:var(--dim);white-space:pre-wrap;margin:6px 0 0}
+.st{font-weight:600}.st.running{color:var(--warn)}.st.done{color:var(--ok)}.st.failed{color:var(--bad)}
+.pk{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.p{border:1px solid var(--line);border-radius:8px;padding:10px;background:#16191e;min-width:0}
+.p h4{margin:0 0 4px;font-size:14px}
+.p .m{color:var(--dim);font-size:12px;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.p img{width:100%;border-radius:4px;display:block;background:#000}
+.p .gl{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.p .gl button{font-size:12px;padding:3px 8px}
+.p .gl button.on{border-color:var(--acc);color:var(--acc)}
+a{color:var(--acc)}
+.right{display:grid;gap:14px;align-content:start}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header>
+  <h1>pfib-synth studio</h1>
+  <p>Synthetic pFIB-SEM stacks with exact ground truth. Set the parameters, generate, then look through the stack slice by slice or turn it in 3-D.</p>
+</header>
+<main>
+  <section class="card">
+    <h2>New stack</h2>
+    <label class="f"><span>start from</span><select id="preset"></select></label>
+    <label class="f"><span>name</span><input id="name" placeholder="my_stack"></label>
+    <label class="f"><span>microscope style</span><select id="style"></select></label>
+    <div class="doc">which real acquisition the beam, depth response, detector and the surroundings of the layer are calibrated to</div>
+    <label class="f"><span>material</span><select id="family"></select></label>
+    <div class="doc" id="famdoc"></div>
+    <label class="f"><span>porosity <b id="porv"></b></span><input type="range" id="porosity" min="0.05" max="0.9" step="0.005"></label>
+    <label class="f"><span>slices</span><input type="number" id="frames" min="10" max="700" value="60"></label>
+    <label class="f"><span>frame width (px)</span><input type="number" id="width" min="128" max="2000" placeholder="full (real frame width)"></label>
+    <label class="f"><span>seed</span><div class="row" style="flex-wrap:nowrap"><input type="number" id="seed"><button id="dice" title="random seed">🎲</button></div></label>
+    <h3>material parameters</h3>
+    <div id="mat"></div>
+    <h3>render settings <span style="font-weight:400">(blank = calibrated value for the style)</span></h3>
+    <div id="knobs"></div>
+    <label class="f"><span>extra overrides</span><textarea id="extra" rows="2" placeholder='{"sigma_y": 1.2}'></textarea></label>
+    <label class="f"><span>showcase GIFs</span><span><input type="checkbox" id="gifs" checked> render milling / rotation / slice GIFs (~10 s)</span></label>
+    <div class="row" style="margin-top:10px"><button class="go" id="go">Generate</button><span class="err" id="err"></span></div>
+    <div class="doc" style="margin:8px 0 0">A 60-slice stack at full width takes about a minute; 118 slices about 5. Equivalent CLI: <code id="cli" style="word-break:break-all"></code></div>
+  </section>
+  <section class="right">
+    <div class="card jobs"><h2>Jobs</h2><div id="jobs" style="color:var(--dim)">nothing running</div></div>
+    <div class="card"><h2>Stacks in out/</h2><div class="pk" id="pk"></div><div id="pk0" style="color:var(--dim)"></div></div>
+  </section>
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+let S = null;
+const fmt = v => Array.isArray(v) ? JSON.stringify(v) : String(v);
+function parse(s) { s = s.trim(); if (s === "") return undefined; try { return JSON.parse(s); } catch (e) { return s; } }
+
+async function init() {
+  S = await (await fetch("/api/schema")).json();
+  $("preset").innerHTML = '<option value="">(custom)</option>' + Object.keys(S.presets).map(k => `<option>${k}</option>`).join("");
+  $("style").innerHTML = S.styles.map(s => `<option>${s}</option>`).join("");
+  $("family").innerHTML = Object.keys(S.families).map(f => `<option>${f}</option>`).join("");
+  $("knobs").innerHTML = Object.entries(S.knobs).map(([k, v]) =>
+    `<div class="knob"><code>${k}</code><input data-k="${k}" placeholder=""><span></span><div class="d">${v.doc}</div></div>`).join("");
+  $("preset").value = "comp_like"; applyPreset();
+  for (const id of ["preset"]) $(id).onchange = applyPreset;
+  $("family").onchange = () => { matFields({}); cli(); };
+  $("style").onchange = () => { knobPlaceholders(); cli(); };
+  $("porosity").oninput = () => { $("porv").textContent = (+$("porosity").value).toFixed(3); cli(); };
+  $("dice").onclick = e => { e.preventDefault(); $("seed").value = Math.floor(Math.random() * 1e8); cli(); };
+  document.querySelector("section.card").addEventListener("input", cli);
+  $("go").onclick = submit;
+  poll(); setInterval(poll, 2000);
+}
+function applyPreset() {
+  const p = S.presets[$("preset").value];
+  if (!p) return cli();
+  $("style").value = p.style; $("family").value = p.family; $("porosity").value = p.porosity; $("porv").textContent = (+p.porosity).toFixed(3);
+  $("seed").value = p.seed; $("name").value = $("preset").value + "_" + (Date.now() % 10000);
+  matFields(p.mat_kw || {}); knobPlaceholders(); cli();
+}
+function matFields(vals) {
+  const f = S.families[$("family").value];
+  $("famdoc").textContent = f.doc;
+  const ps = Object.entries(f.params);
+  $("mat").innerHTML = ps.length ? ps.map(([k, d]) => `<label class="f"><span>${k}</span><input data-m="${k}" placeholder="${fmt(d)}" value="${vals[k] !== undefined ? fmt(vals[k]) : ""}"></label>`).join("")
+    : '<div class="doc" style="margin:0">no builder parameters; the foam cell sizes are part of the style calibration (slicing.json voro)</div>';
+}
+function knobPlaceholders() {
+  const s = $("style").value;
+  document.querySelectorAll("[data-k]").forEach(el => { const d = S.knobs[el.dataset.k].default[s]; el.placeholder = d === undefined || d === null ? "off" : fmt(d); });
+}
+function collect() {
+  const mat_kw = {}, override = {};
+  document.querySelectorAll("[data-m]").forEach(el => { const v = parse(el.value); if (v !== undefined) mat_kw[el.dataset.m] = v; });
+  document.querySelectorAll("[data-k]").forEach(el => { const v = parse(el.value); if (v !== undefined) override[el.dataset.k] = v; });
+  const ex = $("extra").value.trim();
+  if (ex) Object.assign(override, JSON.parse(ex));
+  return { name: $("name").value.trim(), style: $("style").value, family: $("family").value, porosity: +$("porosity").value,
+           seed: +$("seed").value || 1, frames: +$("frames").value || 60, width: +$("width").value || null, mat_kw, override, gifs: $("gifs").checked };
+}
+function cli() {
+  let j; try { j = collect(); } catch (e) { $("cli").textContent = "(extra overrides is not valid JSON)"; return; }
+  let s = `python generate.py --style ${j.style} --family ${j.family} --porosity ${j.porosity} --seed ${j.seed} --frames ${j.frames}` + (j.width ? ` --width ${j.width}` : "") + ` --name ${j.name || "NAME"}`;
+  for (const [k, v] of Object.entries(j.mat_kw)) s += ` --mat '${k}=${JSON.stringify(v)}'`;
+  for (const [k, v] of Object.entries(j.override)) s += ` --set '${k}=${JSON.stringify(v)}'`;
+  $("cli").textContent = s + (j.gifs ? " --view" : "");
+}
+async function submit() {
+  $("err").textContent = "";
+  let body; try { body = collect(); } catch (e) { $("err").textContent = "extra overrides: " + e.message; return; }
+  const r = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const d = await r.json(); if (!r.ok) { $("err").textContent = d.error; return; }
+  poll();
+}
+let seenDone = new Set(), firstPoll = true;
+async function poll() {
+  const js = await (await fetch("/api/jobs")).json();
+  $("jobs").innerHTML = js.length ? js.map(j => `<div class="j"><span class="st ${j.state}">${j.state}</span> <b>${j.name}</b> · ${j.job.family} in ${j.job.style} optics, ${j.job.frames} slices · <i>${j.step}</i> · ${Math.round(((j.finished || Date.now() / 1000) - j.started))} s<pre>${j.log.replace(/</g, "&lt;").split("\n").slice(-12).join("\n")}</pre></div>`).join("") : "nothing running";
+  let changed = firstPoll; firstPoll = false;
+  for (const j of js) if (j.state !== "running" && !seenDone.has(j.id)) { seenDone.add(j.id); changed = true; }
+  if (changed) packages();
+}
+async function packages() {
+  const ps = await (await fetch("/api/packages")).json();
+  $("pk0").textContent = ps.length ? "" : "nothing generated yet";
+  $("pk").innerHTML = ps.map((p, i) => {
+    const kinds = p.gifs.map(g => g.split("_").pop().replace(".gif", ""));
+    return `<div class="p"><h4>${p.name}</h4>
+      <div class="m">${p.family || ""} in ${p.style || ""} optics · ${p.frames} slices · true porosity ${p.porosity != null ? p.porosity.toFixed(3) : "–"} · rule ${p.rule_porosity != null ? p.rule_porosity.toFixed(3) : "–"}</div>
+      ${p.gifs.length ? `<img id="im${i}" src="${p.gifs[kinds.indexOf("milling") >= 0 ? kinds.indexOf("milling") : 0]}" alt="">` : ""}
+      <div class="gl">${p.gifs.map((g, k) => `<button data-i="${i}" data-g="${g}">${kinds[k]}</button>`).join("")}</div>
+      <div class="row">${p.pfibv ? `<a href="/viewer/?data=${encodeURIComponent(p.pfibv)}" target="_blank">open in the 3-D viewer →</a>` : ""}<span style="color:var(--dim)">files: out/${p.name}/</span></div></div>`;
+  }).join("");
+  document.querySelectorAll(".gl button").forEach(b => b.onclick = () => { $("im" + b.dataset.i).src = b.dataset.g; });
+}
+init().catch(() => { document.querySelector("main").innerHTML = '<section class="card" style="grid-column:1/-1"><h2>Studio needs its local server</h2><p>This page generates stacks on your machine. Run <code>python studio.py</code> in a clone of the repo; it opens here at http://127.0.0.1:8770. To look at stacks without installing anything, use the <a href="../viewer/">viewer</a>.</p></section>'; });
+</script>
+</body>
+</html>

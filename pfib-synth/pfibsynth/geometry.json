@@ -1,0 +1,53 @@
+{
+  "comp": {
+    "height": 630,
+    "width": 1860,
+    "real_pages": 354,
+    "top_mean": 24.3,
+    "top_range": [
+      1,
+      80
+    ],
+    "bottom_mean": 539.5,
+    "bottom_range": [
+      515,
+      602
+    ],
+    "ragged_bottom": 3,
+    "excluded_fraction": 0.45233
+  },
+  "uncomp": {
+    "height": 689,
+    "width": 1642,
+    "real_pages": 410,
+    "top_mean": 45.8,
+    "top_range": [
+      23,
+      86
+    ],
+    "bottom_mean": 561.7,
+    "bottom_range": [
+      534,
+      632
+    ],
+    "ragged_bottom": 9,
+    "excluded_fraction": 0.5184
+  },
+  "pristine": {
+    "height": 1100,
+    "width": 1995,
+    "real_pages": 665,
+    "top_mean": 294.1,
+    "top_range": [
+      259,
+      319
+    ],
+    "bottom_mean": 1011.9,
+    "bottom_range": [
+      973,
+      1063
+    ],
+    "ragged_bottom": 3,
+    "excluded_fraction": 0.60759
+  }
+}
